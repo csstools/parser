@@ -1,0 +1,116 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "benchmark": "2.1.4",
+    "bootstrap": "4.5.0",
+    "eslint": "7.4.0",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-json": "2.1.1",
+    "postcss": "7.0.32",
+    "resolve": "1.17.0",
+    "rollup": "2.21.0"
+  },
+  "scripts": {
+    "benchmark": "node run/benchmark.tokenize.js",
+    "build": "npx rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
+    "build:iife": "npx rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
+    "lint": "npx eslint ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "plugin:import/errors",
+      "plugin:json/recommended"
+    ],
+    "rules": {
+      "array-bracket-spacing": 1,
+      "comma-dangle": [
+        "error",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline",
+          "functions": "never"
+        }
+      ],
+      "default-case": 0,
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "ignorePackages": true
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "run/*.js"
+          ]
+        }
+      ],
+      "indent": [
+        "error",
+        "tab",
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 120
+        }
+      ],
+      "key-spacing": [
+        "error",
+        {
+          "align": "value"
+        }
+      ],
+      "no-cond-assign": 0,
+      "no-console": 0,
+      "no-continue": 0,
+      "no-fallthrough": 0,
+      "no-irregular-whitespace": 0,
+      "no-multi-assign": 0,
+      "no-multi-spaces": [
+        "error",
+        {
+          "exceptions": {
+            "Property": false,
+            "VariableDeclarator": true
+          }
+        }
+      ],
+      "no-param-reassign": 0,
+      "no-plusplus": 0,
+      "no-return-assign": 0,
+      "no-tabs": [
+        "error",
+        {
+          "allowIndentationTabs": true
+        }
+      ],
+      "no-use-before-define": [
+        "error",
+        {
+          "classes": false,
+          "functions": false
+        }
+      ],
+      "quotes": [
+        "error",
+        "backtick"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "sort-imports": 0
+    }
+  }
+}
