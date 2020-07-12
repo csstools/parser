@@ -37,8 +37,8 @@ import {
 } from './tokenize.util.js'
 
 /**
- * Reads CSS and executes a function for each token.
- * @param {string} text - Text being tokenized as CSS.
+ * Reads CSS and returns a function for consuming tokens from it.
+ * @param {string} text - Text being read as CSS tokens.
  * @return {Token} Consumes a token and returns the current token or null.
  */
 function tokenize(text) {
@@ -115,6 +115,10 @@ function tokenize(text) {
 
 	/** @type {number} String index of the line, from the end of the current token. */
 	let nextLineOpen = 0
+
+	token.getText = getText
+	token.getLead = getLead
+	token.getTail = getTail
 
 	return token
 
@@ -468,6 +472,18 @@ function tokenize(text) {
 		return token
 	}
 
+	function getText() {
+		return text.slice(open + lead, shut - tail)
+	}
+
+	function getLead() {
+		return text.slice(open, open + lead)
+	}
+
+	function getTail() {
+		return text.slice(shut - tail, shut)
+	}
+
 	/**
 	 * Consumes the contents of a word token.
 	 */
@@ -573,23 +589,18 @@ function tokenize(text) {
 export default tokenize
 
 /**
- * @typedef {number} NodeType - Integer identifying what the current token is.
- * @typedef {number} OpeningIndex - Starting string index of the current token.
- * @typedef {number} ClosingIndex - Ending string index of the current token.
- * @typedef {number} LeadLength - Number of characters between the prefix and value of the current token.
- * @typedef {number} TailLength - Number of characters between the value and suffix of the current token.
- */
-
-/**
- * @typedef {Object} Token
+ * @typedef {Object} Token - Reads CSS and returns a function for consuming tokens from it.
  * @property {() => Token | void} read - Consumes a token and returns the current token or null.
+ * @property {() => string} getLead - Returns any addition text from the start of the token.
+ * @property {() => string} getText - Returns the primary text from the token.
+ * @property {() => string} getTail - Returns any additional text from the end of the token.
  * @property {string} text - Text being tokenized as CSS.
  * @property {number} size - Length of characters being read from the text.
- * @property {NodeType} type - Integer identifying what the current token is.
- * @property {OpeningIndex} open - Starting string index of the current token.
- * @property {ClosingIndex} shut - Ending string index of the current token.
- * @property {LeadLength} lead - Number of characters between the prefix and value of the current token.
- * @property {TailLength} tail - Number of characters between the value and suffix of the current token.
- * @property {LeadLength} line - Line number at the start of the current token.
- * @property {TailLength} lcol - Column number at the start of the current token.
+ * @property {number} type - Integer identifying what the current token is.
+ * @property {number} open - Starting string index of the current token.
+ * @property {number} shut - Ending string index of the current token.
+ * @property {number} lead - Number of characters between the prefix and value of the current token.
+ * @property {number} tail - Number of characters between the value and suffix of the current token.
+ * @property {number} line - Line number at the start of the current token.
+ * @property {number} lcol - Column number at the start of the current token.
  */

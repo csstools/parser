@@ -1,6 +1,7 @@
 {
   "private": true,
   "type": "module",
+  "module": "./dist/tokenize.mjs",
   "devDependencies": {
     "benchmark": "2.1.4",
     "bootstrap": "4.5.0",
@@ -14,8 +15,10 @@
   },
   "scripts": {
     "benchmark": "node run/benchmark.tokenize.js",
-    "build": "npx rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
-    "build:iife": "npx rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
+    "build:nodetize": "npx rollup src/nodetize.js --file dist/nodetize.cjs --format cjs",
+    "build:nodetize:iife": "npx rollup src/nodetize.js --file dist/nodetize.web.cjs --format iife --name 'nodetize'",
+    "build:tokenize": "npx rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
+    "build:tokenize:iife": "npx rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
     "lint": "npx eslint ."
   },
   "eslintConfig": {
@@ -52,6 +55,7 @@
           ]
         }
       ],
+      "import/prefer-default-export": 0,
       "indent": [
         "error",
         "tab",
@@ -76,12 +80,13 @@
       "no-continue": 0,
       "no-fallthrough": 0,
       "no-irregular-whitespace": 0,
+      "no-nested-ternary": 0,
       "no-multi-assign": 0,
       "no-multi-spaces": [
         "error",
         {
           "exceptions": {
-            "Property": false,
+            "Property": true,
             "VariableDeclarator": true
           }
         }
@@ -89,12 +94,7 @@
       "no-param-reassign": 0,
       "no-plusplus": 0,
       "no-return-assign": 0,
-      "no-tabs": [
-        "error",
-        {
-          "allowIndentationTabs": true
-        }
-      ],
+      "no-tabs": 0,
       "no-use-before-define": [
         "error",
         {

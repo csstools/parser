@@ -56,7 +56,30 @@ export const PERC = 0x0025 // % ===  37
  * @see https://unicode.org/charts/nameslist/n_0000.html#0027
  */
 export const SNGQ = 0x0027 // ' ===  39
+
+/**
+ * Left Parenthesis
+ * @see https://unicode.org/charts/nameslist/n_0000.html#0028
+ */
 export const L_RB = 0x0028 // ( ===  40
+
+/**
+ * Right Parenthesis
+ * @see https://unicode.org/charts/nameslist/n_0000.html#0029
+ */
+export const R_RB = 0x0029 // ) ===  41
+
+/**
+ * Colon
+ * @see https://unicode.org/charts/nameslist/n_0000.html#003A
+ */
+export const COLA = 0x003A // : ===  58
+
+/**
+ * Semicolon
+ * @see https://unicode.org/charts/nameslist/n_0000.html#003B
+ */
+export const SEMI = 0x003B // ; ===  59
 
 /**
  * Asterisk
@@ -125,10 +148,22 @@ export const UP_E = 0x0045 // E ===  69
 export const UP_Z = 0x005A // Z ===  90
 
 /**
+ * Left Square Bracket
+ * @see https://unicode.org/charts/nameslist/n_0000.html#005B
+ */
+export const L_SB = 0x005B // [ ===  91
+
+/**
  * Backslash
  * @see https://unicode.org/charts/nameslist/n_0000.html#005C
  */
 export const BS   = 0x005C // \ ===  92
+
+/**
+ * Right Square Bracket
+ * @see https://unicode.org/charts/nameslist/n_0000.html#005D
+ */
+export const R_SB = 0x005D // ] ===  93
 
 /**
  * Low Line
@@ -153,6 +188,18 @@ export const LC_E = 0x0065 // e === 101
  * @see https://unicode.org/charts/nameslist/n_0000.html#007A
  */
 export const LC_Z = 0x007A // z === 122
+
+/**
+ * Left Curly Brace
+ * @see https://unicode.org/charts/nameslist/n_0000.html#007B
+ */
+export const L_CB = 0x007B // { === 123
+
+/**
+ * Right Curly Brace
+ * @see https://unicode.org/charts/nameslist/n_0000.html#007D
+ */
+export const R_CB = 0x007D // } === 125
 
 /**
  * Control
