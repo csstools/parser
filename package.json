@@ -14,16 +14,21 @@
     "postcss-selector-parser": "6.0.2",
     "postcss-values-parser": "3.2.1",
     "resolve": "1.17.0",
-    "rollup": "2.21.0"
+    "rollup": "2.21.0",
+    "terser": "4.8.0"
   },
   "scripts": {
     "benchmark": "npm run benchmark:tokenize && npm run benchmark:parse",
     "benchmark:tokenize": "node run/benchmark.tokenize.js",
     "benchmark:parse": "node run/benchmark.parse.js",
-    "build:tokenize": "rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
-    "postbuild:tokenize": "gzip-size dist/tokenize.cjs",
+    "build": "npm run build:tokenize",
+    "build:tokenize": "npm run build:tokenize:cjs:max && npm run build:tokenize:cjs:min",
+    "build:tokenize:cjs:max": "rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
+    "build:tokenize:cjs:min": "terser dist/tokenize.cjs -c --output dist/tokenize.min.cjs",
     "build:tokenize:iife": "rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
     "lint": "eslint .",
+    "postbuild:tokenize:cjs:max": "gzip-size dist/tokenize.cjs",
+    "postbuild:tokenize:cjs:min": "gzip-size dist/tokenize.min.cjs",
     "validate": "node run/validate.tokenize.js"
   },
   "eslintConfig": {
