@@ -13,7 +13,15 @@ Collecting PostCSS Tokenizer Benchmarks...
 
 PostCSS Tokenizer (Development): 58633 tokens in 7 ms (1.4 times faster)
 PostCSS Tokenizer (7.0.32):      49872 tokens in 9 ms
+
+Collecting PostCSS Parser Benchmarks...
+
+PostCSS Parser (7.0.32):         6240 tokens in 14 ms
+PostCSS Parser (Development):   67811 tokens in 24 ms (1.7 times slower)
+PostCSS/Selector/Value Parsers: 28491 tokens in 81 ms (5.9 times slower)
 ```
+
+Presently, `tokenize.js` compiles to ~ 1.91kB, and `parse.js` compiles to ~ 3.81kB (min/gzip).
 
 ### Build
 

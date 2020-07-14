@@ -1,28 +1,33 @@
-import CSSRoot from '../CSSHost/CSSRoot.js'
+import CSSComment from '../CSSNode/CSSComment.js'
+import CSSSpace from '../CSSNode/CSSSpace.js'
+import CSSAtWord from '../CSSNode/CSSAtWord.js'
 
-import consumeRootValueFromTokenizer from './CSSRoot.value.fromTokenizer.js'
+import consumeAtRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
+import consumeStyleRuleFromTokenizer from './CSSStyleRule.fromTokenizer.js'
 
-/**
- * Consume a block
- * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
- * @arg {Function} tokenizer
- * @arg {Function} [consumer]
- */
 export default function fromTokenizer(tokenizer) {
 	if (!tokenizer.item) tokenizer()
 	if (!tokenizer.item) return null
 
-	const element = new CSSRoot()
-	const { nodes } = element
-	const { value } = nodes
+	/** @type {CSSNode} Current Node */
+	const { item } = tokenizer
 
 	// Repeatedly consume the next input token and process it as follows:
-	do {
-		value.push(
-			consumeRootValueFromTokenizer(tokenizer)
-		)
-	} while (tokenizer().item)
+	switch (true) {
+		// <css-comment>
+		// <css-space>
+		case item.constructor === CSSComment:
+		case item.constructor === CSSSpace:
+			return item
 
-	// return the style rule
-	return element
+		// anything else
+		case item.constructor === CSSAtWord:
+			// consume a component value and append it to the value of the block
+			return consumeAtRuleFromTokenizer(tokenizer, fromTokenizer)
+
+		// anything else
+		default:
+			// consume a component value and append it to the value of the block
+			return consumeStyleRuleFromTokenizer(tokenizer)
+	}
 }

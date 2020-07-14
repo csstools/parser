@@ -6,7 +6,7 @@ import consumeBlockFromTokenizer from './CSSBlock.fromTokenizer.js'
 import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
-import consumerOfRootNodes from './CSSRoot.value.fromTokenizer.js'
+import consumerOfRootNodes from './CSSRoot.fromTokenizer.js'
 
 /**
  * Consume an at-rule from a tokenizer

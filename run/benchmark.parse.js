@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import BenchmarkJS from 'benchmark'
 import resolve from 'resolve'
 import ParserPrd from 'postcss/lib/parser.js'
-import parseDev from '../src/tokenize.js'
+import { parseRoot as parseDev } from '../src/parse.js'
 
 import postcssValuesParserPackage from 'postcss-values-parser'
 import PostcssSelectorParser from 'postcss-selector-parser'
@@ -37,7 +37,7 @@ Object.entries({
 		let parsed = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
 		parsed.parse()
 
-		// hard-code the number of nodes parsed from start-parser.js
+		// hard-code the number of nodes parsed
 		// so as not to negatively skew the results of the combined parsers
 		tokensByTestIndex[0] = { length: 6240 }
 	},
@@ -55,16 +55,17 @@ Object.entries({
 			}
 		})
 
-		// hard-code the number of nodes parsed from start-parser.js
+		// hard-code the number of nodes parsed
 		// so as not to negatively skew the results of the combined parsers
 		tokensByTestIndex[1] = { length: 28491 }
 	},
 	// postcss development test
 	[postcssDevTestName]: () => {
-		const read = parseDev({ data: bootstrapCSS })
-		const tokens = []
-		while (read().item) tokens.push(read.item)
-		tokensByTestIndex[2] = tokens
+		parseDev({ data: bootstrapCSS })
+
+		// hard-code the number of nodes parsed
+		// so as not to negatively skew the results of the combined parsers
+		tokensByTestIndex[2] = { length: 67811 }
 	},
 }).reduce(
 	(suite, [name, func]) => suite.add(name, func),

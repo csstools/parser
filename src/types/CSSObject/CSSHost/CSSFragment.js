@@ -1,3 +1,5 @@
+import toString from '../../../utils/toString.js'
+
 import CSSHost from './CSSHost.js'
 
 import CSSComment from "../CSSNode/CSSComment.js"
@@ -18,4 +20,12 @@ defineProperty(prototype, `items`, {
 		)
 	},
 	configurable: true,
+})
+
+defineProperty(prototype, `toStringTypes`, {
+	value: {
+		value: toString,
+	},
+	configurable: true,
+	writable:     true,
 })

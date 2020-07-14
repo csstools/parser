@@ -3,11 +3,10 @@ import CSSFragment from '../CSSHost/CSSFragment.js'
 import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
 
 /**
- * Consume a block
- * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
+ * Consume a fragment
  * @arg {Function} tokenizer
- * @arg {Function} [consumer] - Consumer which is fed the tokenizer.
- * @arg {Function} [CSSContainer] - Container class given values.
+ * @arg {Function} [consumer] - Function consuming the tokenizer.
+ * @arg {Function} [CSSContainer] - Class assigned consumed nodes.
  * @return {CSSFragment}
  */
 export default function fromTokenizer(tokenizer, consumer, CSSContainer) {
@@ -17,9 +16,8 @@ export default function fromTokenizer(tokenizer, consumer, CSSContainer) {
 	consumer = consumer || consumeNodeFromTokenizer
 	CSSContainer = CSSContainer || CSSFragment
 
-	const element = new CSSContainer()
-	const { nodes } = element
-	const { value } = nodes
+	const element = new CSSContainer({ nodes: { value: [] } })
+	const { value } = element.nodes
 
 	do {
 		value.push(consumer(tokenizer))
