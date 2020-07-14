@@ -14,7 +14,7 @@ import {
 	STAR,
 	STOP,
 	UP_E,
-} from '../utils/code-points.js'
+} from './utils/code-points.js'
 
 import {
 	/* Tokenizer Utilities */
@@ -23,21 +23,21 @@ import {
 	isIdentifierStart,
 	isInteger,
 	isVerticalSpace,
-} from '../utils/token-utils.js'
+} from './utils/tokenizer-algorithms.js'
 
 /* Token Identifiers */
-import CSSAtWord from '../types/CSSObject/CSSNode/CSSAtWord.js'
-import CSSComment from '../types/CSSObject/CSSNode/CSSComment.js'
-import CSSFunctionWord from '../types/CSSObject/CSSNode/CSSFunctionWord.js'
-import CSSHash from '../types/CSSObject/CSSNode/CSSHash.js'
-import CSSNumber from '../types/CSSObject/CSSNode/CSSNumber.js'
-import CSSSpace from '../types/CSSObject/CSSNode/CSSSpace.js'
-import CSSString from '../types/CSSObject/CSSNode/CSSString.js'
-import CSSSymbol from '../types/CSSObject/CSSNode/CSSSymbol.js'
-import CSSWord from '../types/CSSObject/CSSNode/CSSWord.js'
+import CSSAtWord from './types/CSSObject/CSSNode/CSSAtWord.js'
+import CSSComment from './types/CSSObject/CSSNode/CSSComment.js'
+import CSSFunctionWord from './types/CSSObject/CSSNode/CSSFunctionWord.js'
+import CSSHash from './types/CSSObject/CSSNode/CSSHash.js'
+import CSSNumber from './types/CSSObject/CSSNode/CSSNumber.js'
+import CSSSpace from './types/CSSObject/CSSNode/CSSSpace.js'
+import CSSString from './types/CSSObject/CSSNode/CSSString.js'
+import CSSSymbol from './types/CSSObject/CSSNode/CSSSymbol.js'
+import CSSWord from './types/CSSObject/CSSNode/CSSWord.js'
 
 /* Iterator Utilities */
-import createNext from '../utils/createNext.js'
+import createNext from './utils/createNext.js'
 
 /**
  * Reads CSS and returns a function for consuming tokens from it.
@@ -114,7 +114,7 @@ function tokenize(input) {
 	 * @returns {Token | void}
 	 */
 	function tokens() {
-		if (shut === size) {
+		if (shut >= size) {
 			return undefined
 		}
 
@@ -247,15 +247,7 @@ function tokenize(input) {
 					})
 				}
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   HASH,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Number or Word or Symbol
@@ -303,15 +295,7 @@ function tokenize(input) {
 
 				++shut
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   DASH,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Number or Symbol
@@ -348,15 +332,7 @@ function tokenize(input) {
 					}
 				}
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   PLUS,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Number or Symbol
@@ -373,15 +349,7 @@ function tokenize(input) {
 					return consumeNumber(1)
 				}
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   STOP,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Word or Symbol
@@ -411,15 +379,7 @@ function tokenize(input) {
 
 				nextLineOpen = shut + 1
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   BS,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Space
@@ -484,15 +444,7 @@ function tokenize(input) {
 					})
 				}
 
-				return new CSSSymbol({
-					value:  text[open],
-					code:   AT,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Word or Function
@@ -547,19 +499,17 @@ function tokenize(input) {
 			 */
 			default:
 				++shut
-
-				return new CSSSymbol({
-					value:  text[open],
-					code:   cc0,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
 		}
 
-		return undefined
+		return new CSSSymbol({
+			value:  text[open],
+			code:   cc0,
+			source: {
+				input,
+				line,
+				lcol: open - lineOpen,
+			},
+		})
 	}
 
 	/**

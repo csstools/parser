@@ -9,17 +9,22 @@
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-json": "2.1.1",
+    "gzip-size-cli": "3.0.0",
     "postcss": "7.0.32",
+    "postcss-selector-parser": "6.0.2",
+    "postcss-values-parser": "3.2.1",
     "resolve": "1.17.0",
     "rollup": "2.21.0"
   },
   "scripts": {
-    "benchmark": "node run/benchmark.tokenize.js",
-    "build:nodetize": "npx rollup src/nodetize.js --file dist/nodetize.cjs --format cjs",
-    "build:nodetize:iife": "npx rollup src/nodetize.js --file dist/nodetize.web.cjs --format iife --name 'nodetize'",
-    "build:tokenize": "npx rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
-    "build:tokenize:iife": "npx rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
-    "lint": "npx eslint ."
+    "benchmark": "npm run benchmark:tokenize && npm run benchmark:parse",
+    "benchmark:tokenize": "node run/benchmark.tokenize.js",
+    "benchmark:parse": "node run/benchmark.parse.js",
+    "build:tokenize": "rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
+    "postbuild:tokenize": "gzip-size dist/tokenize.cjs",
+    "build:tokenize:iife": "rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
+    "lint": "eslint .",
+    "validate": "node run/validate.tokenize.js"
   },
   "eslintConfig": {
     "extends": [

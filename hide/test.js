@@ -1,4 +1,4 @@
-import tokenize from '../src/tokenize/tokenize.js'
+import tokenize from '../src/tokenize.js'
 // import fromTokenizer from './types/CSSObject/CSSHost/CSSDeclaration/fromTokenizer.js'
 // import blockFromTokenizer from './types/CSSObject/CSSHost/CSSStyleRule/blockFromTokenizer.js'
 // import listFromTokenizer from './types/CSSObject/fromTokenizer/Array.fromTokenizer.js'

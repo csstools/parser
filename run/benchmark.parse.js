@@ -1,8 +1,14 @@
 import { readFileSync } from 'fs'
 import BenchmarkJS from 'benchmark'
 import resolve from 'resolve'
-import tokenizePrd from 'postcss/lib/tokenize.js'
-import tokenizeDev from '../src/tokenize.js'
+import ParserPrd from 'postcss/lib/parser.js'
+import parseDev from '../src/tokenize.js'
+
+import postcssValuesParserPackage from 'postcss-values-parser'
+import PostcssSelectorParser from 'postcss-selector-parser'
+
+const { parse: postcssValuesParser } = postcssValuesParserPackage
+const postcssSelectorParser = PostcssSelectorParser()
 
 // setup test utilities
 const write = process.stdout.write.bind(process.stdout)
@@ -14,30 +20,51 @@ const version = (id) => JSON.parse(readFileSync(resolve.sync(id))).version
 const bootstrapCSSPath = resolve.sync(`bootstrap/dist/css/bootstrap.css`)
 const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 
-write(`\nCollecting PostCSS Tokenizer Benchmarks...\n`)
+write(`\nCollecting PostCSS Parser Benchmarks...\n`)
 
 // setup tests
-const postcssPrdTestName = `PostCSS Tokenizer (${version(`postcss/package.json`)})`
-const postcssDevTestName = `PostCSS Tokenizer (Development)`
+const postcssPrdTestName = `PostCSS Parser (${version(`postcss/package.json`)})`
+const postcssAllTestName = `PostCSS/Selector/Value Parsers`
+const postcssDevTestName = `PostCSS Parser (Development)`
 
 const { Suite: Benchmark } = BenchmarkJS
 
-const tokensByTestIndex = []
+const tokensByTestIndex = [ [], [], [] ]
 
 Object.entries({
 	// postcss production test
 	[postcssPrdTestName]: () => {
-		const read = tokenizePrd({ css: bootstrapCSS })
-		const tokens = []
-		while (!read.endOfFile()) tokens.push(read.nextToken())
-		tokensByTestIndex[0] = tokens
+		let parsed = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
+		parsed.parse()
+
+		// hard-code the number of nodes parsed from start-parser.js
+		// so as not to negatively skew the results of the combined parsers
+		tokensByTestIndex[0] = { length: 6240 }
+	},
+	[postcssAllTestName]: () => {
+		let parsed = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
+		parsed.parse()
+		parsed.root.walk(node => {
+			switch (node.type) {
+				case 'decl':
+					postcssValuesParser(node.value)
+					break
+				case 'rule':
+					postcssSelectorParser.processSync(node.selector)
+					break
+			}
+		})
+
+		// hard-code the number of nodes parsed from start-parser.js
+		// so as not to negatively skew the results of the combined parsers
+		tokensByTestIndex[1] = { length: 28491 }
 	},
 	// postcss development test
 	[postcssDevTestName]: () => {
-		const read = tokenizeDev({ data: bootstrapCSS })
+		const read = parseDev({ data: bootstrapCSS })
 		const tokens = []
 		while (read().item) tokens.push(read.item)
-		tokensByTestIndex[1] = tokens
+		tokensByTestIndex[2] = tokens
 	},
 }).reduce(
 	(suite, [name, func]) => suite.add(name, func),
