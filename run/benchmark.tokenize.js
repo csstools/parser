@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import BenchmarkJS from 'benchmark'
 import resolve from 'resolve'
 import tokenizePrd from 'postcss/lib/tokenize.js'
-import tokenizeDev from '../src/tokenize.js'
+import tokenizeDev from '../src/tokenize/tokenize.js'
 
 // setup test utilities
 const write = process.stdout.write.bind(process.stdout)
@@ -34,9 +34,9 @@ Object.entries({
 	},
 	// postcss development test
 	[postcssDevTestName]: () => {
-		const read = tokenizeDev(bootstrapCSS)
+		const read = tokenizeDev({ data: bootstrapCSS })
 		const tokens = []
-		while (read()) tokens.push(read.type)
+		while (read().item) tokens.push(read.item)
 		tokensByTestIndex[1] = tokens
 	},
 }).reduce(

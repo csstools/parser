@@ -1,11 +1,4 @@
-import { toNonEnumerableDescriptor } from '../utils/toDescriptor.js'
+export { default as CSSObject } from './CSSObject/CSSObject.js'
 
-class CSSObject {}
-
-Object.defineProperties(CSSObject, {
-	create: toNonEnumerableDescriptor(function create(init) {
-		return Object.assign(Object.create(this.prototype), init)
-	}),
-})
-
-export default CSSObject
+export * from './CSSObject/CSSNode.js'
+export * from './CSSObject/CSSHost.js'

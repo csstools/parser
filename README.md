@@ -28,7 +28,7 @@ src/tokenize.js → dist/tokenize.cjs...
 created dist/tokenize.cjs in 60ms
 ```
 
-The compiled size of `dist/tokenize.cjs` is 2798 bytes (1090 gzipped).
+The compiled size of `dist/tokenize.cjs` is 5397 bytes (1538 gzipped).
 
 #### Build `evaluate`
 
