@@ -1,11 +1,11 @@
 {
   "private": true,
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "main": "./dist/parse.cjs",
+  "module": "./dist/parse.mjs",
   "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
+    "import": "./dist/parse.mjs",
+    "require": "./dist/parse.cjs"
   },
   "files": [
     "dist"
@@ -174,23 +174,23 @@
     }
   },
   "rollup": {
-    "input": "src/index.js",
+    "input": "src/parse.js",
     "plugins": [
       "rollup-plugin-filesize"
     ],
     "output": [
       {
-        "file": "dist/index.cjs",
+        "file": "dist/parse.cjs",
         "format": "cjs",
         "strict": false
       },
       {
-        "file": "dist/index.mjs",
+        "file": "dist/parse.mjs",
         "format": "esm",
         "strict": false
       },
       {
-        "file": "dist/index.iife.js",
+        "file": "dist/parse.iife.js",
         "format": "iife",
         "strict": false,
         "plugins": [

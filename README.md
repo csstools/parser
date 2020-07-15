@@ -21,35 +21,38 @@ PostCSS Parser (Development):   67811 tokens in  35 ms (1.7 times slower)
 PostCSS/Selector/Value Parsers: 28491 tokens in 157 ms (7.7 times slower)
 ```
 
-Presently, `tokenize.js` compiles to ~ 814B, and `parse.js` compiles to ~ 2.51kB (min/gzip).
-
 ### Build
 
-#### Build `tokenize`
-
 ```shell
-npm run build:tokenize
+npm run build
 ```
 
 ```
-src/tokenize.js → dist/tokenize.cjs...
-created dist/tokenize.cjs in 60ms
+┌─────────────────────────────────┐
+│                                 │
+│   Destination: dist/parse.cjs   │
+│   Bundle Size:  39.37 KB        │
+│   Minified Size:  13.04 KB      │
+│   Gzipped Size:  3.18 KB        │
+│                                 │
+└─────────────────────────────────┘
+┌─────────────────────────────────┐
+│                                 │
+│   Destination: dist/parse.mjs   │
+│   Bundle Size:  39.27 KB        │
+│   Minified Size:  12.95 KB      │
+│   Gzipped Size:  3.14 KB        │
+│                                 │
+└─────────────────────────────────┘
+┌─────────────────────────────────────┐
+│                                     │
+│   Destination: dist/parse.iife.js   │
+│   Bundle Size:  40.89 KB            │
+│   Minified Size:  9.75 KB           │
+│   Gzipped Size:  2.53 KB            │
+│                                     │
+└─────────────────────────────────────┘
 ```
-
-The compiled size of `dist/tokenize.cjs` is 5397 bytes (1538 gzipped).
-
-#### Build `evaluate`
-
-```shell
-npm run build:evaluate
-```
-
-```
-src/evaluate.js → dist/evaluate.cjs...
-created dist/evaluate.cjs in 90ms
-```
-
-The compiled size of `dist/evaluate.cjs` is 5685 bytes (1251 gzipped).
 
 ### Lint
 
