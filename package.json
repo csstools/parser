@@ -1,8 +1,30 @@
 {
   "private": true,
   "type": "module",
-  "module": "./dist/tokenize.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "benchmark": "npm run benchmark:tokenize && npm run benchmark:parse",
+    "benchmark:tokenize": "node run/benchmark.tokenize.js",
+    "benchmark:parse": "node run/benchmark.parse.js",
+    "build": "rollup -c run/rollup.config.js",
+    "lint": "eslint .",
+    "validate": "node run/validate.tokenize.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "7.10.4",
+    "@rollup/plugin-babel": "5.1.0",
     "benchmark": "2.1.4",
     "bootstrap": "4.5.0",
     "eslint": "7.4.0",
@@ -10,29 +32,24 @@
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-json": "2.1.1",
     "gzip-size-cli": "3.0.0",
+    "npm-run-all": "^4.1.5",
     "postcss": "7.0.32",
     "postcss-selector-parser": "6.0.2",
     "postcss-values-parser": "3.2.1",
     "resolve": "1.17.0",
     "rollup": "2.21.0",
+    "rollup-plugin-terser": "6.1.0",
     "terser": "4.8.0"
   },
-  "scripts": {
-    "benchmark": "npm run benchmark:tokenize && npm run benchmark:parse",
-    "benchmark:tokenize": "node run/benchmark.tokenize.js",
-    "benchmark:parse": "node run/benchmark.parse.js",
-    "build": "npm run build:tokenize && npm run build:parse",
-    "build:parse": "npm run build:parse:cjs:max && npm run build:parse:cjs:min",
-    "build:parse:cjs:max": "rollup src/parse.js --file dist/parse.cjs --format cjs",
-    "build:parse:cjs:min": "terser dist/parse.cjs -c --output dist/parse.min.cjs",
-    "build:tokenize": "npm run build:tokenize:cjs:max && npm run build:tokenize:cjs:min",
-    "build:tokenize:cjs:max": "rollup src/tokenize.js --file dist/tokenize.cjs --format cjs",
-    "build:tokenize:cjs:min": "terser dist/tokenize.cjs -c --output dist/tokenize.min.cjs",
-    "build:tokenize:iife": "rollup src/tokenize.js --file dist/tokenize.web.cjs --format iife --name 'tokenize'",
-    "lint": "eslint .",
-    "postbuild:parse:cjs:min": "gzip-size dist/parse.min.cjs",
-    "postbuild:tokenize:cjs:min": "gzip-size dist/tokenize.min.cjs",
-    "validate": "node run/validate.tokenize.js"
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": "ie 11, maintained node versions"
+        }
+      ]
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -61,10 +78,7 @@
         }
       ],
       "default-case": 0,
-      "func-names": [
-        "error",
-        "as-needed"
-      ],
+      "func-names": 0,
       "guard-for-in": 0,
       "key-spacing": [
         "error",
@@ -156,5 +170,36 @@
       ],
       "sort-imports": 0
     }
+  },
+  "rollup": {
+    "input": "src/index.js",
+    "plugins": [
+      "rollup-plugin-filesize"
+    ],
+    "output": [
+      {
+        "file": "dist/index.cjs",
+        "format": "cjs",
+        "strict": false
+      },
+      {
+        "file": "dist/index.mjs",
+        "format": "esm",
+        "strict": false
+      },
+      {
+        "file": "dist/index.iife.js",
+        "format": "iife",
+        "strict": false,
+        "plugins": [
+          [
+            "@rollup/plugin-babel",
+            {
+              "babelHelpers": "bundled"
+            }
+          ]
+        ]
+      }
+    ]
   }
 }

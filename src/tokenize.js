@@ -1,5 +1,5 @@
+/* Character Codes */
 import {
-	/* Character Codes */
 	AT,
 	BS,
 	DASH,
@@ -16,8 +16,20 @@ import {
 	UP_E,
 } from './utils/code-points.js'
 
+/* Token Identifiers */
 import {
-	/* Tokenizer Utilities */
+	ATWORD_TYPE,
+	COMMENT_TYPE,
+	FUNCTION_TYPE,
+	HASH_TYPE,
+	NUMBER_TYPE,
+	SPACE_TYPE,
+	STRING_TYPE,
+	WORD_TYPE,
+} from './utils/node-types.js'
+
+/* Tokenizer Utilities */
+import {
 	isHorizontalSpace,
 	isIdentifier,
 	isIdentifierStart,
@@ -25,31 +37,28 @@ import {
 	isVerticalSpace,
 } from './utils/tokenizer-algorithms.js'
 
-/* Token Identifiers */
-import CSSAtWord from './types/CSSObject/CSSNode/CSSAtWord.js'
-import CSSComment from './types/CSSObject/CSSNode/CSSComment.js'
-import CSSFunctionWord from './types/CSSObject/CSSNode/CSSFunctionWord.js'
-import CSSHash from './types/CSSObject/CSSNode/CSSHash.js'
-import CSSNumber from './types/CSSObject/CSSNode/CSSNumber.js'
-import CSSSpace from './types/CSSObject/CSSNode/CSSSpace.js'
-import CSSString from './types/CSSObject/CSSNode/CSSString.js'
-import CSSSymbol from './types/CSSObject/CSSNode/CSSSymbol.js'
-import CSSWord from './types/CSSObject/CSSNode/CSSWord.js'
-
-/* Iterator Utilities */
-import createNext from './utils/createNext.js'
-
 /**
  * Reads CSS and returns a function for consuming tokens from it.
  * @param {string} text - Text being read as CSS tokens.
  * @return {Token} Consumes a token and returns the current token or null.
  */
 function tokenize(input) {
+	tokenizer.input = input
+
 	/** @type {string} Text being read as CSS tokens. */
-	const text = String(input.data)
+	const text = tokenizer[0] = String(input.data)
 
 	/** @type {number} Length of characters being read from the text. */
 	const size = text.length
+
+	/**
+	 * Integer identifying what the current token is.
+	 * @type {number}
+	 * @example
+	 * type === 0 // token is a comment
+	 * type === 1 // token is a space
+	 */
+	let TYPE = tokenizer.type = -1
 
 	/**
 	 * String index at the start of the current token.
@@ -107,19 +116,21 @@ function tokenize(input) {
 	/** @type {number} String index of the line, from the end of the current token. */
 	let nextLineOpen = 0
 
-	return createNext(tokens)
+	return tokenizer
 
 	/**
 	 * Consumes a token and returns the current token or null.
 	 * @returns {Token | void}
 	 */
-	function tokens() {
-		if (shut >= size) {
-			return undefined
+	function tokenizer($0, $1, $2, $3, $4, $5) {
+		if (shut === size) {
+			TYPE = tokenizer.type = -1
+			return false
 		}
 
 		// update the starting values with the ending values from the last read
 		cc0 = text.charCodeAt(shut)
+		TYPE = cc0
 		open = shut
 		line = nextLine
 		lineOpen = nextLineOpen
@@ -158,16 +169,7 @@ function tokenize(input) {
 						}
 					}
 
-					return new CSSComment({
-						opener: `/*`,
-						value:  text.slice(open + lead, shut - tail),
-						closer: tail ? `*/` : ``,
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					TYPE = COMMENT_TYPE
 				}
 
 				break
@@ -208,16 +210,9 @@ function tokenize(input) {
 					}
 				}
 
-				return new CSSString({
-					opener: text[open],
-					value:  text.slice(open + 1, shut - 1),
-					closer: tail ? text[open] : ``,
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				TYPE = STRING_TYPE
+
+				break
 
 			/**
 			 * Consume a Hash or Symbol
@@ -236,15 +231,7 @@ function tokenize(input) {
 
 					consumeIdentifier()
 
-					return new CSSHash({
-						symbol: `#`,
-						value:  text.slice(open + 1, shut),
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					TYPE = HASH_TYPE
 				}
 
 				break
@@ -282,18 +269,10 @@ function tokenize(input) {
 
 					consumeIdentifier()
 
-					// [CSSWord, { value: text.slice(open, shut) }]
-					return new CSSWord({
-						value:  text.slice(open, shut),
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					TYPE = WORD_TYPE
+				} else {
+					++shut
 				}
-
-				++shut
 
 				break
 
@@ -314,7 +293,9 @@ function tokenize(input) {
 				) {
 					++shut
 
-					return consumeNumber()
+					consumeNumber()
+
+					break
 				}
 
 				// consume a number when a plus-sign is followed by a full-stop and then an integer
@@ -328,7 +309,7 @@ function tokenize(input) {
 						++shut
 						++shut
 
-						return consumeNumber(1)
+						consumeNumber(1)
 					}
 				}
 
@@ -346,7 +327,7 @@ function tokenize(input) {
 				if (isInteger(text.charCodeAt(shut))) {
 					++shut
 
-					return consumeNumber(1)
+					consumeNumber(1)
 				}
 
 				break
@@ -365,14 +346,9 @@ function tokenize(input) {
 
 					consumeIdentifier()
 
-					return new CSSWord({
-						value:  text.slice(open, shut),
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					TYPE = WORD_TYPE
+
+					break
 				}
 
 				++nextLine
@@ -407,14 +383,9 @@ function tokenize(input) {
 					|| isHorizontalSpace(cc0)
 				)
 
-				return new CSSSpace({
-					value:  text.slice(open, shut),
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				TYPE = SPACE_TYPE
+
+				break
 
 			/**
 			 * Consume an At-Word or Symbol
@@ -433,15 +404,7 @@ function tokenize(input) {
 
 					consumeIdentifier()
 
-					return new CSSAtWord({
-						symbol: `@`,
-						value:  text.slice(open + 1, shut),
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					TYPE = ATWORD_TYPE
 				}
 
 				break
@@ -461,25 +424,14 @@ function tokenize(input) {
 				if (text.charCodeAt(shut) === L_RB) {
 					tail = 1
 
-					return new CSSFunctionWord({
-						value:  text.slice(open, shut++),
-						symbol: `(`,
-						source: {
-							input,
-							line,
-							lcol: open - lineOpen,
-						},
-					})
+					++shut
+
+					TYPE = FUNCTION_TYPE
+				} else {
+					TYPE = WORD_TYPE
 				}
 
-				return new CSSWord({
-					value:  text.slice(open, shut),
-					source: {
-						input,
-						line,
-						lcol: open - lineOpen,
-					},
-				})
+				break
 
 			/**
 			 * Consume a Number
@@ -491,7 +443,9 @@ function tokenize(input) {
 				// consume a number starting with an integer
 				++shut
 
-				return consumeNumber()
+				consumeNumber()
+
+				break
 
 			/**
 			 * Consume a Symbol
@@ -501,15 +455,14 @@ function tokenize(input) {
 				++shut
 		}
 
-		return new CSSSymbol({
-			value:  text[open],
-			code:   cc0,
-			source: {
-				input,
-				line,
-				lcol: open - lineOpen,
-			},
-		})
+		tokenizer.type = TYPE
+		tokenizer[1] = open
+		tokenizer[2] = shut
+		tokenizer[3] = lead
+		tokenizer[4] = tail
+		tokenizer[5] = [ line, open - lineOpen ]
+
+		return true
 	}
 
 	/**
@@ -613,15 +566,7 @@ function tokenize(input) {
 			tail = shut - tail
 		}
 
-		return new CSSNumber({
-			value:  text.slice(open, shut - tail),
-			unit:   tail ? text.slice(shut - tail, shut) : ``,
-			source: {
-				input,
-				line,
-				lcol: open - lineOpen,
-			},
-		})
+		TYPE = NUMBER_TYPE
 	}
 }
 

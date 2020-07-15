@@ -2,59 +2,33 @@ import { RofL } from '../../../utils/code-points.js'
 
 import CSSBlock from '../CSSHost/CSSBlock.js'
 
-import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
+import tokenToNode from '../../../utils/token-to-node.js'
 
 /**
  * Consume a block
  * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
  * @arg {Function} tokenizer
- * @arg {Function} [consumerOfBlockItems]
  */
-export default function fromTokenizer(tokenizer, consumerOfBlockItems) {
-	if (!tokenizer.item) tokenizer()
-	if (!tokenizer.item) return null
-
-	consumerOfBlockItems = consumerOfBlockItems || nodeFromTokenizer
-
+export default function fromTokenizer(tokenizer, consumer) {
 	const element = new CSSBlock()
-	const { nodes } = element
-	const { opener, value, closer } = nodes
+	const { opener, value, closer } = element.nodes
 
-	opener.push(tokenizer.item)
+	opener.push(tokenToNode.apply(tokenizer, tokenizer))
 
-	/** @type {number} Closing brace of the opening brace. */
-	const CB = RofL[tokenizer.item.code]
+	/** @type {number} End of Block */
+	const EOB = RofL[tokenizer.type]
 
-	// create a simple block
-	// with its associated token set to the current input token
-	// and with a value with is initially an empty list.
+	while (tokenizer()) {
+		if (tokenizer.type === EOB) {
+			closer.push(tokenToNode.apply(tokenizer, tokenizer))
 
-	/** @type {CSSNode} Current Node */
-	let item
-
-	// Repeatedly consume the next input token and process it as follows:
-	while (item = tokenizer().item) {
-		switch (true) {
-			// ending token
-			case item.code === CB:
-				// return the block
-				closer.push(item)
-
-				break
-
-			// anything else
-			default:
-				// consume a component value and append it to the value of the block
-				value.push(consumerOfBlockItems(tokenizer))
-
-				continue
+			break
 		}
 
-		break
+		value.push(consumer(tokenizer))
+
+		continue
 	}
 
-	// return the style rule
 	return element
 }
-
-/** @typedef {import('../CSSNode/CSSNode.js')} CSSNode */

@@ -34,9 +34,9 @@ Object.entries({
 	},
 	// postcss development test
 	[postcssDevTestName]: () => {
-		const read = tokenizeDev({ data: bootstrapCSS })
+		const tokenizer = tokenizeDev({ data: bootstrapCSS })
 		const tokens = []
-		while (read().item) tokens.push(read.item)
+		while (tokenizer()) tokens.push(tokenizer.type)
 		tokensByTestIndex[1] = tokens
 	},
 }).reduce(

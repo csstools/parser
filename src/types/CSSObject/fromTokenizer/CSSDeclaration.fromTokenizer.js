@@ -8,6 +8,7 @@ import CSSDeclaration from '../CSSHost/CSSDeclaration.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
+import tokenToNode from '../../../utils/token-to-node.js'
 import valueFromTokenizer from './CSSNode.fromTokenizer.js'
 
 /**
@@ -15,42 +16,41 @@ import valueFromTokenizer from './CSSNode.fromTokenizer.js'
  * @see https://drafts.csswg.org/css-syntax/#consume-declaration
  */
 export default function fromTokenizer(tokenizer) {
-	if (!tokenizer.item) tokenizer()
-	if (!tokenizer.item) return null
-
 	// create an empty declaration
 	const element = new CSSDeclaration()
-	const { nodes } = element
+	const { name, afterName, opener, afterOpener, value, afterValue, important, afterImportant } = element.nodes
 
 	// consume the declaration name, otherwise return the declaration
-	nodes.name.push(tokenizer.item)
+	name.push(
+		tokenToNode.apply(tokenizer, tokenizer)
+	)
 
 	// consume any skippables following the declaration name
-	consumeLeadingWhitespace(tokenizer, nodes.afterName)
+	consumeLeadingWhitespace(tokenizer, afterName)
 
 	// consume the declaration opener or return the declaration
-	if (tokenizer.item && tokenizer.item.code === COLA) nodes.opener.push(tokenizer.item)
+	if (tokenizer.type === COLA) opener.push(tokenToNode.apply(tokenizer, tokenizer))
 	else return element
 
 	// consume any skippables following the declaration opener
-	consumeLeadingWhitespace(tokenizer, nodes.afterOpener)
+	consumeLeadingWhitespace(tokenizer, afterOpener)
 
 	// consume the declaration value
-	if (tokenizer.item) {
+	if (tokenizer.type >= 0) {
 		do {
-			nodes.value.push(
+			value.push(
 				valueFromTokenizer(tokenizer)
 			)
-		} while (tokenizer().item)
+		} while (tokenizer())
 	}
 
 	/** Index of the last skippable node. */
-	const indexOfAfterValueOrImportant = getTrailingSkippableIndex(nodes.value)
+	const indexOfAfterValueOrImportant = getTrailingSkippableIndex(value)
 
 	/** Whether the last non-skippable node is a case-insensitive `important` word. */
 	const doesEndWithAnImportantWord = (
 		indexOfAfterValueOrImportant > 1
-		&& /^important$/i.test(nodes.value[indexOfAfterValueOrImportant - 1].value)
+		&& /^important$/i.test(value[indexOfAfterValueOrImportant - 1].value)
 	)
 
 	if (doesEndWithAnImportantWord) {
@@ -65,7 +65,7 @@ export default function fromTokenizer(tokenizer) {
 
 		// ignore skippables before the case-insensitive `important` word
 		do {
-			node = nodes.value[--indexOfImportant]
+			node = value[--indexOfImportant]
 			CSSClass = node.constructor
 		} while (
 			CSSClass === CSSComment
@@ -75,14 +75,14 @@ export default function fromTokenizer(tokenizer) {
 		/** Whether the value includes an important flag. */
 		const doesHaveAnImportantFlag = (
 			CSSClass === CSSSymbol
-			&& node.code === BANG
+			&& node.type === BANG
 		)
 
 		if (doesHaveAnImportantFlag) {
 			// redistribute the important flag and any surrounding skippables
-			nodes.afterImportant.push(...nodes.value.splice(indexOfAfterValueOrImportant))
-			nodes.important.push(...nodes.value.splice(indexOfImportant))
-			nodes.afterValue.push(...nodes.value.splice(getTrailingSkippableIndex(nodes.value)))
+			afterImportant.push(...value.splice(indexOfAfterValueOrImportant))
+			important.push(...value.splice(indexOfImportant))
+			afterValue.push(...value.splice(getTrailingSkippableIndex(value)))
 
 			// return the declaration
 			return element
@@ -90,7 +90,7 @@ export default function fromTokenizer(tokenizer) {
 	}
 
 	// redistribute any trailing skippables
-	nodes.afterValue.push(...nodes.value.splice(indexOfAfterValueOrImportant))
+	afterValue.push(...value.splice(indexOfAfterValueOrImportant))
 
 	// return the declaration
 	return element

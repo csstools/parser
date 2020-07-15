@@ -1,27 +1,20 @@
-import CSSComment from '../CSSNode/CSSComment.js'
-import CSSSpace from '../CSSNode/CSSSpace.js'
-import CSSAtWord from '../CSSNode/CSSAtWord.js'
+import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../../../utils/node-types.js'
 
 import consumeAtRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import consumeStyleRuleFromTokenizer from './CSSStyleRule.fromTokenizer.js'
+import tokenToNode from '../../../utils/token-to-node.js'
 
 export default function fromTokenizer(tokenizer) {
-	if (!tokenizer.item) tokenizer()
-	if (!tokenizer.item) return null
-
-	/** @type {CSSNode} Current Node */
-	const { item } = tokenizer
-
 	// Repeatedly consume the next input token and process it as follows:
-	switch (true) {
+	switch (tokenizer.type) {
 		// <css-comment>
 		// <css-space>
-		case item.constructor === CSSComment:
-		case item.constructor === CSSSpace:
-			return item
+		case COMMENT_TYPE:
+		case SPACE_TYPE:
+			return tokenToNode.apply(tokenizer, tokenizer)
 
 		// anything else
-		case item.constructor === CSSAtWord:
+		case ATWORD_TYPE:
 			// consume a component value and append it to the value of the block
 			return consumeAtRuleFromTokenizer(tokenizer, fromTokenizer)
 

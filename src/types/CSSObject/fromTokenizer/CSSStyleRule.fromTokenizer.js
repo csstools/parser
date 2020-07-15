@@ -1,34 +1,29 @@
 import { L_CB, SEMI, R_CB } from '../../../utils/code-points.js'
+import { ATWORD_TYPE, WORD_TYPE } from '../../../utils/node-types.js'
+import { createInnerTokenizer } from '../../../utils/iterators.js'
 
-import CSSAtWord from '../CSSNode/CSSAtWord.js'
 import CSSStyleRule from '../CSSHost/CSSStyleRule.js'
-import CSSWord from '../CSSNode/CSSWord.js'
 
 import consumeAtStyleRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import blockFromTokenizer from './CSSBlock.fromTokenizer.js'
 import declarationFromTokenizer from './CSSDeclaration.fromTokenizer.js'
 import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
-import { createArrayIterator } from '../../../utils/createNext.js'
+import tokenToNode from '../../../utils/token-to-node.js'
+
 
 /**
  * Consume a style rule
  * @see https://drafts.csswg.org/css-syntax/#consume-a-qualified-rule
  */
 export default function fromTokenizer(tokenizer) {
-	if (!tokenizer.item) tokenizer()
-	if (!tokenizer.item) return null
-
 	// create an empty declaration
 	const element = new CSSStyleRule()
-	const { nodes } = element
-	const { prelude, value } = nodes
+	const { prelude, value } = element.nodes
 
 	do {
-		const { item } = tokenizer
-
-		switch (true) {
+		switch (tokenizer.type) {
 			// <{-token>
-			case item.code === L_CB:
+			case L_CB:
 				// consume a simple block and assign it to the style rule’s block
 				value.push(
 					blockFromTokenizer(tokenizer, declarationsFromTokenizer)
@@ -48,41 +43,42 @@ export default function fromTokenizer(tokenizer) {
 		}
 
 		break
-	} while (tokenizer().item)
+	} while (tokenizer())
 
 	// return the style rule
 	return element
 }
 
 function declarationsFromTokenizer(tokenizer) {
-	let { item } = tokenizer
 	let declarationTokenizer
 	let element
 
-	switch (true) {
+	switch (tokenizer.type) {
 		// ...
-		case item.constructor === CSSAtWord:
+		case ATWORD_TYPE:
 			return consumeAtStyleRuleFromTokenizer(tokenizer, declarationsFromTokenizer)
 
 		// ...
-		case item.constructor === CSSWord:
-			declarationTokenizer = createArrayIterator()
+		case WORD_TYPE:
+			declarationTokenizer = createInnerTokenizer(tokenizer)
 
 			// ...
 			do {
 				// ...
 				if (
-					item.code === SEMI
-					|| item.code === R_CB
+					tokenizer.type === SEMI
+					|| tokenizer.type === R_CB
 				) break
 
 				// ...
-				declarationTokenizer.push(item)
-			} while (item = tokenizer().item)
+				declarationTokenizer.consume()
+			} while (tokenizer())
+
+			declarationTokenizer()
 
 			element = declarationFromTokenizer(declarationTokenizer)
 
-			if (item.code === SEMI) element.nodes.closer.push(item)
+			if (tokenizer.type === SEMI) element.nodes.closer.push(tokenToNode.apply(tokenizer, tokenizer))
 			else ++tokenizer.hold
 
 			return element

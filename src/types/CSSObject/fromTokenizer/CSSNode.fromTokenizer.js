@@ -1,38 +1,30 @@
 import { L_CB, L_SB, L_RB } from '../../../utils/code-points.js'
-
-import CSSFunctionWord from '../CSSNode/CSSFunctionWord.js'
+import { FUNCTION_TYPE } from '../../../utils/node-types.js'
 
 import functionFromTokenizer from './CSSFunction.fromTokenizer.js'
 import blockFromTokenizer from './CSSBlock.fromTokenizer.js'
+import tokenToNode from '../../../utils/token-to-node.js'
 
 /**
  * Consume a node
  * @see https://drafts.csswg.org/css-syntax/#consume-a-component-value
  */
 export default function fromTokenizer(tokenizer) {
-	if (!tokenizer.item) tokenizer()
-	if (!tokenizer.item) return null
-
-	/** @type {{ item: CSSNode }} Current Node */
-	const { item } = tokenizer
-
-	switch (true) {
+	switch (tokenizer.type) {
 		// <{-token>, <[-token>, or <(-token>
-		case item.code === L_RB:
-		case item.code === L_SB:
-		case item.code === L_CB:
+		case L_RB:
+		case L_SB:
+		case L_CB:
 			// consume a simple block and return it
-			return blockFromTokenizer(tokenizer)
+			return blockFromTokenizer(tokenizer, fromTokenizer)
 
 		// <function-token>
-		case item.constructor === CSSFunctionWord:
+		case FUNCTION_TYPE:
 			// consume a function and return it.
 			return functionFromTokenizer(tokenizer)
 
 		// anything else
 		default:
-			return item
+			return tokenToNode.apply(tokenizer, tokenizer)
 	}
 }
-
-/** @typedef {import('../CSSNode/CSSNode.js')} CSSNode */
