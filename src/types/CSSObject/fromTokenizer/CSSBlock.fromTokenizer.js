@@ -1,32 +1,27 @@
-import { RofL } from '../../../utils/code-points.js'
+import CSSBlock from '../CSSBlock/CSSBlock.js'
 
-import CSSBlock from '../CSSHost/CSSBlock.js'
+import consumeCSSBlockValue from './CSSBlock.valueFromTokenizer.js'
 
 /**
- * Consume a block
- * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
- * @arg {Function} tokenizer
+ * Consume a CSSBlock.
+ * @see https://drafts.csswg.org/css-syntax/#consume-declaration
  */
-export default function fromTokenizer(tokenizer, consumer, element) {
-	const { nodes } = element
-	const { value } = nodes
+export default function fromTokenizer(tokenizer) {
+	const value = []
+	const block = new CSSBlock({ value })
 
-	nodes.opener = tokenizer.node
-
-	/** @type {number} End of Block */
-	const EOB = RofL[tokenizer.type]
-
-	while (tokenizer()) {
-		if (tokenizer.type === EOB) {
-			nodes.closer = tokenizer.node
-
-			break
-		}
-
-		value.push(consumer(tokenizer))
-
-		continue
+	if (
+		tokenizer.type >= 0
+		|| tokenizer()
+	) {
+		do {
+			value.push(
+				consumeCSSBlockValue(tokenizer)
+			)
+		} while (
+			tokenizer()
+		)
 	}
 
-	return element
+	return block
 }

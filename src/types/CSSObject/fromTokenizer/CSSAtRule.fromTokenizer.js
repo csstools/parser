@@ -1,9 +1,9 @@
 import { L_CB, SEMI } from '../../../utils/code-points.js'
 
-import CSSAtRule from '../CSSHost/CSSAtRule.js'
+import CSSAtRule from '../CSSBlock/CSSAtRule.js'
 
-import consumeBlockFromTokenizer from './CSSBlock.fromTokenizer.js'
-import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
+import consumeBlockFromTokenizer from './CSSBracketBlock.fromTokenizer.js'
+import consumeNodeFromTokenizer from './CSSBlock.valueFromTokenizer.js'
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
 

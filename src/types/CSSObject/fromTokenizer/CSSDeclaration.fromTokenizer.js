@@ -1,14 +1,14 @@
 import { COLA, BANG } from '../../../utils/code-points.js'
 
-import CSSComment from '../CSSNode/CSSComment.js'
-import CSSSpace from '../CSSNode/CSSSpace.js'
-import CSSSymbol from '../CSSNode/CSSSymbol.js'
+import CSSComment from '../CSSToken/CSSComment.js'
+import CSSSpace from '../CSSToken/CSSSpace.js'
+import CSSSymbol from '../CSSToken/CSSSymbol.js'
 
-import CSSDeclaration from '../CSSHost/CSSDeclaration.js'
+import CSSDeclaration from '../CSSBlock/CSSDeclaration.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
-import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
+import consumeNodeFromTokenizer from './CSSBlock.valueFromTokenizer.js'
 
 /**
  * Consume a Declaration
@@ -24,6 +24,7 @@ export default function fromTokenizer(tokenizer) {
 	const afterImportant = []
 	const element = new CSSDeclaration({
 		name:   null,
+		afterName,
 		opener: null,
 		afterOpener,
 		value,

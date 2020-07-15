@@ -1,6 +1,6 @@
-import CSSNode from './CSSNode.js'
+import CSSToken from './CSSToken.js'
 
-export default class CSSWord extends CSSNode {}
+export default class CSSWord extends CSSToken {}
 
 CSSWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
 	return new CSSWord({
@@ -12,10 +12,9 @@ CSSWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, lin
 	})
 }
 
-const { prototype } = CSSWord
 const { defineProperties } = Object
 
-defineProperties(prototype, {
+defineProperties(CSSWord.prototype, {
 	props: {
 		value:        [ `value` ],
 		configurable: true,

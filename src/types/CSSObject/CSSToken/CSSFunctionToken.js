@@ -1,9 +1,9 @@
-import CSSNode from './CSSNode.js'
+import CSSToken from './CSSToken.js'
 
-export default class CSSFunctionWord extends CSSNode {}
+export default class CSSFunctionToken extends CSSToken {}
 
-CSSFunctionWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSFunctionWord({
+CSSFunctionToken.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
+	return new CSSFunctionToken({
 		value:  text.slice(open, shut - tail),
 		symbol: `(`,
 		source: {
@@ -13,7 +13,7 @@ CSSFunctionWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, t
 	})
 }
 
-const { prototype } = CSSFunctionWord
+const { prototype } = CSSFunctionToken
 const { defineProperties } = Object
 
 defineProperties(prototype, {

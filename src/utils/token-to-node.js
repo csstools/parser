@@ -10,15 +10,15 @@ import {
 	WORD_TYPE,
 } from './node-types.js'
 
-import CSSAtWord from '../types/CSSObject/CSSNode/CSSAtWord.js'
-import CSSComment from '../types/CSSObject/CSSNode/CSSComment.js'
-import CSSFunctionWord from '../types/CSSObject/CSSNode/CSSFunctionWord.js'
-import CSSHash from '../types/CSSObject/CSSNode/CSSHash.js'
-import CSSNumber from '../types/CSSObject/CSSNode/CSSNumber.js'
-import CSSSpace from '../types/CSSObject/CSSNode/CSSSpace.js'
-import CSSString from '../types/CSSObject/CSSNode/CSSString.js'
-import CSSWord from '../types/CSSObject/CSSNode/CSSWord.js'
-import CSSSymbol from '../types/CSSObject/CSSNode/CSSSymbol.js'
+import CSSAtWord from '../types/CSSObject/CSSToken/CSSAtWord.js'
+import CSSComment from '../types/CSSObject/CSSToken/CSSComment.js'
+import CSSFunctionToken from '../types/CSSObject/CSSToken/CSSFunctionToken.js'
+import CSSHash from '../types/CSSObject/CSSToken/CSSHash.js'
+import CSSNumber from '../types/CSSObject/CSSToken/CSSNumber.js'
+import CSSSpace from '../types/CSSObject/CSSToken/CSSSpace.js'
+import CSSString from '../types/CSSObject/CSSToken/CSSString.js'
+import CSSWord from '../types/CSSObject/CSSToken/CSSWord.js'
+import CSSSymbol from '../types/CSSObject/CSSToken/CSSSymbol.js'
 
 export default function tokenToNode(text, open, shut, lead, tail, position) {
 	switch (this.type) {
@@ -42,7 +42,7 @@ export default function tokenToNode(text, open, shut, lead, tail, position) {
 				},
 			})
 		case FUNCTION_TYPE:
-			return new CSSFunctionWord({
+			return new CSSFunctionToken({
 				value:  text.slice(open, shut - tail),
 				symbol: `(`,
 				source: {

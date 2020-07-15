@@ -1,10 +1,10 @@
-import CSSNode from './CSSNode.js'
+import CSSToken from './CSSToken.js'
 
-export default class CSSAtWord extends CSSNode {}
+export default class CSSHash extends CSSToken {}
 
-CSSAtWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSAtWord({
-		symbol: `@`,
+CSSHash.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
+	return new CSSHash({
+		symbol: `#`,
 		value:  text.slice(open + lead, shut),
 		source: {
 			input,
@@ -13,7 +13,7 @@ CSSAtWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, l
 	})
 }
 
-const { prototype } = CSSAtWord
+const { prototype } = CSSHash
 const { defineProperties } = Object
 
 defineProperties(prototype, {

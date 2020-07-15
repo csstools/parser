@@ -1,8 +1,8 @@
 import { R_RB } from '../../../utils/code-points.js'
 
-import CSSFunction from '../CSSHost/CSSFunction.js'
+import CSSFunction from '../CSSBlock/CSSFunction.js'
 
-import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
+import nodeFromTokenizer from './CSSBlock.valueFromTokenizer.js'
 
 /**
  * Consume a function

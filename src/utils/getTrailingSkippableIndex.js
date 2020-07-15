@@ -1,6 +1,6 @@
 /* Token Identifiers */
-import CSSComment from '../types/CSSObject/CSSNode/CSSComment.js'
-import CSSSpace from '../types/CSSObject/CSSNode/CSSSpace.js'
+import CSSComment from '../types/CSSObject/CSSToken/CSSComment.js'
+import CSSSpace from '../types/CSSObject/CSSToken/CSSSpace.js'
 
 /**
  * Reconsume whitespace from an array and push it into another array

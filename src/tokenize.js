@@ -37,15 +37,15 @@ import {
 	isVerticalSpace,
 } from './utils/tokenizer-algorithms.js'
 
-import CSSAtWord from './types/CSSObject/CSSNode/CSSAtWord.js'
-import CSSComment from './types/CSSObject/CSSNode/CSSComment.js'
-import CSSFunctionWord from './types/CSSObject/CSSNode/CSSFunctionWord.js'
-import CSSHash from './types/CSSObject/CSSNode/CSSHash.js'
-import CSSNumber from './types/CSSObject/CSSNode/CSSNumber.js'
-import CSSSpace from './types/CSSObject/CSSNode/CSSSpace.js'
-import CSSString from './types/CSSObject/CSSNode/CSSString.js'
-import CSSWord from './types/CSSObject/CSSNode/CSSWord.js'
-import CSSSymbol from './types/CSSObject/CSSNode/CSSSymbol.js'
+import CSSAtWord from './types/CSSObject/CSSToken/CSSAtWord.js'
+import CSSComment from './types/CSSObject/CSSToken/CSSComment.js'
+import CSSFunctionToken from './types/CSSObject/CSSToken/CSSFunctionToken.js'
+import CSSHash from './types/CSSObject/CSSToken/CSSHash.js'
+import CSSNumber from './types/CSSObject/CSSToken/CSSNumber.js'
+import CSSSpace from './types/CSSObject/CSSToken/CSSSpace.js'
+import CSSString from './types/CSSObject/CSSToken/CSSString.js'
+import CSSWord from './types/CSSObject/CSSToken/CSSWord.js'
+import CSSSymbol from './types/CSSObject/CSSToken/CSSSymbol.js'
 
 /**
  * Reads CSS and returns a function for consuming tokens from it.
@@ -98,7 +98,7 @@ function tokenize(input) {
 	 * @type {number}
 	 * @example
 	 * tail === 3 // e.g. CSSNumber token of `3` and `rem`
-	 * tail === 1 // e.g. CSSFunctionWord token of `var` and `(`
+	 * tail === 1 // e.g. CSSFunctionToken token of `var` and `(`
 	 * lead === 2 // e.g. CSSComment token of ` comment text ` and `*​/`
 	 */
 	let tail
@@ -447,7 +447,7 @@ function tokenize(input) {
 					++shut
 
 					TYPE = FUNCTION_TYPE
-					Type = CSSFunctionWord
+					Type = CSSFunctionToken
 				} else {
 					TYPE = WORD_TYPE
 					Type = CSSWord
@@ -594,6 +594,7 @@ function tokenize(input) {
 		}
 
 		TYPE = NUMBER_TYPE
+		Type = CSSNumber
 	}
 }
 

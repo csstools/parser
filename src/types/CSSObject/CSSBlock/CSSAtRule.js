@@ -13,14 +13,9 @@ defineProperties(prototype, {
 	},
 	name: {
 		get: function () {
-			return this.nodes.name
+			return this.nodes.name.value
 		},
 		configurable: true,
-	},
-	prelude: {
-		get: function () {
-			return this.nodes.prelude
-		},
-		configurable: true,
+		enumerable:   true,
 	},
 })

@@ -1,6 +1,6 @@
-import CSSNode from './CSSNode.js'
+import CSSToken from './CSSToken.js'
 
-export default class CSSSymbol extends CSSNode {}
+export default class CSSSymbol extends CSSToken {}
 
 CSSSymbol.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
 	return new CSSSymbol({

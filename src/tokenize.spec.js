@@ -13,12 +13,16 @@ import rootFromTokenizer from './types/CSSObject/fromTokenizer/CSSRoot.fromToken
 // const styleRuleTokenizer = tokenize(styleRuleInput)()
 // const styleRuleElement = styleRuleFromTokenizer(styleRuleTokenizer)
 
-// console.log(styleRuleElement.toJSON())
+const testConsumer = rootFromTokenizer
+const testText = `html, body {
+	@media (width >= 34em) {
+		/*1*/color/*2*/:/*3*/ /*4*/34em/*5*/;
+	}
+}`
 
-const rootInput = { file: `-`, data: `html { @media screen { color: color(--blue); } }` }
-const rootTokenizer = tokenize(rootInput)()
-const rootElement = rootFromTokenizer(rootTokenizer)
+const testTokenizer = tokenize({ file: `-`, data: testText })()
+const testElement = testConsumer(testTokenizer)
 
-// console.log(rootElement)
-// console.log(rootElement.toJSON())
-console.log([ rootElement.toString() ])
+console.log(testElement.toString() === testText)
+console.log([ testElement.toString() ])
+console.log(testElement.toJSON())

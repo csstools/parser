@@ -20,7 +20,14 @@ const tokenizedCSS = String(root)
 const isCssIdentical = bootstrapCSS === tokenizedCSS
 
 if (isCssIdentical) {
-	console.log('Success! The tokenizer preserves CSS identically.')
+	console.log(`Success! The tokenizer preserves CSS identically.`)
 } else {
-	console.warn('Failure! The tokenizer does not preserve CSS identically.')
+	console.warn(`Failure! The tokenizer does not preserve CSS identically.`)
+	const bootstrapSize = bootstrapCSS.length
+	const tokenizedSize = tokenizedCSS.length
+
+	if (bootstrapSize !== tokenizedSize) {
+		console.warn(`Unaltered CSS is ${bootstrapSize} characters in length.`)
+		console.warn(`Tokenized CSS is ${tokenizedSize} characters in length.`)
+	}
 }

@@ -44,7 +44,7 @@ export function createInnerTokenizer(tokenizer) {
 
 		innerLength = innerBuffer.length
 
-		return true
+		return innerTokenizer
 	}
 
 	function consume() {
