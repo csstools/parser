@@ -1,4 +1,4 @@
-import RofL from '../../../utils/variant-points.js'
+import RofL from './variant-points.js'
 
 /**
  * Consume a known bracketed block.
@@ -7,7 +7,7 @@ import RofL from '../../../utils/variant-points.js'
  * @arg {Function} consumer - Consumer of the Tokenizer.
  * @arg {Function} element - Element to receive the consumed nodes.
  */
-export default function fromTokenizer(tokenizer, consumer, element) {
+export default function consumeKnownCSSBracketBlock(tokenizer, consumer, element) {
 	const { nodes } = element
 	const { value } = nodes
 

@@ -4,7 +4,7 @@ import { FUNCTION_TYPE } from '../../utils/node-types.js'
 import CSSBracketBlock from './CSSBlock/CSSBracketBlock.js'
 import CSSFunction from './CSSBlock/CSSFunction.js'
 
-import consumeKnownCSSBracketBlock from './CSSBlock/CSSBracketBlock.knownFromTokenizer.js'
+import consumeKnownCSSBracketBlock from '../../utils/consumeKnownCSSBracketBlock.js'
 
 /**
  * Consume a block value from a tokenizer.
@@ -18,7 +18,7 @@ export default function fromTokenizer(tokenizer) {
 		case L_CB:
 			// consume a simple block and return it
 			return consumeKnownCSSBracketBlock(tokenizer, fromTokenizer, new CSSBracketBlock({
-				opener: tokenizer.node,
+				opener: null,
 				value:  [],
 				closer: null,
 			}))
