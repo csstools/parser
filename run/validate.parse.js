@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import resolve from 'resolve'
-import { parseRoot } from '../src/parse.js'
+import { parseCSSRoot } from '../src/parse.js'
 
 // setup
 const postcssDevTestName = `PostCSS Parser (Development)`
@@ -12,7 +12,7 @@ const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 console.log(`Validating whether ${postcssDevTestName} preserves CSS identically...\n`)
 
 // process
-const root = parseRoot({ data: bootstrapCSS })
+const root = parseCSSRoot({ data: bootstrapCSS })
 
 const tokenizedCSS = String(root)
 

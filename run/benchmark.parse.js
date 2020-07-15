@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import BenchmarkJS from 'benchmark'
 import resolve from 'resolve'
 import ParserPrd from 'postcss/lib/parser.js'
-import { parseRoot as parseDev } from '../src/parse.js'
+import { parseCSSRoot } from '../src/parse.js'
 
 import postcssValuesParserPackage from 'postcss-values-parser'
 import PostcssSelectorParser from 'postcss-selector-parser'
@@ -61,7 +61,7 @@ Object.entries({
 	},
 	// postcss development test
 	[postcssDevTestName]: () => {
-		parseDev({ data: bootstrapCSS })
+		parseCSSRoot({ data: bootstrapCSS })
 
 		// hard-code the number of nodes parsed
 		// so as not to negatively skew the results of the combined parsers

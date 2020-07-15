@@ -1,14 +1,10 @@
 import tokenize from './tokenize.js'
+import { consumeCSSBlock, consumeCSSRoot } from './consume.js'
 
-import consumeCSSBlock from './types/CSSObject/CSSBlock.fromTokenizer.js'
-import consumeCSSRoot from './types/CSSObject/CSSBlock/CSSRoot.fromTokenizer.js'
-
-export function parseFragment(input) {
-	const tokenizer = tokenize(input)
-	return consumeCSSBlock(tokenizer)
+export function parseCSSBlock(input) {
+	return consumeCSSBlock(tokenize(input)())
 }
 
-export function parseRoot(input) {
-	const tokenizer = tokenize(input)
-	return consumeCSSRoot(tokenizer)
+export function parseCSSRoot(input) {
+	return consumeCSSRoot(tokenize(input)())
 }
