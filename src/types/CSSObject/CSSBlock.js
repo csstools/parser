@@ -1,4 +1,4 @@
-import CSSObject from './CSSObject.js'
+import CSSObject from '../CSSObject.js'
 import { asJSON } from './prototype/toJSON.js'
 import { asString } from './prototype/toString.js'
 

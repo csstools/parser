@@ -1,5 +1,5 @@
-import toJSON from './prototype/toJSON.js'
-import toString from './prototype/toString.js'
+import toJSON from './CSSObject/prototype/toJSON.js'
+import toString from './CSSObject/prototype/toString.js'
 
 const { assign, defineProperties } = Object
 
