@@ -4,7 +4,7 @@ import CSSComment from '../CSSToken/CSSComment.js'
 import CSSSpace from '../CSSToken/CSSSpace.js'
 import CSSSymbol from '../CSSToken/CSSSymbol.js'
 
-import CSSDeclaration from '../CSSBlock/CSSDeclaration.js'
+import CSSDeclaration from './CSSDeclaration.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'

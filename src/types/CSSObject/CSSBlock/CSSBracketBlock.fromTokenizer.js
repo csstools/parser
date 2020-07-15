@@ -1,6 +1,6 @@
 import CSSBracketBlock from './CSSBracketBlock.js'
 
-import consumeKnownCSSBracketBlock from './CSSBracketBlock.knownFromTokenizer.js'
+import consumeKnownCSSBracketBlock from '../../../utils/consumeKnownCSSBracketBlock.js'
 
 /**
  * Consume a bracket block.

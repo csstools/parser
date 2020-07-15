@@ -56,7 +56,7 @@ function tokenize(input) {
 	tokenizer.input = input
 
 	/** @type {string} Text being read as CSS tokens. */
-	const text = tokenizer[0] = String(input.data)
+	const text = String(input.data)
 
 	/** @type {number} Length of characters being read from the text. */
 	const size = text.length
@@ -133,7 +133,7 @@ function tokenize(input) {
 	 * Consumes a token and returns the current token or null.
 	 * @returns {Token | void}
 	 */
-	function tokenizer($0, $1, $2, $3, $4, $5) {
+	function tokenizer() {
 		if (shut === size) {
 			TYPE = tokenizer.type = -1
 			Type = null

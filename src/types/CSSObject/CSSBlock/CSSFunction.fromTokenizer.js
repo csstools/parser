@@ -1,6 +1,6 @@
 import CSSFunction from './CSSFunction.js'
 
-import consumeKnownCSSBracketBlock from './CSSBracketBlock.knownFromTokenizer.js'
+import consumeKnownCSSBracketBlock from '../../../utils/consumeKnownCSSBracketBlock.js'
 
 /**
  * Consume a function
