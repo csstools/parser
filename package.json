@@ -191,14 +191,19 @@
       },
       {
         "file": "dist/parse.iife.js",
+        "name": "CSSOM",
         "format": "iife",
         "strict": false,
         "plugins": [
           [
             "@rollup/plugin-babel",
             {
-              "babelHelpers": "bundled"
+              "babelHelpers": "external"
             }
+          ],
+          [
+            "rollup-plugin-terser",
+            {}
           ]
         ]
       }

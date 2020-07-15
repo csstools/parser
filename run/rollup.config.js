@@ -14,6 +14,7 @@ const mapPlugins = async (plugins) => plugins
 					plugin = await import(plugin),
 					plugin = plugin.default || plugin,
 					plugin = plugin.default || plugin,
+					plugin = plugin.terser || plugin,
 					plugin(...options)
 				)
 			)

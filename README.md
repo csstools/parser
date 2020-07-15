@@ -47,9 +47,9 @@ npm run build
 ┌─────────────────────────────────────┐
 │                                     │
 │   Destination: dist/parse.iife.js   │
-│   Bundle Size:  40.89 KB            │
-│   Minified Size:  9.75 KB           │
-│   Gzipped Size:  2.53 KB            │
+│   Bundle Size:  9.77 KB             │
+│   Minified Size:  9.76 KB           │
+│   Gzipped Size:  2.54 KB            │
 │                                     │
 └─────────────────────────────────────┘
 ```
