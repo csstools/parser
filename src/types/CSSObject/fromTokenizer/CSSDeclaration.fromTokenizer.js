@@ -8,7 +8,7 @@ import CSSDeclaration from '../CSSHost/CSSDeclaration.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
-import valueFromTokenizer from './CSSNode.fromTokenizer.js'
+import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
 
 /**
  * Consume a Declaration
@@ -16,17 +16,31 @@ import valueFromTokenizer from './CSSNode.fromTokenizer.js'
  */
 export default function fromTokenizer(tokenizer) {
 	// create an empty declaration
-	const element = new CSSDeclaration()
-	const { name, afterName, opener, afterOpener, value, afterValue, important, afterImportant } = element.nodes
+	const afterName = []
+	const afterOpener = []
+	const value = []
+	const afterValue = []
+	const important = []
+	const afterImportant = []
+	const element = new CSSDeclaration({
+		name:   null,
+		opener: null,
+		afterOpener,
+		value,
+		afterValue,
+		important,
+		afterImportant,
+		closer: null,
+	})
 
 	// consume the declaration name, otherwise return the declaration
-	name.push(tokenizer.node)
+	element.nodes.name = tokenizer.node
 
 	// consume any skippables following the declaration name
 	consumeLeadingWhitespace(tokenizer, afterName)
 
 	// consume the declaration opener or return the declaration
-	if (tokenizer.type === COLA) opener.push(tokenizer.node)
+	if (tokenizer.type === COLA) element.nodes.opener = tokenizer.node
 	else return element
 
 	// consume any skippables following the declaration opener
@@ -36,7 +50,7 @@ export default function fromTokenizer(tokenizer) {
 	if (tokenizer.type >= 0) {
 		do {
 			value.push(
-				valueFromTokenizer(tokenizer)
+				consumeNodeFromTokenizer(tokenizer)
 			)
 		} while (tokenizer())
 	}

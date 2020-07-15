@@ -489,7 +489,7 @@ function tokenize(input) {
 			input
 		)
 
-		return true
+		return tokenizer
 	}
 
 	/**

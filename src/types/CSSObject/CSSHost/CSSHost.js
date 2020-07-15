@@ -1,27 +1,31 @@
-import CSSObject from '../CSSObject.js'
+import CSSNode from '../CSSNode/CSSNode.js'
+import { asJSON, asString } from '../CSSObject.js'
 
-import defineNonEnumerableGetter from '../../../utils/defineNonEnumerableGetter.js'
-import defineNonEnumerableValue from '../../../utils/defineNonEnumerableValue.js'
-import toJSON from '../../../utils/toJSON.js'
+const { defineProperties } = Object
 
-export default class CSSHost extends CSSObject {}
-
-const { prototype } = CSSHost
-
-defineNonEnumerableValue(prototype, `toJSON`, toJSON)
-
-defineNonEnumerableValue(prototype, `toString`, function toString() {
-	const buffer = []
-	const { nodes, toStringTypes } = this
-	for (const name in toStringTypes) {
-		buffer.push(
-			toStringTypes[name](
-				nodes[name],
-				name
-			)
-		)
+export default class CSSHost extends CSSNode {
+	constructor(nodes) {
+		super({ nodes })
 	}
-	return buffer.join(``)
+}
+
+defineProperties(CSSHost.prototype, {
+	toJSON: {
+		value:        toJSON,
+		configurable: true,
+		writable:     true,
+	},
+	toString: {
+		value:        toString,
+		configurable: true,
+		writable:     true,
+	},
 })
 
-defineNonEnumerableGetter(prototype, `parent`)
+function toJSON() {
+	return asJSON(this.nodes, toJSON)
+}
+
+function toString() {
+	return asString(this.nodes, this.props)
+}

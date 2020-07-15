@@ -7,18 +7,18 @@ import CSSBlock from '../CSSHost/CSSBlock.js'
  * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
  * @arg {Function} tokenizer
  */
-export default function fromTokenizer(tokenizer, consumer) {
-	const element = new CSSBlock()
-	const { opener, value, closer } = element.nodes
+export default function fromTokenizer(tokenizer, consumer, element) {
+	const { nodes } = element
+	const { value } = nodes
 
-	opener.push(tokenizer.node)
+	nodes.opener = tokenizer.node
 
 	/** @type {number} End of Block */
 	const EOB = RofL[tokenizer.type]
 
 	while (tokenizer()) {
 		if (tokenizer.type === EOB) {
-			closer.push(tokenizer.node)
+			nodes.closer = tokenizer.node
 
 			break
 		}

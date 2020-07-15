@@ -14,7 +14,7 @@ console.log(`Validating ${postcssDevTestName} preserves CSS identically...\n`)
 // process
 const tokenizer = tokenize({ data: bootstrapCSS })
 const buffer = []
-while (tokenizer().item) buffer.push(tokenizer.item)
+while (tokenizer()) buffer.push(tokenizer.node)
 
 const tokenizedCSS = buffer.join(``)
 

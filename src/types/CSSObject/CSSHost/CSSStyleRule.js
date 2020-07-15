@@ -1,35 +1,26 @@
-import toString from '../../../utils/toString.js'
-
 import CSSRule from './CSSRule.js'
 
-export default class CSSStyleRule extends CSSRule {
-	constructor() {
-		super({
-			nodes: {
-				prelude: [],
-				value:   [],
-			},
-		})
-	}
-}
+export default class CSSStyleRule extends CSSRule {}
 
 const { prototype } = CSSStyleRule
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toJsonTypes`, {
-	value: {
-		prelude: Object,
-		value:   Object,
+defineProperties(prototype, {
+	props: {
+		value:        [ `prelude`, `afterPrelude`, `opener`, `value`, `closer` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
-})
-
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		prelude: toString,
-		value:   toString,
+	prelude: {
+		get: function () {
+			return this.nodes.prelude
+		},
+		configurable: true,
 	},
-	configurable: true,
-	writable:     true,
+	value: {
+		get: function () {
+			return this.nodes.value
+		},
+		configurable: true,
+	},
 })

@@ -11,17 +11,17 @@ npm run benchmark
 ```
 Collecting PostCSS Tokenizer Benchmarks...
 
-PostCSS Tokenizer (Development): 58633 tokens in 7 ms (1.4 times faster)
-PostCSS Tokenizer (7.0.32):      49872 tokens in 9 ms
+PostCSS Tokenizer (7.0.32):      49872 tokens in  8 ms
+PostCSS Tokenizer (Development): 58823 tokens in 14 ms (1.8 times slower)
 
 Collecting PostCSS Parser Benchmarks...
 
-PostCSS Parser (7.0.32):         6240 tokens in 14 ms
-PostCSS Parser (Development):   67811 tokens in 24 ms (1.7 times slower)
-PostCSS/Selector/Value Parsers: 28491 tokens in 81 ms (5.9 times slower)
+PostCSS Parser (7.0.32):         6240 tokens in  20 ms
+PostCSS Parser (Development):   67811 tokens in  35 ms (1.7 times slower)
+PostCSS/Selector/Value Parsers: 28491 tokens in 157 ms (7.7 times slower)
 ```
 
-Presently, `tokenize.js` compiles to ~ 1.91kB, and `parse.js` compiles to ~ 3.81kB (min/gzip).
+Presently, `tokenize.js` compiles to ~ 814B, and `parse.js` compiles to ~ 2.51kB (min/gzip).
 
 ### Build
 

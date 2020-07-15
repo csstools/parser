@@ -1,58 +1,26 @@
-import toString from '../../../utils/toString.js'
-
 import CSSRule from './CSSRule.js'
 
-export default class CSSAtRule extends CSSRule {
-	constructor() {
-		super({
-			nodes: {
-				name:         [],
-				afterName:    [],
-				prelude:      [],
-				afterPrelude: [],
-				value:        [],
-			},
-		})
-	}
-}
+export default class CSSAtRule extends CSSRule {}
 
 const { prototype } = CSSAtRule
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toJsonTypes`, {
-	value: {
-		name:         Object,
-		afterName:    Object,
-		prelude:      Object,
-		afterPrelude: Object,
-		value:        Object,
+defineProperties(prototype, {
+	props: {
+		value:        [ `name`, `afterName`, `prelude`, `afterPrelude`, `opener`, `value`, `closer` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
-})
-
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		name:         toString,
-		afterName:    toString,
-		prelude:      toString,
-		afterPrelude: toString,
-		value:        toString,
+	name: {
+		get: function () {
+			return this.nodes.name
+		},
+		configurable: true,
 	},
-	configurable: true,
-	writable:     true,
-})
-
-defineProperty(prototype, `name`, {
-	get: function () {
-		return toString(this.nodes.name.map((node) => node.value))
+	prelude: {
+		get: function () {
+			return this.nodes.prelude
+		},
+		configurable: true,
 	},
-	configurable: true,
-})
-
-defineProperty(prototype, `prelude`, {
-	get: function () {
-		return toString(this.nodes.prelude)
-	},
-	configurable: true,
 })

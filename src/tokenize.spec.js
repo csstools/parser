@@ -1,26 +1,24 @@
-import { readFileSync } from 'fs'
-import resolve from 'resolve'
 import tokenize from './tokenize.js'
-import consumeNode from './types/CSSObject/fromTokenizer/CSSNode.fromTokenizer.js'
-import consumeDeclaration from './types/CSSObject/fromTokenizer/CSSDeclaration.fromTokenizer.js'
+// import declarationFromTokenizer from './types/CSSObject/fromTokenizer/CSSDeclaration.fromTokenizer.js'
+// import styleRuleFromTokenizer from './types/CSSObject/fromTokenizer/CSSStyleRule.fromTokenizer.js'
+import rootFromTokenizer from './types/CSSObject/fromTokenizer/CSSRoot.fromTokenizer.js'
 
-// const bootstrapCSSPath = resolve.sync(`bootstrap/dist/css/bootstrap.css`)
-// const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
+// const declarationInput = { file: `-`, data: `color: blue` }
+// const declarationTokenizer = tokenize(declarationInput)()
+// const declarationElement = declarationFromTokenizer(declarationTokenizer)
 
-// const bootstrapCSS = `html body {
-// 	color: blue;
-// }`
+// console.log(declarationElement.toJSON())
 
-const bootstrapCSS = `color: blue`
+// const styleRuleInput = { file: `-`, data: `html { color: blue; }` }
+// const styleRuleTokenizer = tokenize(styleRuleInput)()
+// const styleRuleElement = styleRuleFromTokenizer(styleRuleTokenizer)
 
-const input = { file: `-`, data: bootstrapCSS }
-const tokenizer = tokenize(input)
-const tokens = []
-while (tokenizer()) {
-	tokens.push(
-		consumeDeclaration(tokenizer)
-	)
-}
+// console.log(styleRuleElement.toJSON())
 
-console.log(tokens[0])
-console.log(tokens[0].nodes.name[0])
+const rootInput = { file: `-`, data: `html { @media screen { color: color(--blue); } }` }
+const rootTokenizer = tokenize(rootInput)()
+const rootElement = rootFromTokenizer(rootTokenizer)
+
+// console.log(rootElement)
+// console.log(rootElement.toJSON())
+console.log([ rootElement.toString() ])

@@ -6,8 +6,8 @@
  * @return {CSSFragment}
  */
 export default function fromTokenizer(tokenizer, consumer, CSSContainer) {
-	const element = new CSSContainer({ nodes: { value: [] } })
-	const { value } = element.nodes
+	const value = []
+	const element = new CSSContainer({ value })
 
 	while (tokenizer()) value.push(consumer(tokenizer))
 

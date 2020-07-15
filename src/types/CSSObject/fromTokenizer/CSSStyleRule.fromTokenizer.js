@@ -9,23 +9,33 @@ import blockFromTokenizer from './CSSBlock.fromTokenizer.js'
 import declarationFromTokenizer from './CSSDeclaration.fromTokenizer.js'
 import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
 
+import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
+
 /**
  * Consume a style rule
  * @see https://drafts.csswg.org/css-syntax/#consume-a-qualified-rule
  */
 export default function fromTokenizer(tokenizer) {
 	// create an empty declaration
-	const element = new CSSStyleRule()
-	const { prelude, value } = element.nodes
+	const prelude = []
+	const afterPrelude = []
+	const value   = []
+	const element = new CSSStyleRule({
+		prelude,
+		afterPrelude,
+		opener: null,
+		value,
+		closer: null,
+	})
 
 	do {
 		switch (tokenizer.type) {
 			// <{-token>
 			case L_CB:
+				afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
+
 				// consume a simple block and assign it to the style rule’s block
-				value.push(
-					blockFromTokenizer(tokenizer, declarationsFromTokenizer)
-				)
+				blockFromTokenizer(tokenizer, declarationsFromTokenizer, element)
 
 				break
 
@@ -76,7 +86,7 @@ function declarationsFromTokenizer(tokenizer) {
 
 			element = declarationFromTokenizer(declarationTokenizer)
 
-			if (tokenizer.type === SEMI) element.nodes.closer.push(tokenizer.node)
+			if (tokenizer.type === SEMI) element.nodes.closer = tokenizer.node
 			else ++tokenizer.hold
 
 			return element

@@ -12,7 +12,7 @@ export default function fromTokenizer(tokenizer) {
 		case SPACE_TYPE:
 			return tokenizer.node
 
-		// anything else
+		// <css-atword>
 		case ATWORD_TYPE:
 			// consume a component value and append it to the value of the block
 			return consumeAtRuleFromTokenizer(tokenizer, fromTokenizer)

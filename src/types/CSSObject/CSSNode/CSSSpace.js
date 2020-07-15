@@ -13,12 +13,12 @@ CSSSpace.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, li
 }
 
 const { prototype } = CSSSpace
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		value: String,
+defineProperties(prototype, {
+	props: {
+		value:        [ `value` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
 })

@@ -14,13 +14,12 @@ CSSFunctionWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, t
 }
 
 const { prototype } = CSSFunctionWord
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		value:  String,
-		symbol: String,
+defineProperties(prototype, {
+	props: {
+		value:        [ `value`, `symbol` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
 })

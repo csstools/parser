@@ -1,38 +1,20 @@
-import toString from '../../../utils/toString.js'
-
 import CSSFragment from './CSSFragment.js'
 
-export default class CSSBlock extends CSSFragment {
-	constructor() {
-		super({
-			nodes: {
-				opener: [],
-				value:  [],
-				closer: [],
-			},
-		})
-	}
-}
+export default class CSSBlock extends CSSFragment {}
 
 const { prototype } = CSSBlock
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toJsonTypes`, {
-	value: {
-		opener: Object,
-		value:  Object,
-		closer: Object,
+defineProperties(prototype, {
+	props: {
+		value:        [ `opener`, `value`, `closer` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
-})
-
-defineProperty(prototype, `toStringTypes`, {
 	value: {
-		opener: toString,
-		value:  toString,
-		closer: toString,
+		get: function () {
+			return this.nodes.value
+		},
+		configurable: true,
 	},
-	configurable: true,
-	writable:     true,
 })

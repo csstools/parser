@@ -14,13 +14,12 @@ CSSHash.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, lin
 }
 
 const { prototype } = CSSHash
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		symbol: String,
-		value:  String,
+defineProperties(prototype, {
+	props: {
+		value:        [ `symbol`, `value` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
 })

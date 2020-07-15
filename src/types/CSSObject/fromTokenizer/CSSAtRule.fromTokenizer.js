@@ -13,11 +13,22 @@ import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js
  */
 export default function fromTokenizer(tokenizer, consumer) {
 	// create an empty declaration
-	const element = new CSSAtRule()
-	const { name, afterName, prelude, afterPrelude, value } = element.nodes
+	const afterName = []
+	const prelude = []
+	const afterPrelude = []
+	const value = []
+	const element = new CSSAtRule({
+		name:   null,
+		afterName,
+		prelude,
+		afterPrelude,
+		value,
+		opener: null,
+		closer: null,
+	})
 
 	// consume the declaration name, otherwise return the declaration
-	name.push(tokenizer.node)
+	element.nodes.name = tokenizer.node
 
 	// consume any skippables following the at-rule name
 	consumeLeadingWhitespace(tokenizer, afterName)
@@ -25,10 +36,10 @@ export default function fromTokenizer(tokenizer, consumer) {
 	if (tokenizer.type >= 0) {
 		do {
 			switch (tokenizer.type) {
-				// <{-token>
+				// <;-token>
 				case SEMI:
 					afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
-					afterPrelude.push(tokenizer.node)
+					element.nodes.closer = tokenizer.node
 
 					break
 
@@ -37,9 +48,7 @@ export default function fromTokenizer(tokenizer, consumer) {
 					afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
 
 					// consume a simple block and assign it to the style rule’s block
-					value.push(
-						consumeBlockFromTokenizer(tokenizer, consumer)
-					)
+					consumeBlockFromTokenizer(tokenizer, consumer, element)
 
 					break
 

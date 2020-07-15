@@ -14,13 +14,12 @@ CSSNumber.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, l
 }
 
 const { prototype } = CSSNumber
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		value: String,
-		unit:  String,
+defineProperties(prototype, {
+	props: {
+		value:        [ `value`, `unit` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
 })

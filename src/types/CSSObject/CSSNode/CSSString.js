@@ -15,14 +15,12 @@ CSSString.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, l
 }
 
 const { prototype } = CSSString
-const { defineProperty } = Object
+const { defineProperties } = Object
 
-defineProperty(prototype, `toStringTypes`, {
-	value: {
-		opener: String,
-		value:  String,
-		closer: String,
+defineProperties(prototype, {
+	props: {
+		value:        [ `opener`, `value`, `closer` ],
+		configurable: true,
+		writable:     true,
 	},
-	configurable: true,
-	writable:     true,
 })
