@@ -4,7 +4,7 @@ import { createInnerTokenizer } from '../../../utils/iterators.js'
 
 import cssAtRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import cssDeclarationFromTokenizer from './CSSDeclaration.fromTokenizer.js'
-import CSSTokenFromTokenizer from './CSSBlock.valueFromTokenizer.js'
+import CSSTokenFromTokenizer from '../CSSBlock.valueFromTokenizer.js'
 
 /**
  * Consume a value within a CSSStyleRule

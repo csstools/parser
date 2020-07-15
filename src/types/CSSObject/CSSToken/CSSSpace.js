@@ -1,4 +1,4 @@
-import CSSToken from './CSSToken.js'
+import CSSToken from '../CSSToken.js'
 
 export default class CSSSpace extends CSSToken {}
 

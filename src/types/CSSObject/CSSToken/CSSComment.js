@@ -1,4 +1,4 @@
-import CSSToken from './CSSToken.js'
+import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSComment/fromTokenizer.js'
 
 export default class CSSComment extends CSSToken {}

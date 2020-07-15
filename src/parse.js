@@ -1,6 +1,6 @@
 import tokenize from './tokenize.js'
 
-import consumeCSSBlock from './types/CSSObject/fromTokenizer/CSSBlock.fromTokenizer.js'
+import consumeCSSBlock from './types/CSSObject/CSSBlock.fromTokenizer.js'
 import consumeCSSRoot from './types/CSSObject/fromTokenizer/CSSRoot.fromTokenizer.js'
 
 export function parseFragment(input) {

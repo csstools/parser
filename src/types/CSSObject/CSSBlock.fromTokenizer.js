@@ -1,4 +1,4 @@
-import CSSBlock from '../CSSBlock/CSSBlock.js'
+import CSSBlock from './CSSBlock.js'
 
 import consumeCSSBlockValue from './CSSBlock.valueFromTokenizer.js'
 

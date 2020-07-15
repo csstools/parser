@@ -1,10 +1,10 @@
-import { L_CB, L_SB, L_RB } from '../../../utils/code-points.js'
-import { FUNCTION_TYPE } from '../../../utils/node-types.js'
+import { L_CB, L_SB, L_RB } from '../../utils/code-points.js'
+import { FUNCTION_TYPE } from '../../utils/node-types.js'
 
-import CSSBracketBlock from '../CSSBlock/CSSBracketBlock.js'
-import CSSFunction from '../CSSBlock/CSSFunction.js'
+import CSSBracketBlock from './CSSBlock/CSSBracketBlock.js'
+import CSSFunction from './CSSBlock/CSSFunction.js'
 
-import consumeCSSBracketBlock from './CSSBracketBlock.fromTokenizer.js'
+import consumeCSSBracketBlock from './fromTokenizer/CSSBracketBlock.fromTokenizer.js'
 
 /**
  * Consume a block value from a tokenizer.

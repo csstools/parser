@@ -1,6 +1,6 @@
-import CSSObject from '../CSSObject.js'
-import { asJSON } from '../prototype/toJSON.js'
-import { asString } from '../prototype/toString.js'
+import CSSObject from './CSSObject.js'
+import { asJSON } from './prototype/toJSON.js'
+import { asString } from './prototype/toString.js'
 
 export default class CSSBlock extends CSSObject {
 	constructor(nodes) {

@@ -1,4 +1,4 @@
-import CSSToken from './CSSToken.js'
+import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSAtWord/fromTokenizer.js'
 
 export default class CSSAtWord extends CSSToken {}

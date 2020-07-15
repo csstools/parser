@@ -3,7 +3,7 @@ import { L_CB } from '../../../utils/code-points.js'
 import CSSStyleRule from '../CSSBlock/CSSStyleRule.js'
 
 import cssBlockFromTokenizer from './CSSBracketBlock.fromTokenizer.js'
-import CSSTokenFromTokenizer from './CSSBlock.valueFromTokenizer.js'
+import CSSTokenFromTokenizer from '../CSSBlock.valueFromTokenizer.js'
 import cssStyleRuleValueFromTokenizer from './CSSStyleRule.valueFromTokenizer.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'

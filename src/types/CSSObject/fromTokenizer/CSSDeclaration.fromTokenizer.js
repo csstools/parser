@@ -8,7 +8,7 @@ import CSSDeclaration from '../CSSBlock/CSSDeclaration.js'
 
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
-import consumeNodeFromTokenizer from './CSSBlock.valueFromTokenizer.js'
+import consumeNodeFromTokenizer from '../CSSBlock.valueFromTokenizer.js'
 
 /**
  * Consume a Declaration
