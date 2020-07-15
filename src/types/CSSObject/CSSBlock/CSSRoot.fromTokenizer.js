@@ -1,4 +1,4 @@
-import CSSRoot from '../CSSBlock/CSSRoot.js'
+import CSSRoot from './CSSRoot.js'
 
 import consumeCSSRootValue from './CSSRoot.valueFromTokenizer.js'
 

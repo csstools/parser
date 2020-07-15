@@ -1,7 +1,7 @@
-import { RofL } from '../../../utils/code-points.js'
+import RofL from '../../../utils/variant-points.js'
 
 /**
- * Consume a bracketed block.
+ * Consume a known bracketed block.
  * @see https://drafts.csswg.org/css-syntax/#consume-a-simple-block
  * @arg {Function} tokenizer - Tokenizer to be consumed.
  * @arg {Function} consumer - Consumer of the Tokenizer.

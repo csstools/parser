@@ -212,12 +212,3 @@ export const R_CB = 0x007D // } === 125
  * @see https://unicode.org/charts/nameslist/n_0080.html#0080
  */
 export const CTRL = 0x0080 // � === 128
-
-/**
- * Right Brace Variants of Left Brace Code Points
- */
-export const RofL = {}
-
-RofL[L_RB] = R_RB
-RofL[L_SB] = R_SB
-RofL[L_CB] = R_CB

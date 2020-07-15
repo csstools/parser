@@ -1,8 +1,8 @@
 import { L_CB, SEMI } from '../../../utils/code-points.js'
 
-import CSSAtRule from '../CSSBlock/CSSAtRule.js'
+import CSSAtRule from './CSSAtRule.js'
 
-import consumeBlockFromTokenizer from './CSSBracketBlock.fromTokenizer.js'
+import consumeCSSBracketBlock from './CSSBracketBlock.knownFromTokenizer.js'
 import consumeNodeFromTokenizer from '../CSSBlock.valueFromTokenizer.js'
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
@@ -47,8 +47,10 @@ export default function fromTokenizer(tokenizer, consumer) {
 				case L_CB:
 					afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
 
+					element.nodes.opener = tokenizer.node
+
 					// consume a simple block and assign it to the style rule’s block
-					consumeBlockFromTokenizer(tokenizer, consumer, element)
+					consumeCSSBracketBlock(tokenizer, consumer, element)
 
 					break
 
@@ -64,7 +66,9 @@ export default function fromTokenizer(tokenizer, consumer) {
 			}
 
 			break
-		} while (tokenizer())
+		} while (
+			tokenizer()
+		)
 	}
 
 	return element

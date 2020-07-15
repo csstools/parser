@@ -12,7 +12,7 @@ defineProperties(CSSFunction.prototype, {
 	},
 	name: {
 		get: function () {
-			return String(this.nodes.opener)
+			return String(this.nodes.opener).slice(0, -1)
 		},
 		configurable: true,
 		enumerable:   true,
