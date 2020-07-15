@@ -27,35 +27,22 @@ export function createInnerTokenizer(tokenizer) {
 	let innerLength = 0
 
 	innerTokenizer.consume = consume
-	innerTokenizer.input = tokenizer.input
-
-	// eslint-disable-next-line prefer-destructuring
-	innerTokenizer[0] = tokenizer[0]
 
 	return innerTokenizer
 
 	// eslint-disable-next-line no-unused-vars
-	function innerTokenizer($0, $1, $2, $3, $4, $5) {
+	function innerTokenizer() {
 		if (innerLength === 0) {
 			innerTokenizer.type = -1
+			innerTokenizer.node = null
 
 			return false
 		}
 
 		innerTokenizer.type = innerBuffer.shift()
+		innerTokenizer.node = innerBuffer.shift()
 
-		const args = innerBuffer.shift()
-
-		/* eslint-disable prefer-destructuring */
-		innerTokenizer[1] = args[0]
-		innerTokenizer[2] = args[1]
-		innerTokenizer[3] = args[2]
-		innerTokenizer[4] = args[3]
-		innerTokenizer[5] = args[4]
-		/* eslint-enable prefer-destructuring */
-
-		--innerLength
-		--innerLength
+		innerLength = innerBuffer.length
 
 		return true
 	}
@@ -63,7 +50,7 @@ export function createInnerTokenizer(tokenizer) {
 	function consume() {
 		innerLength = innerBuffer.push(
 			tokenizer.type,
-			Array.prototype.slice.call(tokenizer, 1)
+			tokenizer.node
 		)
 	}
 }

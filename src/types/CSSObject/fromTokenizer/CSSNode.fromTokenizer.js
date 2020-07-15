@@ -3,7 +3,6 @@ import { FUNCTION_TYPE } from '../../../utils/node-types.js'
 
 import functionFromTokenizer from './CSSFunction.fromTokenizer.js'
 import blockFromTokenizer from './CSSBlock.fromTokenizer.js'
-import tokenToNode from '../../../utils/token-to-node.js'
 
 /**
  * Consume a node
@@ -25,6 +24,6 @@ export default function fromTokenizer(tokenizer) {
 
 		// anything else
 		default:
-			return tokenToNode.apply(tokenizer, tokenizer)
+			return tokenizer.node
 	}
 }

@@ -37,6 +37,16 @@ import {
 	isVerticalSpace,
 } from './utils/tokenizer-algorithms.js'
 
+import CSSAtWord from './types/CSSObject/CSSNode/CSSAtWord.js'
+import CSSComment from './types/CSSObject/CSSNode/CSSComment.js'
+import CSSFunctionWord from './types/CSSObject/CSSNode/CSSFunctionWord.js'
+import CSSHash from './types/CSSObject/CSSNode/CSSHash.js'
+import CSSNumber from './types/CSSObject/CSSNode/CSSNumber.js'
+import CSSSpace from './types/CSSObject/CSSNode/CSSSpace.js'
+import CSSString from './types/CSSObject/CSSNode/CSSString.js'
+import CSSWord from './types/CSSObject/CSSNode/CSSWord.js'
+import CSSSymbol from './types/CSSObject/CSSNode/CSSSymbol.js'
+
 /**
  * Reads CSS and returns a function for consuming tokens from it.
  * @param {string} text - Text being read as CSS tokens.
@@ -59,6 +69,7 @@ function tokenize(input) {
 	 * type === 1 // token is a space
 	 */
 	let TYPE = tokenizer.type = -1
+	let Type = null
 
 	/**
 	 * String index at the start of the current token.
@@ -125,12 +136,14 @@ function tokenize(input) {
 	function tokenizer($0, $1, $2, $3, $4, $5) {
 		if (shut === size) {
 			TYPE = tokenizer.type = -1
+			Type = null
 			return false
 		}
 
 		// update the starting values with the ending values from the last read
 		cc0 = text.charCodeAt(shut)
 		TYPE = cc0
+		Type = CSSSymbol
 		open = shut
 		line = nextLine
 		lineOpen = nextLineOpen
@@ -170,6 +183,7 @@ function tokenize(input) {
 					}
 
 					TYPE = COMMENT_TYPE
+					Type = CSSComment
 				}
 
 				break
@@ -211,6 +225,7 @@ function tokenize(input) {
 				}
 
 				TYPE = STRING_TYPE
+				Type = CSSString
 
 				break
 
@@ -232,6 +247,7 @@ function tokenize(input) {
 					consumeIdentifier()
 
 					TYPE = HASH_TYPE
+					Type = CSSHash
 				}
 
 				break
@@ -270,6 +286,7 @@ function tokenize(input) {
 					consumeIdentifier()
 
 					TYPE = WORD_TYPE
+					Type = CSSWord
 				} else {
 					++shut
 				}
@@ -347,6 +364,7 @@ function tokenize(input) {
 					consumeIdentifier()
 
 					TYPE = WORD_TYPE
+					Type = CSSWord
 
 					break
 				}
@@ -384,6 +402,7 @@ function tokenize(input) {
 				)
 
 				TYPE = SPACE_TYPE
+				Type = CSSSpace
 
 				break
 
@@ -405,6 +424,7 @@ function tokenize(input) {
 					consumeIdentifier()
 
 					TYPE = ATWORD_TYPE
+					Type = CSSAtWord
 				}
 
 				break
@@ -427,8 +447,10 @@ function tokenize(input) {
 					++shut
 
 					TYPE = FUNCTION_TYPE
+					Type = CSSFunctionWord
 				} else {
 					TYPE = WORD_TYPE
+					Type = CSSWord
 				}
 
 				break
@@ -456,11 +478,16 @@ function tokenize(input) {
 		}
 
 		tokenizer.type = TYPE
-		tokenizer[1] = open
-		tokenizer[2] = shut
-		tokenizer[3] = lead
-		tokenizer[4] = tail
-		tokenizer[5] = [ line, open - lineOpen ]
+		tokenizer.node = Type.fromTokenizer(
+			text,
+			open,
+			shut,
+			lead,
+			tail,
+			line,
+			open - lineOpen,
+			input
+		)
 
 		return true
 	}

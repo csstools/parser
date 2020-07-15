@@ -6,7 +6,6 @@ import consumeBlockFromTokenizer from './CSSBlock.fromTokenizer.js'
 import consumeNodeFromTokenizer from './CSSNode.fromTokenizer.js'
 import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
 import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
-import tokenToNode from '../../../utils/token-to-node.js'
 
 /**
  * Consume an at-rule from a tokenizer
@@ -18,7 +17,7 @@ export default function fromTokenizer(tokenizer, consumer) {
 	const { name, afterName, prelude, afterPrelude, value } = element.nodes
 
 	// consume the declaration name, otherwise return the declaration
-	name.push(tokenToNode.apply(tokenizer, tokenizer))
+	name.push(tokenizer.node)
 
 	// consume any skippables following the at-rule name
 	consumeLeadingWhitespace(tokenizer, afterName)
@@ -29,7 +28,7 @@ export default function fromTokenizer(tokenizer, consumer) {
 				// <{-token>
 				case SEMI:
 					afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
-					afterPrelude.push(tokenToNode.apply(tokenizer, tokenizer))
+					afterPrelude.push(tokenizer.node)
 
 					break
 

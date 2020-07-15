@@ -3,7 +3,6 @@ import { R_RB } from '../../../utils/code-points.js'
 import CSSFunction from '../CSSHost/CSSFunction.js'
 
 import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
-import tokenToNode from '../../../utils/token-to-node.js'
 
 /**
  * Consume a function
@@ -13,7 +12,7 @@ export default function fromTokenizer(tokenizer) {
 	const element = new CSSFunction()
 	const { opener, value, closer } = element.nodes
 
-	opener.push(tokenToNode.apply(tokenizer, tokenizer))
+	opener.push(tokenizer.node)
 
 	// Repeatedly consume the next input token and process it as follows:
 	while (tokenizer()) {

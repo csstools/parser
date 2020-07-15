@@ -2,7 +2,6 @@ import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../../../utils/node-types
 
 import consumeAtRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import consumeStyleRuleFromTokenizer from './CSSStyleRule.fromTokenizer.js'
-import tokenToNode from '../../../utils/token-to-node.js'
 
 export default function fromTokenizer(tokenizer) {
 	// Repeatedly consume the next input token and process it as follows:
@@ -11,7 +10,7 @@ export default function fromTokenizer(tokenizer) {
 		// <css-space>
 		case COMMENT_TYPE:
 		case SPACE_TYPE:
-			return tokenToNode.apply(tokenizer, tokenizer)
+			return tokenizer.node
 
 		// anything else
 		case ATWORD_TYPE:

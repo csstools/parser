@@ -8,8 +8,6 @@ import consumeAtStyleRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import blockFromTokenizer from './CSSBlock.fromTokenizer.js'
 import declarationFromTokenizer from './CSSDeclaration.fromTokenizer.js'
 import nodeFromTokenizer from './CSSNode.fromTokenizer.js'
-import tokenToNode from '../../../utils/token-to-node.js'
-
 
 /**
  * Consume a style rule
@@ -78,7 +76,7 @@ function declarationsFromTokenizer(tokenizer) {
 
 			element = declarationFromTokenizer(declarationTokenizer)
 
-			if (tokenizer.type === SEMI) element.nodes.closer.push(tokenToNode.apply(tokenizer, tokenizer))
+			if (tokenizer.type === SEMI) element.nodes.closer.push(tokenizer.node)
 			else ++tokenizer.hold
 
 			return element
