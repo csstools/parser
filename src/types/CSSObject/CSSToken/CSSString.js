@@ -1,26 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSString.fromTokenizer.js'
 
-export default class CSSString extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSString.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSString({
-		opener: text.slice(open, open + lead),
-		value:  text.slice(open + lead, shut - tail),
-		closer: text.slice(shut - tail, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSString(init) {
+	assign(this, init)
 }
 
-const { prototype } = CSSString
-const { defineProperties } = Object
-
-defineProperties(prototype, {
-	props: {
-		value:        [ `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSString,
+	CSSToken,
+	{
+		props: [ 6, [ `opener`, `value`, `closer` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

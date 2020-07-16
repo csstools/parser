@@ -1,24 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSSymbol.fromTokenizer.js'
 
-export default class CSSSymbol extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSSymbol.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSSymbol({
-		value:  text.slice(open, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSSymbol(init) {
+	assign(this, init)
 }
 
-const { prototype } = CSSSymbol
-const { defineProperties } = Object
-
-defineProperties(prototype, {
-	props: {
-		value:        [ `value` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSSymbol,
+	CSSToken,
+	{
+		props: [ 6, [ `value` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

@@ -1,3 +1,12 @@
 import CSSObject from '../CSSObject.js'
 
-export default class CSSToken extends CSSObject {}
+import { assign, defineClass } from '../../utils/define.js'
+
+export default function CSSToken(init) {
+	assign(this, init)
+}
+
+defineClass(
+	CSSToken,
+	CSSObject
+)

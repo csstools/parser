@@ -1,23 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSWord.fromTokenizer.js'
 
-export default class CSSWord extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSWord.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSWord({
-		value:  text.slice(open, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSWord(init) {
+	assign(this, init)
 }
 
-const { defineProperties } = Object
-
-defineProperties(CSSWord.prototype, {
-	props: {
-		value:        [ `value` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSWord,
+	CSSToken,
+	{
+		props: [ 6, [ `value` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

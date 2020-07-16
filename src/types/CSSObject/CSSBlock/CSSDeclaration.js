@@ -1,48 +1,27 @@
 import CSSBlock from '../CSSBlock.js'
 
-export default class CSSDeclaration extends CSSBlock {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSDeclaration(nodes) {
+	assign(this, { nodes })
+}
 
-defineProperties(CSSDeclaration.prototype, {
-	props: {
-		value:        [ `name`, `afterName`, `opener`, `afterOpener`, `value`, `afterValue`, `important`, `afterImportant`, `closer` ],
-		configurable: true,
-		writable:     true,
-	},
-	name: {
-		get: function () {
+defineClass(
+	CSSDeclaration,
+	CSSBlock,
+	{
+		props: [ 6, [ `name`, `afterName`, `opener`, `afterOpener`, `value`, `afterValue`, `important`, `afterImportant`, `closer` ] ],
+		name:  [ 11, function () {
 			return this.nodes.name.value
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	opener: {
-		get: function () {
+		} ],
+		opener: [ 11, function () {
 			return String(this.nodes.opener)
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	value: {
-		get: function () {
-			return this.nodes.value
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	important: {
-		get: function () {
+		} ],
+		important: [ 11, function () {
 			return String(this.nodes.important)
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	closer: {
-		get: function () {
+		} ],
+		closer: [ 11, function () {
 			return String(this.nodes.closer)
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-})
+		} ],
+	}
+)

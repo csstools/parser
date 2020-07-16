@@ -1,11 +1,7 @@
 const { isArray } = Array
 const { keys } = Object
 
-export default function toJSON() {
-	return asJSON(this, toJSON)
-}
-
-export function asJSON(value, toJSONFunction) {
+export default function asJSON(value, toJSONFunction) {
 	return value === Object(value)
 		? isArray(value)
 			? value.map(asJSON)

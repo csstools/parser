@@ -1,13 +1,18 @@
 import CSSRule from './CSSRule.js'
 
-export default class CSSStyleRule extends CSSRule {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSStyleRule(nodes) {
+	assign(this, { nodes })
+}
 
-defineProperties(CSSStyleRule.prototype, {
-	props: {
-		value:        [ `prelude`, `afterPrelude`, `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
-	},
-})
+defineClass(
+	CSSStyleRule,
+	CSSRule,
+	{
+		props:   [ 6, [ `prelude`, `afterPrelude`, `opener`, `value`, `closer` ] ],
+		prelude: [ 11, function () {
+			return this.nodes.prelude
+		} ],
+	}
+)

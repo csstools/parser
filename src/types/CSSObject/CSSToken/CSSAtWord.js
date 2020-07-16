@@ -1,23 +1,19 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSAtWord/fromTokenizer.js'
+import fromTokenizer from './CSSAtWord.fromTokenizer.js'
 
-export default class CSSAtWord extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSAtWord(init) {
+	assign(this, init)
+}
 
-defineProperties(CSSAtWord, {
-	fromTokenizer: {
-		value:        fromTokenizer,
-		configurable: true,
-		enumerable:   true,
-		writable:     true,
+defineClass(
+	CSSAtWord,
+	CSSToken,
+	{
+		props: [ 6, [ `symbol`, `value` ] ],
 	},
-})
-
-defineProperties(CSSAtWord.prototype, {
-	props: {
-		value:        [ `symbol`, `value` ],
-		configurable: true,
-		writable:     true,
-	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

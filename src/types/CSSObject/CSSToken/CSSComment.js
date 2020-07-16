@@ -1,23 +1,19 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSComment/fromTokenizer.js'
+import fromTokenizer from './CSSComment.fromTokenizer.js'
 
-export default class CSSComment extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSComment(init) {
+	assign(this, init)
+}
 
-defineProperties(CSSComment, {
-	fromTokenizer: {
-		value:        fromTokenizer,
-		configurable: true,
-		enumerable:   true,
-		writable:     true,
+defineClass(
+	CSSComment,
+	CSSToken,
+	{
+		props: [ 6, [ `opener`, `value`, `closer` ] ],
 	},
-})
-
-defineProperties(CSSComment.prototype, {
-	props: {
-		value:        [ `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
-	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

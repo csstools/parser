@@ -1,10 +1,6 @@
 const { isArray } = Array
 
-export default function toString() {
-	return asString(this, this.props)
-}
-
-export function asString(object, props) {
+export default function asString(object, props) {
 	const buffer = []
 
 	props.forEach((name) => {

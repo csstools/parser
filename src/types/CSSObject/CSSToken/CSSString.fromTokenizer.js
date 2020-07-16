@@ -1,7 +1,7 @@
-import CSSComment from '../CSSComment.js'
+import CSSString from './CSSString.js'
 
 export default function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSComment({
+	return new CSSString({
 		opener: text.slice(open, open + lead),
 		value:  text.slice(open + lead, shut - tail),
 		closer: text.slice(shut - tail, shut),

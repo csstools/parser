@@ -1,45 +1,49 @@
-import { readFileSync } from 'fs'
+import { getBabelOutputPlugin } from '@rollup/plugin-babel'
+import filesize from 'rollup-plugin-filesize'
+import { terser } from 'rollup-plugin-terser'
 
-const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
-const rollup = Object(pkg.rollup)
+const config = {
+	input: `src/parse.js`,
+	output: [
+		{
+			file: `dist/parse.cjs`,
+			format: `cjs`,
+			strict: false,
+		},
+		{
+			file: `dist/parse.mjs`,
+			format: `esm`,
+			strict: false,
+		},
+		{
+			file: `dist/parse.iife.js`,
+			format: `esm`,
+			strict: false,
+			name: `CSSOM`,
+			plugins: [
+				getBabelOutputPlugin({
+					allowAllFormats: true,
+					presets: [
+						[
+							`@babel/preset-env`,
+							{
+								loose: true,
+								modules: false,
+								targets: {
+									browsers: `ie >= 11`,
+								},
+								useBuiltIns: false,
+							},
+						],
+					],
+				}),
+				terser(),
+			],
+		},
+	],
+	plugins: [
+		filesize(),
+	],
+}
 
-const mapPlugins = async (plugins) => plugins
-	? Promise.all(
-		plugins.map(
-			async (plugin, options) => (
-				(
-					plugin = [].concat(plugin),
-					options = plugin.slice(1),
-					plugin = plugin[0],
-					plugin = await import(plugin),
-					plugin = plugin.default || plugin,
-					plugin = plugin.default || plugin,
-					plugin = plugin.terser || plugin,
-					plugin(...options)
-				)
-			)
-		)
-	)
-	: []
-
-export default (async () => {
-	return {
-		...rollup,
-		plugins: await mapPlugins(rollup.plugins),
-		output: (
-			Array.isArray(rollup.output)
-				? await Promise.all(
-					rollup.output.map(
-						async (output) => ({
-							...output,
-							plugins: await mapPlugins(output.plugins)
-						})
-					)
-				)
-				: []
-		),
-		onwarn(warning, warn) {
-			if (warning.code !== 'UNRESOLVED_IMPORT') warn(warning)
-		}
-	}
-})()
+export default config

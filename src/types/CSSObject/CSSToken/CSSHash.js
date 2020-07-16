@@ -1,25 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSHash.fromTokenizer.js'
 
-export default class CSSHash extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSHash.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSHash({
-		symbol: `#`,
-		value:  text.slice(open + lead, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSHash(init) {
+	assign(this, init)
 }
 
-const { prototype } = CSSHash
-const { defineProperties } = Object
-
-defineProperties(prototype, {
-	props: {
-		value:        [ `symbol`, `value` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSHash,
+	CSSToken,
+	{
+		props: [ 6, [ `symbol`, `value` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

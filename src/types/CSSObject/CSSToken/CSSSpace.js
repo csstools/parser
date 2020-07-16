@@ -1,24 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSSpace.fromTokenizer.js'
 
-export default class CSSSpace extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSSpace.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSSpace({
-		value:  text.slice(open, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSSpace(init) {
+	assign(this, init)
 }
 
-const { prototype } = CSSSpace
-const { defineProperties } = Object
-
-defineProperties(prototype, {
-	props: {
-		value:        [ `value` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSSpace,
+	CSSToken,
+	{
+		props: [ 6, [ `value` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

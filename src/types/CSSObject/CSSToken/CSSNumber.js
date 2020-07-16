@@ -1,24 +1,19 @@
 import CSSToken from '../CSSToken.js'
+import fromTokenizer from './CSSNumber.fromTokenizer.js'
 
-export default class CSSNumber extends CSSToken {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-CSSNumber.fromTokenizer = function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSNumber({
-		value:  text.slice(open, shut - tail),
-		unit:   text.slice(shut - tail, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function CSSNumber(init) {
+	assign(this, init)
 }
 
-const { defineProperties } = Object
-
-defineProperties(CSSNumber.prototype, {
-	props: {
-		value:        [ `value`, `unit` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSNumber,
+	CSSToken,
+	{
+		props: [ 6, [ `value`, `unit` ] ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

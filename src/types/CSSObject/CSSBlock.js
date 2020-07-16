@@ -1,44 +1,26 @@
 import CSSObject from '../CSSObject.js'
-import { asJSON } from './prototype/toJSON.js'
-import { asString } from './prototype/toString.js'
+import asJSON from '../../utils/as-json.js'
+import asString from '../../utils/as-string.js'
 
-export default class CSSBlock extends CSSObject {
-	constructor(nodes) {
-		super({ nodes })
-	}
+import { assign, defineClass } from '../../utils/define.js'
+
+export default function CSSBlock(nodes) {
+	assign(this, { nodes })
 }
 
-const { defineProperties } = Object
-
-defineProperties(CSSBlock.prototype, {
-	toJSON: {
-		value:        toJSON,
-		configurable: true,
-		writable:     true,
-	},
-	toString: {
-		value:        toString,
-		configurable: true,
-		writable:     true,
-	},
-	props: {
-		value:        [ `value` ],
-		configurable: true,
-		writable:     true,
-	},
-	value: {
-		get: function () {
+defineClass(
+	CSSBlock,
+	CSSObject,
+	{
+		toJSON: [ 6, function toJSON() {
+			return asJSON(this.nodes, toJSON)
+		} ],
+		toString: [ 6, function toString() {
+			return asString(this.nodes, this.props)
+		} ],
+		props: [ 6, [ `value` ] ],
+		value: [ 11, function () {
 			return this.nodes.value
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-})
-
-function toJSON() {
-	return asJSON(this.nodes, toJSON)
-}
-
-function toString() {
-	return asString(this.nodes, this.props)
-}
+		} ],
+	}
+)

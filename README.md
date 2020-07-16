@@ -9,16 +9,23 @@ npm run benchmark
 ```
 
 ```
+> node run/benchmark.tokenize.js
+
+
 Collecting PostCSS Tokenizer Benchmarks...
 
 PostCSS Tokenizer (7.0.32):      49872 tokens in  8 ms
-PostCSS Tokenizer (Development): 58823 tokens in 14 ms (1.8 times slower)
+PostCSS Tokenizer (Development): 58823 tokens in 13 ms (1.6 times slower)
+
+
+> node run/benchmark.parse.js
+
 
 Collecting PostCSS Parser Benchmarks...
 
-PostCSS Parser (7.0.32):         6240 tokens in  20 ms
-PostCSS Parser (Development):   67811 tokens in  35 ms (1.7 times slower)
-PostCSS/Selector/Value Parsers: 28491 tokens in 157 ms (7.7 times slower)
+PostCSS Parser (7.0.32):         6240 tokens in  22 ms
+PostCSS Parser (Development):   67811 tokens in  27 ms (1.2 times slower)
+PostCSS/Selector/Value Parsers: 28491 tokens in 100 ms (4.6 times slower)
 ```
 
 ### Build
@@ -31,25 +38,25 @@ npm run build
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.cjs   │
-│   Bundle Size:  39.37 KB        │
-│   Minified Size:  13.04 KB      │
-│   Gzipped Size:  3.18 KB        │
+│   Bundle Size:  38.15 KB        │
+│   Minified Size:  11.82 KB      │
+│   Gzipped Size:  3.13 KB        │
 │                                 │
 └─────────────────────────────────┘
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.mjs   │
-│   Bundle Size:  39.27 KB        │
-│   Minified Size:  12.95 KB      │
-│   Gzipped Size:  3.14 KB        │
+│   Bundle Size:  38.05 KB        │
+│   Minified Size:  11.73 KB      │
+│   Gzipped Size:  3.09 KB        │
 │                                 │
 └─────────────────────────────────┘
 ┌─────────────────────────────────────┐
 │                                     │
 │   Destination: dist/parse.iife.js   │
-│   Bundle Size:  9.77 KB             │
-│   Minified Size:  9.76 KB           │
-│   Gzipped Size:  2.54 KB            │
+│   Bundle Size:  8.84 KB             │
+│   Minified Size:  8.84 KB           │
+│   Gzipped Size:  2.6 KB             │
 │                                     │
 └─────────────────────────────────────┘
 ```

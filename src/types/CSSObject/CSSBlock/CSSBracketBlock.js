@@ -1,34 +1,28 @@
 import CSSBlock from '../CSSBlock.js'
+import fromTokenizer from './CSSBracketBlock.fromTokenizer.js'
 
-export default class CSSBracketBlock extends CSSBlock {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSBracketBlock(nodes) {
+	assign(this, { nodes })
+}
 
-defineProperties(CSSBracketBlock.prototype, {
-	props: {
-		value:        [ `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
-	},
-	opener: {
-		get: function () {
+defineClass(
+	CSSBracketBlock,
+	CSSBlock,
+	{
+		props:  [ 6, [ `opener`, `value`, `closer` ] ],
+		opener: [ 11, function () {
 			return String(this.nodes.opener)
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	value: {
-		get: function () {
+		} ],
+		value: [ 11, function () {
 			return this.nodes.value
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-	closer: {
-		get: function () {
+		} ],
+		closer: [ 11, function () {
 			return String(this.nodes.closer)
-		},
-		configurable: true,
-		enumerable:   true,
+		} ],
 	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

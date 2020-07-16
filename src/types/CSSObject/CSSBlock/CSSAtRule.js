@@ -1,21 +1,22 @@
 import CSSRule from './CSSRule.js'
+import fromTokenizer from './CSSAtRule.fromTokenizer.js'
 
-export default class CSSAtRule extends CSSRule {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { prototype } = CSSAtRule
-const { defineProperties } = Object
+export default function CSSAtRule(nodes) {
+	assign(this, { nodes })
+}
 
-defineProperties(prototype, {
-	props: {
-		value:        [ `name`, `afterName`, `prelude`, `afterPrelude`, `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
+defineClass(
+	CSSAtRule,
+	CSSRule,
+	{
+		props: [ 6, [ `name`, `afterName`, `prelude`, `afterPrelude`, `opener`, `value`, `closer` ] ],
+		name:  [ 11, function () {
+			return String(this.nodes.name.value).slice(0, -1)
+		} ],
 	},
-	name: {
-		get: function () {
-			return this.nodes.name.value
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-})
+	{
+		fromTokenizer: [ 7, fromTokenizer ],
+	}
+)

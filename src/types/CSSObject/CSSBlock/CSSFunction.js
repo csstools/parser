@@ -1,20 +1,18 @@
 import CSSBracketBlock from './CSSBracketBlock.js'
 
-export default class CSSFunction extends CSSBracketBlock {}
+import { assign, defineClass } from '../../../utils/define.js'
 
-const { defineProperties } = Object
+export default function CSSFunction(nodes) {
+	assign(this, { nodes })
+}
 
-defineProperties(CSSFunction.prototype, {
-	props: {
-		value:        [ `opener`, `value`, `closer` ],
-		configurable: true,
-		writable:     true,
-	},
-	name: {
-		get: function () {
+defineClass(
+	CSSFunction,
+	CSSBracketBlock,
+	{
+		props: [ 6, [ `opener`, `value`, `closer` ] ],
+		name:  [ 11, function () {
 			return String(this.nodes.opener).slice(0, -1)
-		},
-		configurable: true,
-		enumerable:   true,
-	},
-})
+		} ],
+	}
+)
