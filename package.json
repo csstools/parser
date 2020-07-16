@@ -54,6 +54,9 @@
       ]
     ]
   },
+  "browserslist": [
+    "ie >= 11"
+  ],
   "eslintConfig": {
     "extends": [
       "airbnb-base",
@@ -175,43 +178,5 @@
       ],
       "sort-imports": 0
     }
-  },
-  "browserslist": [
-    "ie >= 11"
-  ],
-  "rollup": {
-    "input": "src/parse.js",
-    "plugins": [
-      "rollup-plugin-filesize"
-    ],
-    "output": [
-      {
-        "file": "dist/parse.cjs",
-        "format": "cjs",
-        "strict": false
-      },
-      {
-        "file": "dist/parse.mjs",
-        "format": "esm",
-        "strict": false
-      },
-      {
-        "file": "dist/parse.iife.js",
-        "name": "CSSOM",
-        "format": "iife",
-        "strict": false,
-        "plugins": [
-          [
-            "@rollup/plugin-babel",
-            {
-              "babelHelpers": "external",
-              "presets": [
-                "@babel/preset-env"
-              ]
-            }
-          ]
-        ]
-      }
-    ]
   }
 }

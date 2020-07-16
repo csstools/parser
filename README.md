@@ -38,7 +38,7 @@ npm run build
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.cjs   │
-│   Bundle Size:  38.97 KB        │
+│   Bundle Size:  38.96 KB        │
 │   Minified Size:  12.33 KB      │
 │   Gzipped Size:  3.28 KB        │
 │                                 │
@@ -46,7 +46,7 @@ npm run build
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.mjs   │
-│   Bundle Size:  38.87 KB        │
+│   Bundle Size:  38.86 KB        │
 │   Minified Size:  12.24 KB      │
 │   Gzipped Size:  3.25 KB        │
 │                                 │
