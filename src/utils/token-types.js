@@ -1,5 +1,5 @@
 /**
- * Token Identifiers
+ * Token Type Numeric Identifiers
  * @see https://drafts.csswg.org/css-syntax/#tokenization
  * ========================================================================== */
 

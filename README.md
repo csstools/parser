@@ -67,10 +67,12 @@ npm run build
 npm run lint
 ```
 
+All checks should pass.
+
 ## Usage
 
 ```js
-import tokenize from 'src/tokenize.js'
+import parseCSSRoot from './dist/parse.cjs'
 
 const token = tokenize(`/* Example Comment */`)
 

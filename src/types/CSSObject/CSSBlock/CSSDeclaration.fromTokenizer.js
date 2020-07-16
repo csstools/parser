@@ -1,13 +1,13 @@
 import { COLA, BANG } from '../../../utils/code-points.js'
 
-import CSSComment from '../CSSToken/CSSComment.js'
-import CSSSpace from '../CSSToken/CSSSpace.js'
-import CSSSymbol from '../CSSToken/CSSSymbol.js'
+import CSSComment from '../CSSToken/CSSCommentToken.js'
+import CSSSpace from '../CSSToken/CSSSpaceToken.js'
+import CSSSymbol from '../CSSToken/CSSSymbolToken.js'
 
 import CSSDeclaration from './CSSDeclaration.js'
 
-import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
-import consumeLeadingWhitespace from '../../../utils/consumeLeadingWhitespace.js'
+import getTrailingSkippableIndex from '../../../utils/get-trailing-skippable-index.js'
+import consumeLeadingWhitespace from '../../../utils/consume-leading-skippables.js'
 import consumeNodeFromTokenizer from '../CSSBlock.valueFromTokenizer.js'
 
 /**
@@ -35,13 +35,13 @@ export default function fromTokenizer(tokenizer) {
 	})
 
 	// consume the declaration name, otherwise return the declaration
-	element.nodes.name = tokenizer.node
+	element.nodes.name = tokenizer.token
 
 	// consume any skippables following the declaration name
 	consumeLeadingWhitespace(tokenizer, afterName)
 
 	// consume the declaration opener or return the declaration
-	if (tokenizer.type === COLA) element.nodes.opener = tokenizer.node
+	if (tokenizer.type === COLA) element.nodes.opener = tokenizer.token
 	else return element
 
 	// consume any skippables following the declaration opener
@@ -70,15 +70,15 @@ export default function fromTokenizer(tokenizer) {
 		let indexOfImportant = indexOfAfterValueOrImportant - 1
 
 		/** Node being inspected from the declaration value block. */
-		let node
+		let token
 
 		/** Class of Node being inspected from the declaration value block. */
 		let CSSClass
 
 		// ignore skippables before the case-insensitive `important` word
 		do {
-			node = value[--indexOfImportant]
-			CSSClass = node.constructor
+			token = value[--indexOfImportant]
+			CSSClass = token.constructor
 		} while (
 			CSSClass === CSSComment
 			|| CSSClass === CSSSpace
@@ -87,7 +87,7 @@ export default function fromTokenizer(tokenizer) {
 		/** Whether the value includes an important flag. */
 		const doesHaveAnImportantFlag = (
 			CSSClass === CSSSymbol
-			&& node.type === BANG
+			&& token.type === BANG
 		)
 
 		if (doesHaveAnImportantFlag) {

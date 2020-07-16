@@ -1,5 +1,5 @@
 import { L_CB, L_SB, L_RB } from '../../utils/code-points.js'
-import { FUNCTION_TYPE } from '../../utils/node-types.js'
+import { FUNCTION_TYPE } from '../../utils/token-types.js'
 
 import CSSBracketBlock from './CSSBlock/CSSBracketBlock.js'
 import CSSFunction from './CSSBlock/CSSFunction.js'
@@ -34,6 +34,6 @@ export default function fromTokenizer(tokenizer) {
 
 		// anything else
 		default:
-			return tokenizer.node
+			return tokenizer.token
 	}
 }

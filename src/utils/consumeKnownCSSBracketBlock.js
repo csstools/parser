@@ -11,7 +11,7 @@ export default function consumeKnownCSSBracketBlock(tokenizer, consumer, element
 	const { nodes } = element
 	const { value } = nodes
 
-	nodes.opener = tokenizer.node
+	nodes.opener = tokenizer.token
 
 	/** @type {number} End of Block */
 	const END_OF_BLOCK = RofL[tokenizer.type]
@@ -20,7 +20,7 @@ export default function consumeKnownCSSBracketBlock(tokenizer, consumer, element
 		tokenizer()
 	) {
 		if (tokenizer.type === END_OF_BLOCK) {
-			nodes.closer = tokenizer.node
+			nodes.closer = tokenizer.token
 
 			break
 		}

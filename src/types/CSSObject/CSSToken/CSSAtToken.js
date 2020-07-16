@@ -1,14 +1,14 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSAtWord.fromTokenizer.js'
+import fromTokenizer from './CSSAtToken.fromTokenizer.js'
 
 import { assign, defineClass } from '../../../utils/define.js'
 
-export default function CSSAtWord(init) {
+export default function CSSAtToken(init) {
 	assign(this, init)
 }
 
 defineClass(
-	CSSAtWord,
+	CSSAtToken,
 	CSSToken,
 	{
 		props: [ 6, [ `symbol`, `value` ] ],

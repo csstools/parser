@@ -1,4 +1,4 @@
-import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../../../utils/node-types.js'
+import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../../../utils/token-types.js'
 
 import consumeCSSAtRule from './CSSAtRule.fromTokenizer.js'
 import consumeCSSStyleRule from './CSSStyleRule.fromTokenizer.js'
@@ -14,7 +14,7 @@ export default function valueFromTokenizer(tokenizer) {
 		// <css-space>
 		case COMMENT_TYPE:
 		case SPACE_TYPE:
-			return tokenizer.node
+			return tokenizer.token
 
 		// <css-atword>
 		case ATWORD_TYPE:

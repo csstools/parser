@@ -1,9 +1,8 @@
-import CSSAtWord from './CSSAtWord.js'
+import CSSWordToken from './CSSWordToken.js'
 
 export default function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSAtWord({
-		symbol: `@`,
-		value:  text.slice(open + lead, shut),
+	return new CSSWordToken({
+		value:  text.slice(open, shut),
 		source: {
 			input,
 			position: [ line, lcol ],

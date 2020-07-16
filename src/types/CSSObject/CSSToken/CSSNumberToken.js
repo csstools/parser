@@ -1,17 +1,17 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSSymbol.fromTokenizer.js'
+import fromTokenizer from './CSSNumberToken.fromTokenizer.js'
 
 import { assign, defineClass } from '../../../utils/define.js'
 
-export default function CSSSymbol(init) {
+export default function CSSNumberToken(init) {
 	assign(this, init)
 }
 
 defineClass(
-	CSSSymbol,
+	CSSNumberToken,
 	CSSToken,
 	{
-		props: [ 6, [ `value` ] ],
+		props: [ 6, [ `value`, `unit` ] ],
 	},
 	{
 		fromTokenizer: [ 7, fromTokenizer ],

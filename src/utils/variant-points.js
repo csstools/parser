@@ -1,5 +1,5 @@
 import { L_RB, R_RB, L_SB, R_SB, L_CB, R_CB } from './code-points.js'
-import { FUNCTION_TYPE } from './node-types.js'
+import { FUNCTION_TYPE } from './token-types.js'
 
 /**
  * @type {{ [key: number]: number }} Right Brace Variants of Left Brace Code Points

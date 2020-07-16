@@ -6,7 +6,7 @@ import consumeKnownCSSBracketBlock from '../../../utils/consumeKnownCSSBracketBl
 import consumeCSSBlockValue from '../CSSBlock.valueFromTokenizer.js'
 import consumeCSSStyleRule from './CSSStyleRule.valueFromTokenizer.js'
 
-import getTrailingSkippableIndex from '../../../utils/getTrailingSkippableIndex.js'
+import getTrailingSkippableIndex from '../../../utils/get-trailing-skippable-index.js'
 
 /**
  * Consume a style rule

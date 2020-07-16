@@ -12,13 +12,13 @@ defineClass(
 	CSSBlock,
 	CSSObject,
 	{
+		props:  [ 6, [ `value` ] ],
 		toJSON: [ 6, function toJSON() {
 			return asJSON(this.nodes, toJSON)
 		} ],
 		toString: [ 6, function toString() {
 			return asString(this.nodes, this.props)
 		} ],
-		props: [ 6, [ `value` ] ],
 		value: [ 11, function () {
 			return this.nodes.value
 		} ],

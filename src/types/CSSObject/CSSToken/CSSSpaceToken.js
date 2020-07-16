@@ -1,17 +1,17 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSHash.fromTokenizer.js'
+import fromTokenizer from './CSSSpaceToken.fromTokenizer.js'
 
 import { assign, defineClass } from '../../../utils/define.js'
 
-export default function CSSHash(init) {
+export default function CSSSpaceToken(init) {
 	assign(this, init)
 }
 
 defineClass(
-	CSSHash,
+	CSSSpaceToken,
 	CSSToken,
 	{
-		props: [ 6, [ `symbol`, `value` ] ],
+		props: [ 6, [ `value` ] ],
 	},
 	{
 		fromTokenizer: [ 7, fromTokenizer ],

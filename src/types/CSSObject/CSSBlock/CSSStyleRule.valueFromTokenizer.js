@@ -1,6 +1,6 @@
+import createInnerTokenizer from '../../../utils/create-inner-tokenizer.js'
 import { SEMI, R_CB } from '../../../utils/code-points.js'
-import { ATWORD_TYPE, WORD_TYPE } from '../../../utils/node-types.js'
-import { createInnerTokenizer } from '../../../utils/iterators.js'
+import { ATWORD_TYPE, WORD_TYPE } from '../../../utils/token-types.js'
 
 import cssAtRuleFromTokenizer from './CSSAtRule.fromTokenizer.js'
 import cssDeclarationFromTokenizer from './CSSDeclaration.fromTokenizer.js'
@@ -36,7 +36,7 @@ export default function valueFromTokenizer(tokenizer) {
 
 			element = cssDeclarationFromTokenizer(declarationTokenizer())
 
-			if (tokenizer.type === SEMI) element.nodes.closer = tokenizer.node
+			if (tokenizer.type === SEMI) element.nodes.closer = tokenizer.token
 			else ++tokenizer.hold
 
 			return element

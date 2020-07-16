@@ -1,14 +1,14 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSSpace.fromTokenizer.js'
+import fromTokenizer from './CSSWordToken.fromTokenizer.js'
 
 import { assign, defineClass } from '../../../utils/define.js'
 
-export default function CSSSpace(init) {
+export default function CSSWord(init) {
 	assign(this, init)
 }
 
 defineClass(
-	CSSSpace,
+	CSSWord,
 	CSSToken,
 	{
 		props: [ 6, [ `value` ] ],

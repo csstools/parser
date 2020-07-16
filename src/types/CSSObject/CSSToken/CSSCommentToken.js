@@ -1,17 +1,17 @@
 import CSSToken from '../CSSToken.js'
-import fromTokenizer from './CSSWord.fromTokenizer.js'
+import fromTokenizer from './CSSCommentToken.fromTokenizer.js'
 
 import { assign, defineClass } from '../../../utils/define.js'
 
-export default function CSSWord(init) {
+export default function CSSCommentToken(init) {
 	assign(this, init)
 }
 
 defineClass(
-	CSSWord,
+	CSSCommentToken,
 	CSSToken,
 	{
-		props: [ 6, [ `value` ] ],
+		props: [ 6, [ `opener`, `value`, `closer` ] ],
 	},
 	{
 		fromTokenizer: [ 7, fromTokenizer ],
