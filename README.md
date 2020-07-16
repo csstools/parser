@@ -38,25 +38,25 @@ npm run build
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.cjs   │
-│   Bundle Size:  38.15 KB        │
-│   Minified Size:  11.82 KB      │
-│   Gzipped Size:  3.13 KB        │
+│   Bundle Size:  38.97 KB        │
+│   Minified Size:  12.33 KB      │
+│   Gzipped Size:  3.28 KB        │
 │                                 │
 └─────────────────────────────────┘
 ┌─────────────────────────────────┐
 │                                 │
 │   Destination: dist/parse.mjs   │
-│   Bundle Size:  38.05 KB        │
-│   Minified Size:  11.73 KB      │
-│   Gzipped Size:  3.09 KB        │
+│   Bundle Size:  38.87 KB        │
+│   Minified Size:  12.24 KB      │
+│   Gzipped Size:  3.25 KB        │
 │                                 │
 └─────────────────────────────────┘
 ┌─────────────────────────────────────┐
 │                                     │
 │   Destination: dist/parse.iife.js   │
-│   Bundle Size:  8.84 KB             │
-│   Minified Size:  8.84 KB           │
-│   Gzipped Size:  2.6 KB             │
+│   Bundle Size:  9.17 KB             │
+│   Minified Size:  9.17 KB           │
+│   Gzipped Size:  2.75 KB            │
 │                                     │
 └─────────────────────────────────────┘
 ```

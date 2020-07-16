@@ -22,7 +22,7 @@ export default function fromTokenizer(tokenizer) {
 	const afterValue = []
 	const important = []
 	const afterImportant = []
-	const element = new CSSDeclaration({
+	const block = new CSSDeclaration({
 		name:   null,
 		afterName,
 		opener: null,
@@ -34,25 +34,30 @@ export default function fromTokenizer(tokenizer) {
 		closer: null,
 	})
 
+	let { token } = tokenizer
+	token.parent = block
+
 	// consume the declaration name, otherwise return the declaration
-	element.nodes.name = tokenizer.token
+	block.nodes.name = token
 
 	// consume any skippables following the declaration name
-	consumeLeadingWhitespace(tokenizer, afterName)
+	consumeLeadingWhitespace(tokenizer, afterName, block)
 
 	// consume the declaration opener or return the declaration
-	if (tokenizer.type === COLA) element.nodes.opener = tokenizer.token
-	else return element
+	if (tokenizer.type === COLA) {
+		token = tokenizer.token
+		token.parent = block
+		block.nodes.opener = token
+	} else return block
 
 	// consume any skippables following the declaration opener
-	consumeLeadingWhitespace(tokenizer, afterOpener)
+	consumeLeadingWhitespace(tokenizer, afterOpener, block)
 
 	// consume the declaration value
 	if (tokenizer.type >= 0) {
 		do {
-			value.push(
-				consumeNodeFromTokenizer(tokenizer)
-			)
+			value.push(token = consumeNodeFromTokenizer(tokenizer))
+			token.parent = block
 		} while (tokenizer())
 	}
 
@@ -68,9 +73,6 @@ export default function fromTokenizer(tokenizer) {
 	if (doesEndWithAnImportantWord) {
 		/** Index of the beginning of an important flag. */
 		let indexOfImportant = indexOfAfterValueOrImportant - 1
-
-		/** Node being inspected from the declaration value block. */
-		let token
 
 		/** Class of Node being inspected from the declaration value block. */
 		let CSSClass
@@ -97,7 +99,7 @@ export default function fromTokenizer(tokenizer) {
 			afterValue.push(...value.splice(getTrailingSkippableIndex(value)))
 
 			// return the declaration
-			return element
+			return block
 		}
 	}
 
@@ -105,5 +107,5 @@ export default function fromTokenizer(tokenizer) {
 	afterValue.push(...value.splice(indexOfAfterValueOrImportant))
 
 	// return the declaration
-	return element
+	return block
 }

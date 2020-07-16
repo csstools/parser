@@ -4,7 +4,7 @@ import { FUNCTION_TYPE } from '../../utils/token-types.js'
 import CSSBracketBlock from './CSSBlock/CSSBracketBlock.js'
 import CSSFunction from './CSSBlock/CSSFunction.js'
 
-import consumeKnownCSSBracketBlock from '../../utils/consumeKnownCSSBracketBlock.js'
+import consumeKnownCSSBracketBlock from '../../utils/consume-known-css-bracket-block.js'
 
 /**
  * Consume a block value from a tokenizer.

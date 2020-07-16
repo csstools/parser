@@ -2,7 +2,7 @@ import { L_CB } from '../../../utils/code-points.js'
 
 import CSSStyleRule from './CSSStyleRule.js'
 
-import consumeKnownCSSBracketBlock from '../../../utils/consumeKnownCSSBracketBlock.js'
+import consumeKnownCSSBracketBlock from '../../../utils/consume-known-css-bracket-block.js'
 import consumeCSSBlockValue from '../CSSBlock.valueFromTokenizer.js'
 import consumeCSSStyleRule from './CSSStyleRule.valueFromTokenizer.js'
 
@@ -17,13 +17,15 @@ export default function fromTokenizer(tokenizer) {
 	const prelude = []
 	const afterPrelude = []
 	const value   = []
-	const element = new CSSStyleRule({
+	const block = new CSSStyleRule({
 		prelude,
 		afterPrelude,
 		opener: null,
 		value,
 		closer: null,
 	})
+
+	let token
 
 	do {
 		switch (tokenizer.type) {
@@ -32,7 +34,7 @@ export default function fromTokenizer(tokenizer) {
 				afterPrelude.push(...prelude.splice(getTrailingSkippableIndex(prelude)))
 
 				// consume a simple block and assign it to the style rule’s block
-				consumeKnownCSSBracketBlock(tokenizer, consumeCSSStyleRule, element)
+				consumeKnownCSSBracketBlock(tokenizer, consumeCSSStyleRule, block)
 
 				break
 
@@ -40,9 +42,8 @@ export default function fromTokenizer(tokenizer) {
 			default:
 				// consume a component value
 				// append the returned value to the style rule’s prelude.
-				prelude.push(
-					consumeCSSBlockValue(tokenizer)
-				)
+				prelude.push(token = consumeCSSBlockValue(tokenizer))
+				token.parent = block
 
 				continue
 		}
@@ -51,5 +52,5 @@ export default function fromTokenizer(tokenizer) {
 	} while (tokenizer())
 
 	// return the style rule
-	return element
+	return block
 }

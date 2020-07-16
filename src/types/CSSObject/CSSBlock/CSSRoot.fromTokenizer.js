@@ -10,17 +10,16 @@ export default function fromTokenizer(tokenizer) {
 	const value = []
 	const block = new CSSRoot({ value })
 
+	let token
+
 	if (
 		tokenizer.type >= 0
 		|| tokenizer()
 	) {
 		do {
-			value.push(
-				consumeCSSRootValue(tokenizer)
-			)
-		} while (
-			tokenizer()
-		)
+			value.push(token = consumeCSSRootValue(tokenizer))
+			token.parent = block
+		} while (tokenizer())
 	}
 
 	return block
