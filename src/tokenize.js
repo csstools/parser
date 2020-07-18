@@ -55,7 +55,7 @@ import CSSInput from './types/CSSObject/CSSInput.js'
  * @return {tokenize} Consumes a token and returns the current token or null.
  */
 export default function tokenize(input) {
-	tokenizer.input = input === Object(input) ? input : new CSSInput(input)
+	input = tokenizer.input = input === Object(input) ? input : new CSSInput(input)
 
 	/** @type {string} CSS text being tokenized. */
 	const text = String(input.data)

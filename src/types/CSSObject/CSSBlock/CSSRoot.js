@@ -10,6 +10,7 @@ defineClass(
 	CSSRoot,
 	CSSBlock,
 	{
-		props: [ 6, [ `value` ] ],
+		isRoot: [ 6, true ],
+		props:  [ 6, [ `value` ] ],
 	}
 )

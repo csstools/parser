@@ -10,8 +10,9 @@ defineClass(
 	CSSDeclaration,
 	CSSBlock,
 	{
-		props: [ 6, [ `name`, `afterName`, `opener`, `afterOpener`, `value`, `afterValue`, `important`, `afterImportant`, `closer` ] ],
-		name:  [ 11, function () {
+		isDeclaration: [ 6, true ],
+		props:         [ 6, [ `name`, `afterName`, `opener`, `afterOpener`, `value`, `afterValue`, `important`, `afterImportant`, `closer` ] ],
+		name:          [ 11, function () {
 			return this.nodes.name.value
 		} ],
 		opener: [ 11, function () {

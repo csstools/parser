@@ -11,8 +11,9 @@ defineClass(
 	CSSBracketBlock,
 	CSSBlock,
 	{
-		props:  [ 6, [ `opener`, `value`, `closer` ] ],
-		opener: [ 11, function () {
+		isBracketBlock: [ 6, true ],
+		props:          [ 6, [ `opener`, `value`, `closer` ] ],
+		opener:         [ 11, function () {
 			return String(this.nodes.opener)
 		} ],
 		value: [ 11, function () {

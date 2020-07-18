@@ -76,6 +76,18 @@ export const L_RB = 0x0028 // ( ===  40
 export const R_RB = 0x0029 // ) ===  41
 
 /**
+ * Asterisk
+ * @see https://unicode.org/charts/nameslist/n_0000.html#002A
+ */
+export const STAR = 0x002A // * ===  42
+
+/**
+ * Comma
+ * @see https://unicode.org/charts/nameslist/n_0000.html#0029
+ */
+export const COMA = 0x002C // ) ===  44
+
+/**
  * Colon
  * @see https://unicode.org/charts/nameslist/n_0000.html#003A
  */
@@ -86,12 +98,6 @@ export const COLA = 0x003A // : ===  58
  * @see https://unicode.org/charts/nameslist/n_0000.html#003B
  */
 export const SEMI = 0x003B // ; ===  59
-
-/**
- * Asterisk
- * @see https://unicode.org/charts/nameslist/n_0000.html#002A
- */
-export const STAR = 0x002A // * ===  42
 
 /**
  * Plus Sign

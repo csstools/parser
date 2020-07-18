@@ -11,7 +11,8 @@ defineClass(
 	CSSSymbolToken,
 	CSSToken,
 	{
-		props: [ 6, [ `value` ] ],
+		isSymbolToken: [ 6, true ],
+		props:         [ 6, [ `value` ] ],
 	},
 	{
 		fromTokenizer: [ 7, fromTokenizer ],

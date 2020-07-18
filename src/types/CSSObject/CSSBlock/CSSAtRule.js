@@ -11,8 +11,9 @@ defineClass(
 	CSSAtRule,
 	CSSRule,
 	{
-		props: [ 6, [ `name`, `afterName`, `prelude`, `afterPrelude`, `opener`, `value`, `closer` ] ],
-		name:  [ 11, function () {
+		isAtRule: [ 6, true ],
+		props:    [ 6, [ `name`, `afterName`, `prelude`, `afterPrelude`, `opener`, `value`, `closer` ] ],
+		name:     [ 11, function () {
 			return String(this.nodes.name.value).slice(0, -1)
 		} ],
 	},

@@ -3,21 +3,21 @@ import filesize from 'rollup-plugin-filesize'
 import { terser } from 'rollup-plugin-terser'
 
 const config = {
-	input: `src/parse.js`,
+	input: `src/index.js`,
 	output: [
 		{
-			file: `dist/parse.cjs`,
+			file: `dist/index.cjs`,
 			format: `cjs`,
 			strict: false,
 		},
 		{
-			file: `dist/parse.mjs`,
+			file: `dist/index.mjs`,
 			format: `esm`,
 			strict: false,
 		},
 		{
-			file: `dist/parse.iife.js`,
-			format: `esm`,
+			file: `dist/index.iife.js`,
+			format: `iife`,
 			strict: false,
 			name: `CSSOM`,
 			plugins: [

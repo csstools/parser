@@ -10,8 +10,9 @@ defineClass(
 	CSSFunction,
 	CSSBracketBlock,
 	{
-		props: [ 6, [ `opener`, `value`, `closer` ] ],
-		name:  [ 11, function () {
+		isFunction: [ 6, true ],
+		props:      [ 6, [ `opener`, `value`, `closer` ] ],
+		name:       [ 11, function () {
 			return String(this.nodes.opener).slice(0, -1)
 		} ],
 	}

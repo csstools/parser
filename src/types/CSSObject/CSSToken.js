@@ -1,4 +1,4 @@
-import CSSObject from '../CSSObject.js'
+import CSSNode from './CSSNode.js'
 
 import { assign, defineClass } from '../../utils/define.js'
 
@@ -8,5 +8,8 @@ export default function CSSToken(init) {
 
 defineClass(
 	CSSToken,
-	CSSObject
+	CSSNode,
+	{
+		isToken: [ 6, true ],
+	}
 )
