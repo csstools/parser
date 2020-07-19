@@ -111,6 +111,11 @@ export default function tokenize(cssText) {
 	/** @type {number} String index of the line, from the end of the current token. */
 	let nextLineOpen = 0
 
+	tokenizer.getChar = getChar
+	tokenizer.getText = getText
+	tokenizer.getLead = getLead
+	tokenizer.getTail = getTail
+
 	return tokenizer
 
 	/**
@@ -455,6 +460,22 @@ export default function tokenize(cssText) {
 		tokenizer.smap = [ line, open - lineOpen ]
 
 		return true
+	}
+
+	function getChar() {
+		return cssText.charAt(open)
+	}
+
+	function getText() {
+		return cssText.slice(open + lead, shut - tail)
+	}
+
+	function getLead() {
+		return cssText.slice(open, open + lead)
+	}
+
+	function getTail() {
+		return cssText.slice(shut - tail, shut)
 	}
 
 	/**
