@@ -103,19 +103,6 @@ function CSSSymbol() {} defineClass(CSSSymbol, CSSValue, {
 	isSymbol: [ 2, true ],
 })
 
-const { create } = Object
-const createCSSAtWord = create.bind(Object, CSSAtWord.prototype)
-const createCSSComment = create.bind(Object, CSSComment.prototype)
-const createCSSFragment = create.bind(Object, CSSFragment.prototype)
-const createCSSBlock = create.bind(Object, CSSBlock.prototype)
-const createCSSFunction = create.bind(Object, CSSFunction.prototype)
-const createCSSHash = create.bind(Object, CSSHash.prototype)
-const createCSSNumber = create.bind(Object, CSSNumber.prototype)
-const createCSSSpace = create.bind(Object, CSSSpace.prototype)
-const createCSSString = create.bind(Object, CSSString.prototype)
-const createCSSWord = create.bind(Object, CSSWord.prototype)
-const createCSSSymbol = create.bind(Object, CSSSymbol.prototype)
-
 export default function parse(cssText) {
 	const tokenizer = tokenize(cssText)
 
@@ -124,7 +111,7 @@ export default function parse(cssText) {
 	let parserShut
 	let node
 	let list = []
-	let fore = parser.root = createCSSFragment()
+	let fore = parser.root = new CSSFragment()
 	fore.value = list
 
 	return parser
@@ -137,14 +124,14 @@ export default function parse(cssText) {
 
 		switch (tokenizer.type) {
 			case ATWORD_TYPE:
-				node = createCSSAtWord()
+				node = new CSSAtWord()
 				node.value = tokenizer.getText()
 				node.parent = fore
 				node.source = { position: tokenizer.smap }
 				break
 
 			case COMMENT_TYPE:
-				node = createCSSComment()
+				node = new CSSComment()
 				node.opener = `/*`
 				node.value = tokenizer.getText()
 				node.closer = tokenizer.getTail()
@@ -153,7 +140,7 @@ export default function parse(cssText) {
 				break
 
 			case FUNCTION_TYPE:
-				node = createCSSFunction()
+				node = new CSSFunction()
 				node.name = tokenizer.getText()
 				node.opener = `(`
 				node.value = []
@@ -164,14 +151,14 @@ export default function parse(cssText) {
 				break
 
 			case HASH_TYPE:
-				node = createCSSHash()
+				node = new CSSHash()
 				node.value = tokenizer.getText()
 				node.parent = fore
 				node.source = { position: tokenizer.smap }
 				break
 
 			case NUMBER_TYPE:
-				node = createCSSNumber()
+				node = new CSSNumber()
 				node.value = tokenizer.getText()
 				node.unit = tokenizer.getTail()
 				node.parent = fore
@@ -179,14 +166,14 @@ export default function parse(cssText) {
 				break
 
 			case SPACE_TYPE:
-				node = createCSSSpace()
+				node = new CSSSpace()
 				node.value = tokenizer.getText()
 				node.parent = fore
 				node.source = { position: tokenizer.smap }
 				break
 
 			case STRING_TYPE:
-				node = createCSSString()
+				node = new CSSString()
 				node.opener = tokenizer.getLead()
 				node.value = tokenizer.getText()
 				node.closer = tokenizer.getTail()
@@ -195,7 +182,7 @@ export default function parse(cssText) {
 				break
 
 			case WORD_TYPE:
-				node = createCSSWord()
+				node = new CSSWord()
 				node.value = tokenizer.getText()
 				node.parent = fore
 				node.source = { position: tokenizer.smap }
@@ -204,7 +191,7 @@ export default function parse(cssText) {
 			case L_RB:
 			case L_SB:
 			case L_CB:
-				node = createCSSBlock()
+				node = new CSSBlock()
 				node.opener = String.fromCharCode(tokenizer.type)
 				node.value = []
 				node.closer = ``
@@ -226,7 +213,7 @@ export default function parse(cssText) {
 				}
 
 			default:
-				node = createCSSSymbol()
+				node = new CSSSymbol()
 				node.value = tokenizer.getChar()
 				node.parent = fore
 				node.source = { position: tokenizer.smap }

@@ -23,9 +23,9 @@ PostCSS Tokenizer (7.0.32):      49872 tokens in 8 ms
 
 Collecting PostCSS Parser Benchmarks...
 
-PostCSS Parser (7.0.32):         6240 tokens in  11 ms
-PostCSS/Selector/Value Parsers: 28491 tokens in  74 ms (6.9 times slower)
-PostCSS Parser (Development):   58823 tokens in 101 ms (9.5 times slower)
+PostCSS Parser (7.0.32):         6240 values in 11 ms
+PostCSS Parser (Development):   58823 values in 18 ms (1.6 times slower)
+PostCSS/Selector/Value Parsers: 28491 values in 75 ms (6.6 times slower)
 ```
 
 ### Build

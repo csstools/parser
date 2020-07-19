@@ -69,7 +69,6 @@ addTest(`PostCSS Parser (Development)`, () => {
 })
 
 suite.on(`complete`, (event) => {
-	// assign `tokens` to each test result
 	const results = Array.from(event.currentTarget)
 
 	// setup production test results as the basis of comparison
@@ -100,7 +99,7 @@ suite.on(`complete`, (event) => {
 			`${name}: ${indent(longestName, name)}${indent(
 				longestReturnValue,
 				String(returnValue.length)
-			)}${returnValue.length} tokens in ${indent(
+			)}${returnValue.length} values in ${indent(
 				mstime(slowestHz),
 				mstime(hz)
 			)}${mstime(hz)}`
