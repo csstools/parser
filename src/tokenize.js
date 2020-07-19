@@ -453,10 +453,6 @@ export default function tokenize(cssText) {
 		}
 
 		tokenizer.type = type
-		tokenizer.open = open
-		tokenizer.shut = shut
-		tokenizer.lead = lead
-		tokenizer.tail = tail
 		tokenizer.smap = [ line, open - lineOpen ]
 
 		return true
@@ -471,11 +467,11 @@ export default function tokenize(cssText) {
 	}
 
 	function getLead() {
-		return cssText.slice(open, open + lead)
+		return lead ? cssText.slice(open, open + lead) : ``
 	}
 
 	function getTail() {
-		return cssText.slice(shut - tail, shut)
+		return shut ? cssText.slice(shut - tail, shut) : ``
 	}
 
 	/**
