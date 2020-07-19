@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSAtToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { ATWORD_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSAtToken(init) {
-	assign(this, init)
-}
+export default function CSSAtToken() {}
 
 defineClass(
 	CSSAtToken,

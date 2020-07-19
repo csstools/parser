@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSHashToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { HASH_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSHashToken(init) {
-	assign(this, init)
-}
+export default function CSSHashToken() {}
 
 defineClass(
 	CSSHashToken,

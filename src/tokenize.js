@@ -37,31 +37,14 @@ import {
 	isVerticalSpace,
 } from './utils/tokenizer-algorithms.js'
 
-import toCSSAtToken from './types/CSSObject/CSSToken/CSSAtToken.fromTokenizer.js'
-import toCSSCommentToken from './types/CSSObject/CSSToken/CSSCommentToken.fromTokenizer.js'
-import toCSSFunctionToken from './types/CSSObject/CSSToken/CSSFunctionToken.fromTokenizer.js'
-import toCSSHashToken from './types/CSSObject/CSSToken/CSSHashToken.fromTokenizer.js'
-import toCSSNumberToken from './types/CSSObject/CSSToken/CSSNumberToken.fromTokenizer.js'
-import toCSSSpaceToken from './types/CSSObject/CSSToken/CSSSpaceToken.fromTokenizer.js'
-import toCSSStringToken from './types/CSSObject/CSSToken/CSSStringToken.fromTokenizer.js'
-import toCSSWordToken from './types/CSSObject/CSSToken/CSSWordToken.fromTokenizer.js'
-import toCSSSymbolToken from './types/CSSObject/CSSToken/CSSSymbolToken.fromTokenizer.js'
-
-import CSSInput from './types/CSSObject/CSSInput.js'
-
 /**
  * Reads from an input and returns a function for consuming tokens from it.
- * @param {string | import('./types/CSSObject/CSSInput.js')} input - CSS Input being tokenized.
- * @return {tokenize} Consumes a token and returns the current token or null.
+ * @arg {string} cssText - CSS text being tokenized.
+ * @return {tokenize} Returns whether it consumed and assigned a token to itself.
  */
-export default function tokenize(input) {
-	input = tokenizer.input = input === Object(input) ? input : new CSSInput(input)
-
-	/** @type {string} CSS text being tokenized. */
-	const text = String(input.data)
-
+export default function tokenize(cssText) {
 	/** @type {number} Length of characters being read from the text. */
-	const size = text.length
+	const size = cssText.length
 
 	/**
 	 * Integer identifying what the current token is.
@@ -70,9 +53,7 @@ export default function tokenize(input) {
 	 * type === 0 // token is a comment
 	 * type === 1 // token is a space
 	 */
-	let type = tokenizer.type = -1
-
-	let make = null
+	let type
 
 	/**
 	 * String index at the start of the current token.
@@ -137,16 +118,11 @@ export default function tokenize(input) {
 	 * @returns {Token | void}
 	 */
 	function tokenizer() {
-		if (shut === size) {
-			type = tokenizer.type = -1
-			make = null
-			return false
-		}
+		if (shut === size) return false
 
 		// update the starting values with the ending values from the last read
-		cc0 = text.charCodeAt(shut)
+		cc0 = cssText.charCodeAt(shut)
 		type = cc0
-		make = toCSSSymbolToken
 		open = shut
 		line = nextLine
 		lineOpen = nextLineOpen
@@ -163,18 +139,18 @@ export default function tokenize(input) {
 				++shut
 
 				// consume a comment when a slash is followed by an asterisk
-				if (text.charCodeAt(shut) === STAR) {
+				if (cssText.charCodeAt(shut) === STAR) {
 					lead = 2
 
 					while (++shut < size) {
 						// consume every character until an asterisk is followed by a slash
-						if (isVerticalSpace(text.charCodeAt(shut))) {
+						if (isVerticalSpace(cssText.charCodeAt(shut))) {
 							++nextLine
 
 							nextLineOpen = shut + 1
 						} else if (
-							text.charCodeAt(shut) === STAR
-							&& text.charCodeAt(shut + 1) === FS
+							cssText.charCodeAt(shut) === STAR
+							&& cssText.charCodeAt(shut + 1) === FS
 						) {
 							++shut
 							++shut
@@ -186,7 +162,6 @@ export default function tokenize(input) {
 					}
 
 					type = COMMENT_TYPE
-					make = toCSSCommentToken
 				}
 
 				break
@@ -200,14 +175,14 @@ export default function tokenize(input) {
 				lead = 1
 
 				while (++shut < size) {
-					cc1 = text.charCodeAt(shut)
+					cc1 = cssText.charCodeAt(shut)
 
 					// consume any escape (a backslash followed by any character)
 					if (cc1 === BS) {
 						if (shut + 1 < size) {
 							++shut
 
-							if (isVerticalSpace(text.charCodeAt(shut))) {
+							if (isVerticalSpace(cssText.charCodeAt(shut))) {
 								++nextLine
 
 								nextLineOpen = shut + 1
@@ -228,7 +203,6 @@ export default function tokenize(input) {
 				}
 
 				type = STRING_TYPE
-				make = toCSSStringToken
 
 				break
 
@@ -243,14 +217,13 @@ export default function tokenize(input) {
 				// consume a hash when a number-sign is followed by an identifier
 				if (
 					shut < size
-					&& isIdentifier(text.charCodeAt(shut))
+					&& isIdentifier(cssText.charCodeAt(shut))
 				) {
 					shut += lead = 1
 
 					consumeIdentifier()
 
 					type = HASH_TYPE
-					make = toCSSHashToken
 				}
 
 				break
@@ -262,7 +235,7 @@ export default function tokenize(input) {
 			 * @see https://drafts.csswg.org/css-syntax/#ref-for-typedef-delim-token①⓪
 			 */
 			case cc0 === DASH:
-				cc0 = text.charCodeAt(shut + 1)
+				cc0 = cssText.charCodeAt(shut + 1)
 
 				// consume a word when a hyphen-minus starts an identifier
 				if (
@@ -279,7 +252,7 @@ export default function tokenize(input) {
 					// when an escape (a backslash followed by any non-newline character) follows a hyphen-minus
 					|| (
 						cc0 === BS
-						&& !isVerticalSpace(text.charCodeAt(shut + 2))
+						&& !isVerticalSpace(cssText.charCodeAt(shut + 2))
 						&& ++shut
 						&& ++shut
 					)
@@ -289,7 +262,6 @@ export default function tokenize(input) {
 					consumeIdentifier()
 
 					type = WORD_TYPE
-					make = toCSSWordToken
 				} else {
 					++shut
 				}
@@ -304,7 +276,7 @@ export default function tokenize(input) {
 			case cc0 === PLUS:
 				++shut
 
-				cc0 = text.charCodeAt(shut)
+				cc0 = cssText.charCodeAt(shut)
 
 				// consume a number when a plus-sign is followed by an integer
 				if (
@@ -320,7 +292,7 @@ export default function tokenize(input) {
 
 				// consume a number when a plus-sign is followed by a full-stop and then an integer
 				if (cc0 === STOP) {
-					cc0 = text.charCodeAt(shut + 1)
+					cc0 = cssText.charCodeAt(shut + 1)
 
 					if (
 						cc0
@@ -344,7 +316,7 @@ export default function tokenize(input) {
 				++shut
 
 				// consume a number when a full-stop is followed by an integer
-				if (isInteger(text.charCodeAt(shut))) {
+				if (isInteger(cssText.charCodeAt(shut))) {
 					++shut
 
 					consumeNumber(1)
@@ -361,13 +333,12 @@ export default function tokenize(input) {
 				++shut
 
 				// consume a word when a backslash is followed by a non-newline
-				if (!isVerticalSpace(text.charCodeAt(shut))) {
+				if (!isVerticalSpace(cssText.charCodeAt(shut))) {
 					++shut
 
 					consumeIdentifier()
 
 					type = WORD_TYPE
-					make = toCSSWordToken
 
 					break
 				}
@@ -392,7 +363,7 @@ export default function tokenize(input) {
 				do {
 					++shut
 
-					cc0 = text.charCodeAt(shut)
+					cc0 = cssText.charCodeAt(shut)
 				} while (
 					(
 						isVerticalSpace(cc0)
@@ -405,7 +376,6 @@ export default function tokenize(input) {
 				)
 
 				type = SPACE_TYPE
-				make = toCSSSpaceToken
 
 				break
 
@@ -420,14 +390,13 @@ export default function tokenize(input) {
 				// consume an at-word when an at-sign is followed by an identifier
 				if (
 					shut < size
-					&& isIdentifier(text.charCodeAt(shut))
+					&& isIdentifier(cssText.charCodeAt(shut))
 				) {
 					shut += lead = 1
 
 					consumeIdentifier()
 
 					type = ATWORD_TYPE
-					make = toCSSAtToken
 				}
 
 				break
@@ -444,16 +413,14 @@ export default function tokenize(input) {
 				consumeIdentifier()
 
 				// consume an function when an identifier is followed by a starting round bracket
-				if (text.charCodeAt(shut) === L_RB) {
+				if (cssText.charCodeAt(shut) === L_RB) {
 					tail = 1
 
 					++shut
 
 					type = FUNCTION_TYPE
-					make = toCSSFunctionToken
 				} else {
 					type = WORD_TYPE
-					make = toCSSWordToken
 				}
 
 				break
@@ -481,18 +448,13 @@ export default function tokenize(input) {
 		}
 
 		tokenizer.type = type
-		tokenizer.token = make(
-			text,
-			open,
-			shut,
-			lead,
-			tail,
-			line,
-			open - lineOpen,
-			input
-		)
+		tokenizer.open = open
+		tokenizer.shut = shut
+		tokenizer.lead = lead
+		tokenizer.tail = tail
+		tokenizer.smap = [ line, open - lineOpen ]
 
-		return tokenizer
+		return true
 	}
 
 	/**
@@ -502,12 +464,12 @@ export default function tokenize(input) {
 		while (shut < size) {
 			if (
 				(
-					isIdentifier(text.charCodeAt(shut))
+					isIdentifier(cssText.charCodeAt(shut))
 					&& ++shut
 				)
 				|| (
-					text.charCodeAt(shut) === BS
-					&& !isVerticalSpace(text.charCodeAt(shut + 1))
+					cssText.charCodeAt(shut) === BS
+					&& !isVerticalSpace(cssText.charCodeAt(shut + 1))
 					&& ++shut
 					&& ++shut
 				)
@@ -528,14 +490,14 @@ export default function tokenize(input) {
 			if (
 				// consume an integer
 				(
-					isInteger(text.charCodeAt(shut))
+					isInteger(cssText.charCodeAt(shut))
 					&& ++shut
 				)
 				// if a non-decimal, consume a full-stop followed by an integer
 				|| (
 					!isDecimal
-					&& text.charCodeAt(shut) === STOP
-					&& isInteger(text.charCodeAt(shut + 1))
+					&& cssText.charCodeAt(shut) === STOP
+					&& isInteger(cssText.charCodeAt(shut + 1))
 					&& (
 						isDecimal = 1
 					)
@@ -546,14 +508,14 @@ export default function tokenize(input) {
 				|| (
 					!isScientific
 					&& (
-						cc1 = text.charCodeAt(shut)
+						cc1 = cssText.charCodeAt(shut)
 					)
 					&& (
 						cc1 === UP_E
 						|| cc1 === LC_E
 					)
 					&& (
-						cc1 = text.charCodeAt(shut + 1)
+						cc1 = cssText.charCodeAt(shut + 1)
 					)
 					&& (
 						// ...followed by an integer; or,
@@ -567,7 +529,7 @@ export default function tokenize(input) {
 								cc1 === PLUS
 								|| cc1 === DASH
 							)
-							&& isInteger(text.charCodeAt(shut + 1))
+							&& isInteger(cssText.charCodeAt(shut + 1))
 							&& ++shut
 							&& ++shut
 						)
@@ -583,7 +545,7 @@ export default function tokenize(input) {
 		}
 
 		// consume a percent-sign or any identifier as the unit
-		if (text.charCodeAt(shut) === PERC) {
+		if (cssText.charCodeAt(shut) === PERC) {
 			++shut
 			tail = 1
 		} else {
@@ -597,7 +559,6 @@ export default function tokenize(input) {
 		}
 
 		type = NUMBER_TYPE
-		make = toCSSNumberToken
 	}
 }
 
@@ -607,7 +568,5 @@ export default function tokenize(input) {
 
 /**
  * @typedef {Object} Tokenizer - Reads CSS and returns a function for consuming tokens from it.
- * @property {string} type - Integer identifying what the current token is.
- * @property {import('./types/CSSObject/CSSToken.js')} token - CSS Token being generated from the CSS.
- * @property {import('./types/CSSObject/CSSInput.js')} input - CSS Input being tokenized.
+ * @property {[ number, number, number, number, number, number, number ]} token - CSS Token being generated from the CSS.
  */

@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSNumberToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { NUMBER_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSNumberToken(init) {
-	assign(this, init)
-}
+export default function CSSNumberToken() {}
 
 defineClass(
 	CSSNumberToken,

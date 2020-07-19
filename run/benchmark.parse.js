@@ -1,11 +1,10 @@
 import { readFileSync } from 'fs'
-import BenchmarkJS from 'benchmark'
+import Benchmark from 'benchmark'
 import resolve from 'resolve'
 import ParserPrd from 'postcss/lib/parser.js'
-import { parseCSSRoot } from '../src/parse.js'
-
 import postcssValuesParserPackage from 'postcss-values-parser'
 import PostcssSelectorParser from 'postcss-selector-parser'
+import parse from '../src/parse.js'
 
 const { parse: postcssValuesParser } = postcssValuesParserPackage
 const postcssSelectorParser = PostcssSelectorParser()
@@ -22,60 +21,56 @@ const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 
 write(`\nCollecting PostCSS Parser Benchmarks...\n`)
 
-// setup tests
-const postcssPrdTestName = `PostCSS Parser (${version(`postcss/package.json`)})`
-const postcssAllTestName = `PostCSS/Selector/Value Parsers`
-const postcssDevTestName = `PostCSS Parser (Development)`
+const suite = new Benchmark.Suite
 
-const { Suite: Benchmark } = BenchmarkJS
+let returnValue
+const addTest = (name, fn) => suite.add({
+	name,
+	fn,
+	onCycle(event) {
+		event.currentTarget.returnValue = returnValue
+	}
+})
 
-const tokensByTestIndex = [ [], [], [] ]
+addTest(`PostCSS Parser (${version(`postcss/package.json`)})`, () => {
+	const parser = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
+	parser.parse()
 
-Object.entries({
-	// postcss production test
-	[postcssPrdTestName]: () => {
-		let parsed = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
-		parsed.parse()
+	// hard-code the number of nodes parsed
+	// so as not to negatively skew the results of the combined parsers
+	returnValue = { length: 6240 }
+})
 
-		// hard-code the number of nodes parsed
-		// so as not to negatively skew the results of the combined parsers
-		tokensByTestIndex[0] = { length: 6240 }
-	},
-	[postcssAllTestName]: () => {
-		let parsed = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
-		parsed.parse()
-		parsed.root.walk(node => {
-			switch (node.type) {
-				case 'decl':
-					postcssValuesParser(node.value)
-					break
-				case 'rule':
-					postcssSelectorParser.processSync(node.selector)
-					break
-			}
-		})
+addTest(`PostCSS/Selector/Value Parsers`, () => {
+	const parser = new ParserPrd({ css: bootstrapCSS }, { from: bootstrapCSSPath })
+	parser.parse()
+	parser.root.walk(node => {
+		switch (node.type) {
+			case 'decl':
+				postcssValuesParser(node.value)
+				break
+			case 'rule':
+				postcssSelectorParser.processSync(node.selector)
+				break
+		}
+	})
 
-		// hard-code the number of nodes parsed
-		// so as not to negatively skew the results of the combined parsers
-		tokensByTestIndex[1] = { length: 28491 }
-	},
-	// postcss development test
-	[postcssDevTestName]: () => {
-		parseCSSRoot({ data: bootstrapCSS })
+	// hard-code the number of nodes parsed
+	// so as not to negatively skew the results of the combined parsers
+	returnValue = { length: 28491 }
+})
 
-		// hard-code the number of nodes parsed
-		// so as not to negatively skew the results of the combined parsers
-		tokensByTestIndex[2] = { length: 67811 }
-	},
-}).reduce(
-	(suite, [name, func]) => suite.add(name, func),
-	new Benchmark()
-).on(`complete`, (event) => {
+addTest(`PostCSS Parser (Development)`, () => {
+	const parser = parse(bootstrapCSS)
+
+	while (parser() === true) continue
+
+	returnValue = { length: 58823 }
+})
+
+suite.on(`complete`, (event) => {
 	// assign `tokens` to each test result
-	const results = Array.from(
-		event.currentTarget,
-		(result, i) => Object.defineProperty(result, `tokens`, { value: tokensByTestIndex[i] })
-	)
+	const results = Array.from(event.currentTarget)
 
 	// setup production test results as the basis of comparison
 	const prdResults = results[0]
@@ -90,9 +85,9 @@ Object.entries({
 	const longestName = results.slice().sort((a, b) => b.name.length - a.name.length).shift().name
 
 	// calculate the longest token number for visual alignemnt in CLI output
-	const longestTokens = String(results.slice().sort(
-		(a, b) => b.tokens.length - a.tokens.length
-	).shift().tokens.length)
+	const longestReturnValue = String(results.slice().sort(
+		(a, b) => b.returnValue.length - a.returnValue.length
+	).shift().returnValue.length)
 
 	// use the slowest test result as a basis of comparison
 	const slowestHz = results.slice().pop().hz
@@ -100,12 +95,12 @@ Object.entries({
 	// write the results of the tests
 	write(`\n`)
 
-	results.forEach(({ hz, name, tokens }) => {
+	results.forEach(({ hz, name, returnValue }) => {
 		write(
 			`${name}: ${indent(longestName, name)}${indent(
-				longestTokens,
-				String(tokens.length)
-			)}${tokens.length} tokens in ${indent(
+				longestReturnValue,
+				String(returnValue.length)
+			)}${returnValue.length} tokens in ${indent(
 				mstime(slowestHz),
 				mstime(hz)
 			)}${mstime(hz)}`

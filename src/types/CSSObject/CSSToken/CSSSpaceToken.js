@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSSpaceToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { SPACE_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSSpaceToken(init) {
-	assign(this, init)
-}
+export default function CSSSpaceToken() {}
 
 defineClass(
 	CSSSpaceToken,

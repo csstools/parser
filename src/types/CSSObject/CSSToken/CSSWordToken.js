@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSWordToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { WORD_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSWord(init) {
-	assign(this, init)
-}
+export default function CSSWord() {}
 
 defineClass(
 	CSSWord,

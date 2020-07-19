@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSFunctionToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { FUNCTION_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSFunctionToken(init) {
-	assign(this, init)
-}
+export default function CSSFunctionToken() {}
 
 defineClass(
 	CSSFunctionToken,

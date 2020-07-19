@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSCommentToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { COMMENT_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSCommentToken(init) {
-	assign(this, init)
-}
+export default function CSSCommentToken() {}
 
 defineClass(
 	CSSCommentToken,

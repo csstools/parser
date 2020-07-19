@@ -1,12 +1,10 @@
 import CSSToken from '../CSSToken.js'
 import fromTokenizer from './CSSStringToken.fromTokenizer.js'
 
-import { assign, defineClass } from '../../../utils/define.js'
+import { defineClass } from '../../../utils/define.js'
 import { STRING_TYPE } from '../../../utils/token-types.js'
 
-export default function CSSStringToken(init) {
-	assign(this, init)
-}
+export default function CSSStringToken() {}
 
 defineClass(
 	CSSStringToken,

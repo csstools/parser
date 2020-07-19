@@ -70,3 +70,46 @@ export function defineClass(Class, Super, protoProps, staticProps) {
 		})
 	)
 }
+
+/*
+| bitmask | enumerable | configurable | writable | accessor |
+| ------- | ---------- | ------------ | -------- | -------- |
+| 0       |            |              |          |          |
+| 1       |    YES     |              |          |          |
+| 2       |            |     YES      |          |          |
+| 3       |    YES     |     YES      |          |          |
+| 4       |            |              |   YES    |          |
+| 5       |    YES     |              |   YES    |          |
+| 6       |            |     YES      |   YES    |          |
+| 7       |    YES     |     YES      |   YES    |          |
+| 8       |            |              |          |   YES    |
+| 9       |    YES     |              |          |   YES    |
+| 10      |            |     YES      |          |   YES    |
+| 11      |    YES     |     YES      |          |   YES    |
+*/
+
+// 2
+export function toValueDescriptor(value) {
+	return {
+		value,
+		configurable: true,
+	}
+}
+
+// 3
+export function toEnumerableValueDescriptor(value) {
+	return {
+		value,
+		configurable: true,
+		enumerable:   true,
+	}
+}
+
+// 6
+export function toWritableValueDescriptor(value) {
+	return {
+		value,
+		configurable: true,
+		writable:     true,
+	}
+}

@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import BenchmarkJS from 'benchmark'
+import Benchmark from 'benchmark'
 import resolve from 'resolve'
 import tokenizePrd from 'postcss/lib/tokenize.js'
 import tokenizeDev from '../src/tokenize.js'
@@ -16,38 +16,32 @@ const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 
 write(`\nCollecting PostCSS Tokenizer Benchmarks...\n`)
 
-// setup tests
-const postcssPrdTestName = `PostCSS Tokenizer (${version(`postcss/package.json`)})`
-const postcssDevTestName = `PostCSS Tokenizer (Development)`
+const suite = new Benchmark.Suite
 
-const { Suite: Benchmark } = BenchmarkJS
+let returnValue
+const addTest = (name, fn) => suite.add({
+	name,
+	fn,
+	onCycle(event) {
+		event.currentTarget.returnValue = returnValue
+	}
+})
 
-const tokensByTestIndex = []
+addTest(`PostCSS Tokenizer (${version(`postcss/package.json`)})`, () => {
+	returnValue = []
+	const tokenizer = tokenizePrd({ css: bootstrapCSS })
+	while (!tokenizer.endOfFile()) returnValue.push(tokenizer.nextToken())
+})
 
-Object.entries({
-	// postcss production test
-	[postcssPrdTestName]: () => {
-		const read = tokenizePrd({ css: bootstrapCSS })
-		const tokens = []
-		while (!read.endOfFile()) tokens.push(read.nextToken())
-		tokensByTestIndex[0] = tokens
-	},
-	// postcss development test
-	[postcssDevTestName]: () => {
-		const tokenizer = tokenizeDev({ data: bootstrapCSS })
-		const tokens = []
-		while (tokenizer()) tokens.push(tokenizer.type)
-		tokensByTestIndex[1] = tokens
-	},
-}).reduce(
-	(suite, [name, func]) => suite.add(name, func),
-	new Benchmark()
-).on(`complete`, (event) => {
+addTest(`PostCSS Tokenizer (Development)`, () => {
+	returnValue = []
+	const tokenizer = tokenizeDev(bootstrapCSS)
+	while (tokenizer() === true) returnValue.push(tokenizer.type)
+})
+
+suite.on(`complete`, (event) => {
 	// assign `tokens` to each test result
-	const results = Array.from(
-		event.currentTarget,
-		(result, i) => Object.defineProperty(result, `tokens`, { value: tokensByTestIndex[i] })
-	)
+	const results = Array.from(event.currentTarget)
 
 	// setup production test results as the basis of comparison
 	const prdResults = results[0]
@@ -62,9 +56,9 @@ Object.entries({
 	const longestName = results.slice().sort((a, b) => b.name.length - a.name.length).shift().name
 
 	// calculate the longest token number for visual alignemnt in CLI output
-	const longestTokens = String(results.slice().sort(
-		(a, b) => b.tokens.length - a.tokens.length
-	).shift().tokens.length)
+	const longestReturnValue = String(results.slice().sort(
+		(a, b) => b.returnValue.length - a.returnValue.length
+	).shift().returnValue.length)
 
 	// use the slowest test result as a basis of comparison
 	const slowestHz = results.slice().pop().hz
@@ -72,12 +66,12 @@ Object.entries({
 	// write the results of the tests
 	write(`\n`)
 
-	results.forEach(({ hz, name, tokens }) => {
+	results.forEach(({ hz, name, returnValue }) => {
 		write(
 			`${name}: ${indent(longestName, name)}${indent(
-				longestTokens,
-				String(tokens.length)
-			)}${tokens.length} tokens in ${indent(
+				longestReturnValue,
+				String(returnValue.length)
+			)}${returnValue.length} tokens in ${indent(
 				mstime(slowestHz),
 				mstime(hz)
 			)}${mstime(hz)}`

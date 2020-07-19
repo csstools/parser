@@ -1,12 +1,9 @@
 import CSSAtToken from './CSSAtToken.js'
 
-export default function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSAtToken({
-		symbol: `@`,
-		value:  text.slice(open + lead, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function fromTokenizer(source, value) {
+	const token = new CSSAtToken()
+	token.symbol = `@`
+	token.value = value.slice(1)
+	token.source = source
+	return token
 }

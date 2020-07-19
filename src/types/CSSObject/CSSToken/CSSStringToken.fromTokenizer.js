@@ -1,13 +1,10 @@
 import CSSStringToken from './CSSStringToken.js'
 
-export default function fromTokenizer(text, open, shut, lead, tail, line, lcol, input) {
-	return new CSSStringToken({
-		opener: text.slice(open, open + lead),
-		value:  text.slice(open + lead, shut - tail),
-		closer: text.slice(shut - tail, shut),
-		source: {
-			input,
-			position: [ line, lcol ],
-		},
-	})
+export default function fromTokenizer(source, value, lead, tail) {
+	const token = new CSSStringToken()
+	token.opener = value.charAt(0)
+	token.value = tail === 0 ? value : value.slice(lead, 0 - tail)
+	token.closer = tail === 0 ? `` : value.slice(0 - tail)
+	token.source = source
+	return token
 }
