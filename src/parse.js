@@ -22,11 +22,7 @@ import {
 
 import RofL from './utils/string-variants.js'
 import tokenize from './tokenize.js'
-import {
-	defineClass,
-	toEnumerableValueDescriptor,
-	toValueDescriptor,
-} from './utils/define.js'
+import { defineClass } from './utils/define.js'
 
 function CSSList() {} defineClass(CSSList, Array, {
 	isList: [ 2, true ],
@@ -39,29 +35,29 @@ function CSSAtWord() {} defineClass(CSSAtWord, CSSValue, {
 		return ``.concat(this.symbol, this.value)
 	} ],
 	isAtWord: [ 2, true ],
-	symbol:   [ 3, `@` ],
+	symbol:   [ 7, `@` ],
 })
 function CSSComment() {} defineClass(CSSComment, CSSValue, {
 	toString: [ 6, function toString() {
 		return ``.concat(this.opener, this.value, this.closer)
 	} ],
 	isComment: [ 2, true ],
-	opener:    [ 3, `/*` ],
+	opener:    [ 7, `/*` ],
 })
 function CSSFragment() {} defineClass(CSSFragment, CSSValue, {
 	toString: [ 6, function toString() {
 		return this.value.join(``)
 	} ],
 	isFragment: [ 2, true ],
-	value:      [ 3, [] ],
+	value:      [ 7, [] ],
 })
 function CSSBlock() {} defineClass(CSSBlock, CSSFragment, {
 	toString: [ 6, function toString() {
 		return ``.concat(this.opener, this.value.join(``), this.closer)
 	} ],
 	isBlock: [ 2, true ],
-	opener:  [ 3, `(` ],
-	closer:  [ 3, `)` ],
+	opener:  [ 7, `(` ],
+	closer:  [ 7, `)` ],
 })
 function CSSFunction() {} defineClass(CSSFunction, CSSBlock, {
 	toString: [ 6, function toString() {
@@ -74,7 +70,7 @@ function CSSHash() {} defineClass(CSSHash, CSSValue, {
 		return ``.concat(this.symbol, this.value)
 	} ],
 	isAtWord: [ 2, true ],
-	symbol:   [ 3, `#` ],
+	symbol:   [ 7, `#` ],
 })
 function CSSNumber() {} defineClass(CSSNumber, CSSValue, {
 	toString: [ 6, function toString() {
@@ -107,7 +103,7 @@ function CSSSymbol() {} defineClass(CSSSymbol, CSSValue, {
 	isSymbol: [ 2, true ],
 })
 
-const { create, defineProperties } = Object
+const { create } = Object
 const createCSSAtWord = create.bind(Object, CSSAtWord.prototype)
 const createCSSComment = create.bind(Object, CSSComment.prototype)
 const createCSSFragment = create.bind(Object, CSSFragment.prototype)
@@ -128,9 +124,8 @@ export default function parse(cssText) {
 	let parserShut
 	let node
 	let list = []
-	let fore = parser.root = createCSSFragment({
-		value: toEnumerableValueDescriptor(list),
-	})
+	let fore = parser.root = createCSSFragment()
+	fore.value = list
 
 	return parser
 
@@ -142,88 +137,79 @@ export default function parse(cssText) {
 
 		switch (tokenizer.type) {
 			case ATWORD_TYPE:
-				node = createCSSAtWord({
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSAtWord()
+				node.value = tokenizer.getText()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case COMMENT_TYPE:
-				node = createCSSComment({
-					opener: toEnumerableValueDescriptor(`/*`),
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					closer: toEnumerableValueDescriptor(tokenizer.getTail()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSComment()
+				node.opener = `/*`
+				node.value = tokenizer.getText()
+				node.closer = tokenizer.getTail()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case FUNCTION_TYPE:
-				node = createCSSFunction({
-					name:   toEnumerableValueDescriptor(tokenizer.getText()),
-					opener: toEnumerableValueDescriptor(`(`),
-					value:  toEnumerableValueDescriptor([]),
-					closer: toEnumerableValueDescriptor(``),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSFunction()
+				node.name = tokenizer.getText()
+				node.opener = `(`
+				node.value = []
+				node.closer = ``
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				parserOpen = true
 				break
 
 			case HASH_TYPE:
-				node = createCSSHash({
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSHash()
+				node.value = tokenizer.getText()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case NUMBER_TYPE:
-				node = createCSSNumber({
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					unit:   toEnumerableValueDescriptor(tokenizer.getTail()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSNumber()
+				node.value = tokenizer.getText()
+				node.unit = tokenizer.getTail()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case SPACE_TYPE:
-				node = createCSSSpace({
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSSpace()
+				node.value = tokenizer.getText()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case STRING_TYPE:
-				node = createCSSString({
-					opener: toEnumerableValueDescriptor(tokenizer.getLead()),
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					closer: toEnumerableValueDescriptor(tokenizer.getTail()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSString()
+				node.opener = tokenizer.getLead()
+				node.value = tokenizer.getText()
+				node.closer = tokenizer.getTail()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case WORD_TYPE:
-				node = createCSSWord({
-					value:  toEnumerableValueDescriptor(tokenizer.getText()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSWord()
+				node.value = tokenizer.getText()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 
 			case L_RB:
 			case L_SB:
 			case L_CB:
-				node = createCSSBlock({
-					opener: toEnumerableValueDescriptor(String.fromCharCode(tokenizer.type)),
-					value:  toEnumerableValueDescriptor([]),
-					closer: toEnumerableValueDescriptor(``),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSBlock()
+				node.opener = String.fromCharCode(tokenizer.type)
+				node.value = []
+				node.closer = ``
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				parserOpen = true
 				parser.deep = ++deep
 				break
@@ -232,20 +218,18 @@ export default function parse(cssText) {
 			case R_SB:
 			case R_CB:
 				if (RofL[tokenizer.type] === fore.opener) {
-					defineProperties(node = fore, {
-						closer: toEnumerableValueDescriptor(String.fromCharCode(tokenizer.type)),
-					})
+					node = fore
+					node.closer = String.fromCharCode(tokenizer.type)
 					parserShut = true
 					parser.deep = --deep
 					break
 				}
 
 			default:
-				node = createCSSSymbol({
-					value:  toEnumerableValueDescriptor(tokenizer.getChar()),
-					parent: toValueDescriptor(fore),
-					source: toValueDescriptor({ position: tokenizer.smap }),
-				})
+				node = createCSSSymbol()
+				node.value = tokenizer.getChar()
+				node.parent = fore
+				node.source = { position: tokenizer.smap }
 				break
 		}
 
