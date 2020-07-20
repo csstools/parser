@@ -26,6 +26,7 @@ import {
 	SPACE_TYPE,
 	STRING_TYPE,
 	WORD_TYPE,
+	EOT_TYPE,
 } from './utils/token-types.js'
 
 /* Tokenizer Utilities */
@@ -37,10 +38,22 @@ import {
 	isVerticalSpace,
 } from './utils/tokenizer-algorithms.js'
 
+import {
+	edgeOfDQString,
+	edgeOfSQString,
+	emptyString,
+	leadOfAtWord,
+	leadOfComment,
+	leadOfHash,
+	tailOfComment,
+	leadOfFunction,
+} from './utils/strings.js'
+
+const { fromCharCode } = String
+
 /**
- * Reads from an input and returns a function for consuming tokens from it.
+ * Reads from CSS text and returns a function for consuming tokens from it.
  * @arg {string} cssText - CSS text being tokenized.
- * @return {tokenize} Returns whether it consumed and assigned a token to itself.
  */
 export default function tokenize(cssText) {
 	/** @type {number} Length of characters being read from the text. */
@@ -111,10 +124,11 @@ export default function tokenize(cssText) {
 	/** @type {number} String index of the line, from the end of the current token. */
 	let nextLineOpen = 0
 
-	tokenizer.getChar = getChar
-	tokenizer.getText = getText
-	tokenizer.getLead = getLead
-	tokenizer.getTail = getTail
+	let code
+	let char
+	let leadText
+	let mainText
+	let tailText
 
 	return tokenizer
 
@@ -123,16 +137,25 @@ export default function tokenize(cssText) {
 	 * @returns {Token | void}
 	 */
 	function tokenizer() {
-		if (shut === size) return false
+		if (shut === size) {
+			tokenizer.type = tokenizer.code = EOT_TYPE
+
+			return false
+		}
 
 		// update the starting values with the ending values from the last read
-		cc0 = cssText.charCodeAt(shut)
-		type = cc0
+		code = cc0 = cssText.charCodeAt(shut)
+		char = fromCharCode(code)
+		type = code
 		open = shut
 		line = nextLine
 		lineOpen = nextLineOpen
 		lead = 0
 		tail = 0
+
+		leadText = emptyString
+		mainText = char
+		tailText = emptyString
 
 		switch (true) {
 			/**
@@ -157,9 +180,7 @@ export default function tokenize(cssText) {
 							cssText.charCodeAt(shut) === STAR
 							&& cssText.charCodeAt(shut + 1) === FS
 						) {
-							++shut
-							++shut
-
+							shut += 2
 							tail = 2
 
 							break
@@ -167,6 +188,9 @@ export default function tokenize(cssText) {
 					}
 
 					type = COMMENT_TYPE
+					leadText = leadOfComment
+					mainText = cssText.slice(open + lead, shut - tail)
+					tailText = tail === 0 ? emptyString : tailOfComment
 				}
 
 				break
@@ -208,6 +232,9 @@ export default function tokenize(cssText) {
 				}
 
 				type = STRING_TYPE
+				leadText = cc0 === DBLQ ? edgeOfDQString : edgeOfSQString
+				mainText = cssText.slice(open + lead, shut - tail)
+				tailText = tail === 0 ? emptyString : leadText
 
 				break
 
@@ -229,6 +256,8 @@ export default function tokenize(cssText) {
 					consumeIdentifier()
 
 					type = HASH_TYPE
+					leadText = leadOfHash
+					mainText = cssText.slice(open + lead, shut)
 				}
 
 				break
@@ -258,8 +287,9 @@ export default function tokenize(cssText) {
 					|| (
 						cc0 === BS
 						&& !isVerticalSpace(cssText.charCodeAt(shut + 2))
-						&& ++shut
-						&& ++shut
+						&& (
+							shut += 2
+						)
 					)
 				) {
 					++shut
@@ -267,6 +297,7 @@ export default function tokenize(cssText) {
 					consumeIdentifier()
 
 					type = WORD_TYPE
+					mainText = cssText.slice(open, shut)
 				} else {
 					++shut
 				}
@@ -303,8 +334,7 @@ export default function tokenize(cssText) {
 						cc0
 						&& isInteger(cc0)
 					) {
-						++shut
-						++shut
+						shut += 2
 
 						consumeNumber(1)
 					}
@@ -344,6 +374,7 @@ export default function tokenize(cssText) {
 					consumeIdentifier()
 
 					type = WORD_TYPE
+					mainText = cssText.slice(open, shut)
 
 					break
 				}
@@ -381,6 +412,7 @@ export default function tokenize(cssText) {
 				)
 
 				type = SPACE_TYPE
+				mainText = cssText.slice(open, shut)
 
 				break
 
@@ -402,6 +434,8 @@ export default function tokenize(cssText) {
 					consumeIdentifier()
 
 					type = ATWORD_TYPE
+					leadText = leadOfAtWord
+					mainText = cssText.slice(open + lead, shut)
 				}
 
 				break
@@ -424,8 +458,11 @@ export default function tokenize(cssText) {
 					++shut
 
 					type = FUNCTION_TYPE
+					mainText = cssText.slice(open, shut - tail)
+					tailText = leadOfFunction
 				} else {
 					type = WORD_TYPE
+					mainText = cssText.slice(open, shut)
 				}
 
 				break
@@ -453,25 +490,14 @@ export default function tokenize(cssText) {
 		}
 
 		tokenizer.type = type
-		tokenizer.smap = [ line, open - lineOpen ]
+		tokenizer.code = code
+		tokenizer.char = char
+		tokenizer.leadText = leadText
+		tokenizer.mainText = mainText
+		tokenizer.tailText = tailText
+		tokenizer.position = [ line, open - lineOpen ]
 
 		return true
-	}
-
-	function getChar() {
-		return cssText.charAt(open)
-	}
-
-	function getText() {
-		return cssText.slice(open + lead, shut - tail)
-	}
-
-	function getLead() {
-		return lead ? cssText.slice(open, open + lead) : ``
-	}
-
-	function getTail() {
-		return shut ? cssText.slice(shut - tail, shut) : ``
 	}
 
 	/**
@@ -487,8 +513,9 @@ export default function tokenize(cssText) {
 				|| (
 					cssText.charCodeAt(shut) === BS
 					&& !isVerticalSpace(cssText.charCodeAt(shut + 1))
-					&& ++shut
-					&& ++shut
+					&& (
+						shut += 2
+					)
 				)
 			) {
 				continue
@@ -518,8 +545,9 @@ export default function tokenize(cssText) {
 					&& (
 						isDecimal = 1
 					)
-					&& ++shut
-					&& ++shut
+					&& (
+						shut += 2
+					)
 				)
 				// if non-scientific, consume an "E" or "e"...
 				|| (
@@ -547,8 +575,9 @@ export default function tokenize(cssText) {
 								|| cc1 === DASH
 							)
 							&& isInteger(cssText.charCodeAt(shut + 1))
-							&& ++shut
-							&& ++shut
+							&& (
+								shut += 2
+							)
 						)
 					)
 					&& (
@@ -576,6 +605,8 @@ export default function tokenize(cssText) {
 		}
 
 		type = NUMBER_TYPE
+		mainText = cssText.slice(open, shut - tail)
+		tailText = tail === 0 ? emptyString : cssText.slice(shut - tail, shut)
 	}
 }
 

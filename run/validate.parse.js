@@ -24,15 +24,15 @@ if (isCssIdentical) {
 	if (bootstrapSize !== tokenizedSize) {
 		console.warn(`Unaltered CSS is ${bootstrapSize} characters in length.`)
 		console.warn(`Tokenized CSS is ${tokenizedSize} characters in length.`)
+	}
 
-		for (let i = 0, l = Math.max(bootstrapSize, tokenizedSize); i < l; ++i) {
-			if (bootstrapCSS[i] !== tokenizedCSS[i]) {
-				console.warn([
-					bootstrapCSS.slice(i - 50, i + 50),
-					tokenizedCSS.slice(i - 50, i + 50)
-				])
-				break
-			}
+	for (let i = 0, l = Math.max(bootstrapSize, tokenizedSize); i < l; ++i) {
+		if (bootstrapCSS[i] !== tokenizedCSS[i]) {
+			console.warn([
+				bootstrapCSS.slice(i - 50, i + 50),
+				tokenizedCSS.slice(i - 50, i + 50)
+			])
+			break
 		}
 	}
 }

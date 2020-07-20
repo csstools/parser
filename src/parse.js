@@ -18,223 +18,199 @@ import {
 	SPACE_TYPE,
 	STRING_TYPE,
 	WORD_TYPE,
+	EOT_TYPE,
 } from './utils/token-types.js'
 
-import RofL from './utils/string-variants.js'
-import tokenize from './tokenize.js'
-import { defineClass } from './utils/define.js'
+/* CSS Values */
+import {
+	CSSFragment,
+	CSSBlock,
+	CSSAtWord,
+	CSSComment,
+	CSSFunction,
+	CSSHash,
+	CSSNumber,
+	CSSSpace,
+	CSSString,
+	CSSWord,
+	CSSSymbol,
+} from './CSSValue.js'
 
-function CSSList() {} defineClass(CSSList, Array, {
-	isList: [ 2, true ],
-})
-function CSSValue() {} defineClass(CSSValue, Object, {
-	isValue: [ 2, true ],
-})
-function CSSAtWord() {} defineClass(CSSAtWord, CSSValue, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.symbol, this.value)
-	} ],
-	isAtWord: [ 2, true ],
-	symbol:   [ 7, `@` ],
-})
-function CSSComment() {} defineClass(CSSComment, CSSValue, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.opener, this.value, this.closer)
-	} ],
-	isComment: [ 2, true ],
-	opener:    [ 7, `/*` ],
-})
-function CSSFragment() {} defineClass(CSSFragment, CSSValue, {
-	toString: [ 6, function toString() {
-		return this.value.join(``)
-	} ],
-	isFragment: [ 2, true ],
-	value:      [ 7, [] ],
-})
-function CSSBlock() {} defineClass(CSSBlock, CSSFragment, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.opener, this.value.join(``), this.closer)
-	} ],
-	isBlock: [ 2, true ],
-	opener:  [ 7, `(` ],
-	closer:  [ 7, `)` ],
-})
-function CSSFunction() {} defineClass(CSSFunction, CSSBlock, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.name, this.opener, this.value.join(``), this.closer)
-	} ],
-	isFunction: [ 2, true ],
-})
-function CSSHash() {} defineClass(CSSHash, CSSValue, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.symbol, this.value)
-	} ],
-	isAtWord: [ 2, true ],
-	symbol:   [ 7, `#` ],
-})
-function CSSNumber() {} defineClass(CSSNumber, CSSValue, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.value, this.unit)
-	} ],
-	isNumber: [ 2, true ],
-})
-function CSSSpace() {} defineClass(CSSSpace, CSSValue, {
-	toString: [ 6, function toString() {
-		return this.value
-	} ],
-	isSpace: [ 2, true ],
-})
-function CSSString() {} defineClass(CSSString, CSSValue, {
-	toString: [ 6, function toString() {
-		return ``.concat(this.opener, this.value, this.closer)
-	} ],
-	isString: [ 2, true ],
-})
-function CSSWord() {} defineClass(CSSWord, CSSValue, {
-	toString: [ 6, function toString() {
-		return this.value
-	} ],
-	isWord: [ 2, true ],
-})
-function CSSSymbol() {} defineClass(CSSSymbol, CSSValue, {
-	toString: [ 6, function toString() {
-		return this.value
-	} ],
-	isSymbol: [ 2, true ],
-})
+/* String fragments */
+import {
+	emptyString,
+	leadOfAtWord,
+	leadOfComment,
+	leadOfHash,
+	leadOfFunction,
+} from './utils/strings.js'
 
-export default function parse(cssText) {
-	const tokenizer = tokenize(cssText)
+import RofL from './utils/variants.js'
 
-	let deep = parser.deep = 0
-	let parserOpen
-	let parserShut
+/**
+ * Reads from CSS text and returns a function for parsing values from it.
+ */
+export default function parse(tokenizer) {
 	let node
-	let list = []
-	let fore = parser.root = new CSSFragment()
-	fore.value = list
+	let parentNode = parser.rootNode = new CSSFragment()
+	let parentList = []
+
+	parentNode.value = parentList
+
+	let type
+	let parentShut
+	let wait = 0
+
+	let riseUp
+
+	let isOpen
+	let isShut
+
+	function diveIn(currentShut, currentRoot, currentList) {
+		// cache
+		currentShut = parentShut
+		currentRoot = parentNode
+		currentList = parentList
+
+		// update
+		parentShut = parser.parentShut = RofL[type]
+		parentNode = parser.parentNode = node
+		parentList = parser.parentList = node.value
+
+		riseUp = function () {
+			// restore
+			parentShut = parser.parentShut = currentShut
+			parentNode = parser.parentNode = currentRoot
+			parentList = parser.parentList = currentList
+		}
+	}
+
+	parser.hold = hold
 
 	return parser
 
+	function hold() {
+		++wait
+
+		return false
+	}
+
 	function parser() {
-		if (tokenizer() === false) return false
+		// done
+		if (tokenizer() === false) {
+			parser.type = parser.code = EOT_TYPE
 
-		parserOpen = false
-		parserShut = false
+			return false
+		}
 
-		switch (tokenizer.type) {
+		// hold
+		if (wait > 0) {
+			--wait
+			return true
+		}
+
+		// reset
+		isOpen = false
+		isShut = false
+
+		type = parser.type = tokenizer.type
+
+		parser.code = tokenizer.code
+		parser.char = tokenizer.char
+
+		switch (type) {
 			case ATWORD_TYPE:
 				node = new CSSAtWord()
-				node.value = tokenizer.getText()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.symbol = leadOfAtWord
+				node.value = tokenizer.mainText
 				break
 
 			case COMMENT_TYPE:
 				node = new CSSComment()
-				node.opener = `/*`
-				node.value = tokenizer.getText()
-				node.closer = tokenizer.getTail()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.opener = leadOfComment
+				node.value = tokenizer.mainText
+				node.closer = tokenizer.tailText
 				break
 
 			case FUNCTION_TYPE:
 				node = new CSSFunction()
-				node.name = tokenizer.getText()
-				node.opener = `(`
+				node.name = tokenizer.mainText
+				node.opener = leadOfFunction
 				node.value = []
-				node.closer = ``
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
-				parserOpen = true
+				node.closer = emptyString
+				isOpen = true
 				break
 
 			case HASH_TYPE:
 				node = new CSSHash()
-				node.value = tokenizer.getText()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.symbol = leadOfHash
+				node.value = tokenizer.mainText
 				break
 
 			case NUMBER_TYPE:
 				node = new CSSNumber()
-				node.value = tokenizer.getText()
-				node.unit = tokenizer.getTail()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.value = tokenizer.mainText
+				node.unit = tokenizer.tailText
 				break
 
 			case SPACE_TYPE:
 				node = new CSSSpace()
-				node.value = tokenizer.getText()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.value = tokenizer.mainText
 				break
 
 			case STRING_TYPE:
 				node = new CSSString()
-				node.opener = tokenizer.getLead()
-				node.value = tokenizer.getText()
-				node.closer = tokenizer.getTail()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.opener = tokenizer.leadText
+				node.value = tokenizer.mainText
+				node.closer = tokenizer.tailText
 				break
 
 			case WORD_TYPE:
 				node = new CSSWord()
-				node.value = tokenizer.getText()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
+				node.value = tokenizer.mainText
 				break
 
 			case L_RB:
 			case L_SB:
 			case L_CB:
 				node = new CSSBlock()
-				node.opener = String.fromCharCode(tokenizer.type)
+				node.opener = tokenizer.mainText
 				node.value = []
-				node.closer = ``
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
-				parserOpen = true
-				parser.deep = ++deep
+				node.closer = emptyString
+				isOpen = true
 				break
 
 			case R_RB:
 			case R_SB:
 			case R_CB:
-				if (RofL[tokenizer.type] === fore.opener) {
-					node = fore
-					node.closer = String.fromCharCode(tokenizer.type)
-					parserShut = true
-					parser.deep = --deep
+				if (type === parentShut) {
+					isShut = true
 					break
 				}
 
 			default:
 				node = new CSSSymbol()
-				node.value = tokenizer.getChar()
-				node.parent = fore
-				node.source = { position: tokenizer.smap }
-				break
+				node.value = tokenizer.mainText
+				node.code = tokenizer.code
 		}
 
-		if (parserShut) {
-			fore = parser.fore = node.parent
-			list = parser.list = fore.value
-		} else {
-			list.push(node)
+		node.parent = parentNode
+		node.source = { position: tokenizer.position }
 
-			if (parserOpen) {
-				fore = node
-				list = fore.value
+		if (isShut === true) {
+			riseUp()
+		} else {
+			parentList.push(node)
+
+			if (isOpen === true) {
+				diveIn()
 			}
 		}
 
+		parser.type = type
 		parser.node = node
-		parser.open = parserOpen
-		parser.shut = parserShut
+		parser.open = isOpen
+		parser.shut = isShut
 
 		return true
 	}

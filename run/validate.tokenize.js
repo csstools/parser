@@ -14,9 +14,9 @@ console.log(`Validating ${postcssDevTestName} preserves CSS identically...\n`)
 // process
 const tokens = []
 const tokenizer = tokenize(bootstrapCSS)
-while (tokenizer() === true) tokens.push([tokenizer.open, tokenizer.shut])
+while (tokenizer() === true) tokens.push(tokenizer.leadText, tokenizer.mainText, tokenizer.tailText)
 
-const tokenizedCSS = tokens.map(([ open, shut ]) => bootstrapCSS.slice(open, shut)).join(``)
+const tokenizedCSS = tokens.join(``)
 
 // validate
 const isCssIdentical = bootstrapCSS === tokenizedCSS

@@ -5,7 +5,7 @@ const {
 	defineProperties: objectDefineProperties,
 } = Object
 
-export { assign }
+export { assign, objectDefineProperties as defineProperties }
 
 export function toDescriptor(bitmask, valueOrGetter, setter) {
 	const descriptor = {
@@ -71,6 +71,14 @@ export function defineClass(Class, Super, protoProps, staticProps) {
 	)
 }
 
+export function defineClass2(Class, Super, protoProps) {
+	Class.prototype = objectCreate(
+		(Class.__proto__ = Super).prototype,
+		protoProps
+	)
+	return Class
+}
+
 /*
 | bitmask | enumerable | configurable | writable | accessor |
 | ------- | ---------- | ------------ | -------- | -------- |
@@ -87,6 +95,16 @@ export function defineClass(Class, Super, protoProps, staticProps) {
 | 10      |            |     YES      |          |   YES    |
 | 11      |    YES     |     YES      |          |   YES    |
 */
+
+// 2
+export function toDescriptor2(value, isWritable, isEnumerable) {
+	return {
+		value,
+		configurable: true,
+		enumerable:   Boolean(isEnumerable),
+		writable:     Boolean(isWritable)
+	}
+}
 
 // 2
 export function toValueDescriptor(value) {
@@ -110,6 +128,16 @@ export function toWritableValueDescriptor(value) {
 	return {
 		value,
 		configurable: true,
+		writable:     true,
+	}
+}
+
+// 7
+export function toAssignDescriptor(value) {
+	return {
+		value,
+		configurable: true,
+		enumerable:   true,
 		writable:     true,
 	}
 }

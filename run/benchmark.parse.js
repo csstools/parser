@@ -65,6 +65,8 @@ addTest(`PostCSS Parser (Development)`, () => {
 
 	while (parser() === true) continue
 
+	// hard-code the number of nodes parsed
+	// so as not to negatively skew the results of the combined parsers
 	returnValue = { length: 58823 }
 })
 
