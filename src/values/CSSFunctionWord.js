@@ -22,7 +22,7 @@ defineClass(`CSSFunctionWord`, CSSFunctionWord, CSSToken, {
 	// Methods
 	toString: [ 6, function toString() {
 		return toConcatenatedString(
-			this.opening,
+			this.value,
 			this.symbol
 		)
 	} ],

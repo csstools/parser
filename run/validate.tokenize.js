@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import resolve from 'resolve'
-import tokenize from '../src/tokenize.js'
+import tokenize from '../src/tokenize/tokenize.js'
 
 // setup
 const postcssDevTestName = `PostCSS Tokenizer (Development)`
