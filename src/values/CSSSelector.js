@@ -1,4 +1,4 @@
-import { defineClass } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedString, toConcatenatedValues, toJSONObject, toValueString } from './CSSValue.utils.js'
 import CSSGroup from './CSSGroup.js'
 
 /**
@@ -8,15 +8,42 @@ import CSSGroup from './CSSGroup.js'
  * The CSSSelector class is the token object for all selectors in CSS.
  *
  * @class @extends {CSSGroup}
- * @argument {CSSSelectorSource} [source]
+ * @argument {CSSSelectorItems} [items]
  */
-export default function CSSSelector(source) {
-	/** @type {CSSSelectorSource} */
-	this.source = Object(source)
-	this.source.detail = Object(this.source.detail)
+export default function CSSSelector(items) {
+	/** @type {CSSSelectorItems} */
+	this.items = Object(items)
 }
 
-defineClass(`CSSSelector`, CSSSelector, CSSGroup, {})
+defineClass(`CSSSelector`, CSSSelector, CSSGroup, {
+
+	// Methods
+	toJSON: [ 6, function toJSON() {
+		const { items } = this
+
+		return {
+			constructor: this.constructor.name,
+			symbol:      toJSONObject(items.symbol),
+			value:       toJSONObject(items.value),
+		}
+	} ],
+	toString: [ 6, function toString() {
+		const { items } = this
+
+		return toConcatenatedString(
+			items.symbol,
+			items.value
+		)
+	} ],
+	toValues: [ 6, function toValues() {
+		const { items } = this
+
+		return toConcatenatedValues(
+			items.symbol,
+			items.value
+		)
+	} ],
+})
 
 /** @typedef {import("./CSSValue.js")} CSSValue */
-/** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSSelectorSource */
+/** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSSelectorItems */

@@ -16,9 +16,15 @@ defineClass(`CSSGroup`, CSSGroup, CSSValue, {
 		}
 	} ],
 	toString: [ 6, function toString() {
-		return toConcatenatedString(
-			this.items.value
-		)
+		try {
+			return toConcatenatedString(
+				this.items.value
+			)
+		} catch (error) {
+			console.log(this)
+
+			throw error
+		}
 	} ],
 	toValues: [ 6, function toValues() {
 		return toConcatenatedValues(

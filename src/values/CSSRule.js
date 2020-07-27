@@ -1,4 +1,4 @@
-import { defineClass } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedString, toConcatenatedValues, toJSONObject, toValueString } from './CSSValue.utils.js'
 import CSSBlock from './CSSBlock.js'
 
 /**
@@ -15,7 +15,42 @@ export default function CSSRule(items) {
 	this.items = Object(items)
 }
 
-defineClass(`CSSRule`, CSSRule, CSSBlock, {})
+defineClass(`CSSRule`, CSSRule, CSSBlock, {
+	// Methods
+	toJSON: [ 6, function toJSON() {
+		const { items } = this
+
+		return {
+			constructor: this.constructor.name,
+			prelude:     toJSONObject(items.prelude),
+			opening:     toValueString(items.opening),
+			value:       toJSONObject(items.value),
+			closing:     toValueString(items.closing),
+		}
+	} ],
+	toString: [ 6, function toString() {
+		const { items } = this
+
+		return toConcatenatedString(
+			items.prelude,
+			items.extra.betweenPreludeAndOpening,
+			items.opening,
+			items.value,
+			items.closing
+		)
+	} ],
+	toValues: [ 6, function toValues() {
+		const { items } = this
+
+		return toConcatenatedValues(
+			items.prelude,
+			items.extra.betweenPreludeAndOpening,
+			items.opening,
+			items.value,
+			items.closing
+		)
+	} ],
+})
 
 /** @typedef {import("./CSSValue.js")} CSSValue */
 /** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSRuleItems */

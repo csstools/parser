@@ -1,24 +1,23 @@
+import { CSSStyleSheet as parseCSSStyleSheet } from '../src/parse.js'
 import { readFileSync } from 'fs'
 import resolve from 'resolve'
-import { consumeStyleSheet } from '../src/consume.styles.js'
-import tokenize from '../src/tokenize.js'
 
 const bootstrapCSSPath = resolve.sync(`bootstrap/dist/css/bootstrap.css`)
 const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 
-const sheet = consumeStyleSheet(tokenize(bootstrapCSS))
+const sheet = parseCSSStyleSheet(bootstrapCSS)
 
-const tokenizedCSS = String(sheet)
+const processedCSS = String(sheet)
 
 // validate
-const isCssIdentical = bootstrapCSS === tokenizedCSS
+const isCssIdentical = bootstrapCSS === processedCSS
 
 if (isCssIdentical) {
 	console.log(`Success! The parser preserves CSS identically.`)
 } else {
 	console.warn(`Failure! The parser does not preserve CSS identically.`)
 	const bootstrapSize = bootstrapCSS.length
-	const tokenizedSize = tokenizedCSS.length
+	const tokenizedSize = processedCSS.length
 
 	if (bootstrapSize !== tokenizedSize) {
 		console.warn(`Unaltered CSS is ${bootstrapSize} characters in length.`)
@@ -26,10 +25,10 @@ if (isCssIdentical) {
 	}
 
 	for (let i = 0, l = Math.max(bootstrapSize, tokenizedSize); i < l; ++i) {
-		if (bootstrapCSS[i] !== tokenizedCSS[i]) {
+		if (bootstrapCSS[i] !== processedCSS[i]) {
 			console.warn([
 				bootstrapCSS.slice(i - 50, i + 50),
-				tokenizedCSS.slice(i - 50, i + 50)
+				processedCSS.slice(i - 50, i + 50)
 			])
 			break
 		}
