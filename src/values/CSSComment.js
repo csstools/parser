@@ -1,6 +1,6 @@
-import { COMMENT_TYPE } from '../token-types.js'
+import { COMMENT_TYPE } from '../utils/token-types.js'
 import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { closingOfComment, emptyString, openingOfComment } from '../tokenize.strings.js'
+import { closingOfComment, emptyString, openingOfComment } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
 
 /**

@@ -18,10 +18,10 @@ export default class CSSAtRule extends CSSGroup {
 export interface CSSAtRuleItems {
 	name: CSSValue
 	opening: CSSValue
-	value: CSSValue[]
+	value?: CSSValue[]
 	closing: CSSValue
 	extra: {
-		betweenNameAndPrelude?: CSSValue
-		betweenPreludeAndOpening?: CSSValue
+		betweenNameAndPrelude?: CSSValue[]
+		betweenPreludeAndOpening?: CSSValue[]
 	}
 }

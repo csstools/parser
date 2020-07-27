@@ -54,12 +54,6 @@ export const HASH_TYPE     = 0x0048 // H === 72
 export const WORD_TYPE     = 0x0057 // W === 87
 
 /**
- * Integer identifying a conceptual **EOT** token (`<eot-token>`).
- * @see https://drafts.csswg.org/css-syntax/#whitespace-diagram
- */
-export const END_TYPE    = -0x001 //   === -1
-
-/**
  * @type {{ [key: number]: number }} Mirror variant of token type.
  */
 export const mirrorOf = {}

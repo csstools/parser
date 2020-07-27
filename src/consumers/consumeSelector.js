@@ -1,21 +1,24 @@
-import { COLA, HASH, STOP, STAR } from '../code-points.js'
-import { WORD_TYPE } from '../token-types.js'
+import { COLA, HASH, STOP, STAR } from '../utils/code-points.js'
+import { WORD_TYPE } from '../utils/token-types.js'
+import { withParent } from './consume.utils.js'
 import CSSSelector from '../values/CSSSelector.js'
 
 /**
  * Consume a selector from an prepared iterator.
  */
 export default function consumeSelector(iterator, parent) {
-	let iv0
-	let iv1
-	let value = []
-	let element = new CSSSelector({
+	const value = []
+	const element = withParent(new CSSSelector({
 		selector: `complex`,
 		value,
-	})
+	}), parent)
+
+	let iv0
+	let iv1
 
 	do {
 		iv0 = iterator.value
+
 		switch (iterator.type) {
 			// pseudo-class
 			// pseudo-element

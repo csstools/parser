@@ -1,6 +1,6 @@
-import { NUMBER_TYPE } from '../token-types.js'
+import { NUMBER_TYPE } from '../utils/token-types.js'
 import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { emptyString, zero } from '../tokenize.strings.js'
+import { emptyString, zero } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
 
 /**

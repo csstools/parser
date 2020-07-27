@@ -1,6 +1,6 @@
-import { WORD_TYPE } from '../token-types.js'
+import { WORD_TYPE } from '../utils/token-types.js'
 import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { edgeOfDQString, emptyString } from '../tokenize.strings.js'
+import { edgeOfDQString, emptyString } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
 
 /**

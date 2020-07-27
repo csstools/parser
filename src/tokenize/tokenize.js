@@ -1,64 +1,66 @@
 /* Character Codes */
-import { AT, BS, DASH, DBLQ, FS, HASH, L_RB, LC_E, PERC, PLUS, SNGQ, STAR, STOP, UP_E } from '../code-points.js'
-import { ATWORD_TYPE, COMMENT_TYPE, FUNCTION_TYPE, HASH_TYPE, NUMBER_TYPE, SPACE_TYPE, STRING_TYPE, WORD_TYPE } from '../token-types.js'
-import { isHorizontalSpace, isIdentifier, isIdentifierStart, isInteger, isVerticalSpace } from '../tokenize.algorithms.js'
-import { closingOfComment, edgeOfDQString, edgeOfSQString, emptyString, openingOfComment, symbolOfAtWord, symbolOfFunction, symbolOfHash } from '../tokenize.strings.js'
+import { AT, BS, DASH, DBLQ, FS, HASH, L_RB, LC_E, PERC, PLUS, SNGQ, STAR, STOP, UP_E } from '../utils/code-points.js'
+import { ATWORD_TYPE, COMMENT_TYPE, FUNCTION_TYPE, HASH_TYPE, NUMBER_TYPE, SPACE_TYPE, STRING_TYPE, WORD_TYPE } from '../utils/token-types.js'
+import { isHorizontalSpace, isIdentifier, isIdentifierStart, isInteger, isVerticalSpace } from './tokenize.algorithms.js'
+import { closingOfComment, edgeOfDQString, edgeOfSQString, emptyString, openingOfComment, symbolOfAtWord, symbolOfFunction, symbolOfHash } from '../utils/string-values.js'
 import { CSSAtWord, CSSComment, CSSFunctionWord, CSSHash, CSSNumber, CSSSpace, CSSString, CSSSymbol, CSSWord } from '../values/index.js'
 
 const { fromCharCode } = String
 
 /**
  * Reads from CSS text and returns a function for consuming tokens from it.
- * @argument {string} cssText - CSS text being tokenized.
+ * @argument {string} cssText - String being tokenized as CSS.
  * @argument {boolean} doIteration - Whether to immediately iterate the tokenizer.
  * @returns {Iterator}
  */
 export default function tokenize(cssText, doIteration) {
-	// const charCodeAt = cssText.charCodeAt.bind(cssText)
-
-	/** @type {number} Length of characters being read from the text. */
+	/**
+	 * Length of characters being read from the c.
+	 * @type {number}
+	 */
 	const size = cssText.length
 
 	/**
-	 * Function which assigns the value of the current token.
-	 * @type {NewableFunction}
+	 * Function which creates and assigns the current value of the iterator.
+	 * @type {() => void}
 	 */
-	let assignValue
+	let createValue
 
 	/**
 	 * Value of the current token.
-	 * @type {NewableFunction}
+	 * @type {CSSValue}
 	 */
 	let value
 
 	/**
 	 * Whether the iterator should remain unchanged in the next iteration.
+	 * @type {boolean}
 	 */
 	let wait
 
 	/**
-	 * Integer identifying what the current token is.
+	 * Integer identifying what the current token value is.
 	 * @type {number}
 	 * @example
-	 * type === 0 // token is a comment
-	 * type === 1 // token is a space
+	 * type === 0x0043 // token is a comment
+	 * type === 0x0009 // token is a space
 	 */
 	let type
 
 	/**
-	 * String index at the start of the current token.
+	 * Opening index of the current token value in the string.
 	 * @type {number}
 	 */
 	let open
 
 	/**
-	 * String index at the end of the current token.
+	 * Closing index of the current token value in the string.
 	 * @type {number}
 	 */
 	let shut = 0
 
 	/**
-	 * Number of characters between the prefix and value of the current token.
+	 * Length of characters between the prefix and the value of the current token value.
 	 * @type {number}
 	 * @example
 	 * lead === 1 // e.g. toCSSHashToken token of `#` and `fff`
@@ -68,7 +70,7 @@ export default function tokenize(cssText, doIteration) {
 	let lead
 
 	/**
-	 * Number of characters between the value and suffix of the current token.
+	 * Length of characters between the value and the suffix of the current token value.
 	 * @type {number}
 	 * @example
 	 * tail === 3 // e.g. toCSSNumberToken token of `3` and `rem`
@@ -78,7 +80,7 @@ export default function tokenize(cssText, doIteration) {
 	let tail
 
 	/**
-	 * Current character code.
+	 * Current character code being tokenized.
 	 * @type {number}
 	 * @example
 	 * cc0 === 38 // character code for "&"
@@ -86,28 +88,52 @@ export default function tokenize(cssText, doIteration) {
 	 */
 	let cc0
 
-	/** @type {number} Next character code. */
+	/**
+	 * Next character code.
+	 * @type {number}
+	 */
 	let cc1
 
-	/** @type {number} Line number at the start of the current token. */
+	/**
+	 * Line number at the start of the current token.
+	 * @type {number}
+	 */
 	let line
 
-	/** @type {number} Line number at the end of the current token. */
+	/**
+	 * Line number at the end of the current token.
+	 * @type {number}
+	 */
 	let nextLine = 1
 
-	/** @type {number} String index of the line, from the start of the current token. */
+	/**
+	 * String index of the line, from the start of the current token.
+	 * @type {number}
+	 */
 	let lineOpen
 
-	/** @type {number} String index of the line, from the end of the current token. */
+	/**
+	 * String index of the line, from the end of the current token.
+	 * @type {number}
+	 */
 	let nextLineOpen = 0
 
-	/** @type {string} The prefix of the current token. */
+	/**
+	 * The prefix of the current token.
+	 * @type {string}
+	 */
 	let leadText
 
-	/** @type {string} The value of the current token. */
+	/**
+	 * The value of the current token.
+	 * @type {string}
+	 */
 	let mainText
 
-	/** @type {string} The suffix of the current token. */
+	/**
+	 * The suffix of the current token.
+	 * @type {string}
+	 */
 	let tailText
 
 	iterator.redo = redo
@@ -117,7 +143,7 @@ export default function tokenize(cssText, doIteration) {
 	return iterator
 
 	/**
-	 * Consumes a token and returns whether it was consumed.
+	 * Consumes a token from the string and returns whether it was consumed.
 	 * @returns {boolean}
 	 */
 	function iterator() {
@@ -133,16 +159,18 @@ export default function tokenize(cssText, doIteration) {
 			return false
 		}
 
-		// update the starting values with the ending values from the last read
+		// update the starting values with the ending values from the last iteration
 		cc0 = cssText.charCodeAt(shut)
-		assignValue = assignSymbolToValue
-		type = cc0
 		open = shut
 		line = nextLine
 		lineOpen = nextLineOpen
 		lead = 0
 		tail = 0
 
+		// initialize the lead, main, and tail values of the current token
+		// initialize everything as though we are generating a symbol token
+		type = cc0
+		createValue = createSymbolValue
 		leadText = emptyString
 		mainText = fromCharCode(cc0)
 		tailText = emptyString
@@ -177,7 +205,7 @@ export default function tokenize(cssText, doIteration) {
 						}
 					}
 
-					assignValue = assignCommentToValue
+					createValue = createCommentValue
 					type = COMMENT_TYPE
 					leadText = openingOfComment
 					mainText = cssText.slice(open + lead, shut - tail)
@@ -222,7 +250,7 @@ export default function tokenize(cssText, doIteration) {
 					}
 				}
 
-				assignValue = assignStringToValue
+				createValue = createStringValue
 				type = STRING_TYPE
 				leadText = cc0 === DBLQ ? edgeOfDQString : edgeOfSQString
 				mainText = cssText.slice(open + lead, shut - tail)
@@ -247,7 +275,7 @@ export default function tokenize(cssText, doIteration) {
 
 					consumeIdentifier()
 
-					assignValue = assignHashToValue
+					createValue = createHashValue
 					type = HASH_TYPE
 					leadText = symbolOfHash
 					mainText = cssText.slice(open + lead, shut)
@@ -289,7 +317,7 @@ export default function tokenize(cssText, doIteration) {
 
 					consumeIdentifier()
 
-					assignValue = assignWordToValue
+					createValue = createWordValue
 					type = WORD_TYPE
 					mainText = cssText.slice(open, shut)
 				} else {
@@ -367,7 +395,7 @@ export default function tokenize(cssText, doIteration) {
 
 					consumeIdentifier()
 
-					assignValue = assignWordToValue
+					createValue = createWordValue
 					type = WORD_TYPE
 					mainText = cssText.slice(open, shut)
 
@@ -406,7 +434,7 @@ export default function tokenize(cssText, doIteration) {
 					|| isHorizontalSpace(cc0)
 				)
 
-				assignValue = assignSpaceToValue
+				createValue = createSpaceValue
 				type = SPACE_TYPE
 				mainText = cssText.slice(open, shut)
 
@@ -429,7 +457,7 @@ export default function tokenize(cssText, doIteration) {
 
 					consumeIdentifier()
 
-					assignValue = assignAtWordToValue
+					createValue = createAtWordValue
 					type = ATWORD_TYPE
 					leadText = symbolOfAtWord
 					mainText = cssText.slice(open + lead, shut)
@@ -454,12 +482,12 @@ export default function tokenize(cssText, doIteration) {
 
 					++shut
 
-					assignValue = assignFunctionToValue
+					createValue = createFunctionValue
 					type = FUNCTION_TYPE
 					mainText = cssText.slice(open, shut - tail)
 					tailText = symbolOfFunction
 				} else {
-					assignValue = assignWordToValue
+					createValue = createWordValue
 					type = WORD_TYPE
 					mainText = cssText.slice(open, shut)
 				}
@@ -489,7 +517,7 @@ export default function tokenize(cssText, doIteration) {
 		}
 
 		// assign the current value
-		assignValue()
+		createValue()
 
 		// assign the current value’s value
 		value.value = mainText
@@ -617,82 +645,82 @@ export default function tokenize(cssText, doIteration) {
 			tail = shut - tail
 		}
 
-		assignValue = assignNumberToValue
+		createValue = createNumberValue
 		type = NUMBER_TYPE
 		mainText = cssText.slice(open, shut - tail)
 		tailText = tail === 0 ? emptyString : cssText.slice(shut - tail, shut)
 	}
 
 	/**
-	 * Assigns a CSSAtWord as the current value.
+	 * Creates a CSSAtWord.
 	 */
-	function assignAtWordToValue() {
+	function createAtWordValue() {
 		value = new CSSAtWord(mainText)
 	}
 
 	/**
-	 * Assigns a CSSComment as the current value.
+	 * Creates a CSSComment.
 	 */
-	function assignCommentToValue() {
+	function createCommentValue() {
 		value = new CSSComment(mainText, !tailText)
 	}
 
 	/**
-	 * Assigns a CSSFunction as the current value.
+	 * Creates a CSSFunction.
 	 */
-	function assignFunctionToValue() {
+	function createFunctionValue() {
 		value = new CSSFunctionWord(mainText)
 	}
 
 	/**
-	 * Assigns a CSSHash as the current value.
+	 * Creates a CSSHash.
 	 */
-	function assignHashToValue() {
+	function createHashValue() {
 		value = new CSSHash(mainText)
 	}
 
 	/**
-	 * Assigns a CSSNumber as the current value.
+	 * Creates a CSSNumber.
 	 */
-	function assignNumberToValue() {
+	function createNumberValue() {
 		value = new CSSNumber(mainText, tailText)
 	}
 
 	/**
-	 * Assigns a CSSSpace as the current value.
+	 * Creates a CSSSpace.
 	 */
-	function assignSpaceToValue() {
+	function createSpaceValue() {
 		value = new CSSSpace(mainText)
 	}
 
 	/**
-	 * Assigns a CSSString as the current value.
+	 * Creates a CSSString.
 	 */
-	function assignStringToValue() {
+	function createStringValue() {
 		value = new CSSString(mainText, leadText, !tailText)
 	}
 
 	/**
-	 * Assigns a CSSWord as the current value.
+	 * Creates a CSSWord.
 	 */
-	function assignWordToValue() {
+	function createWordValue() {
 		value = new CSSWord(mainText)
 	}
 
 	/**
-	 * Assigns a CSSSymbol as the current value.
+	 * Creates a CSSSymbol.
 	 */
-	function assignSymbolToValue() {
+	function createSymbolValue() {
 		value = new CSSSymbol(mainText)
 	}
 }
 
 /**
- * @typedef {() => Iterator} tokenize - Reads CSS and returns a function for consuming tokens from it.
- */
-
-/**
- * @typedef {{ (): boolean, type: number, value: number, redo(): void }} Iterator - Consumes a token and returns whether it was consumed.
+ * @typedef {() => TokenIterator} tokenize - Reads CSS and returns a function for consuming tokens from it.
+ * @typedef {import('../values/index.js').CSSValue} CSSValue
+ * @typedef {import('../values/index.js').CSSGroup} CSSGroup
+ * @typedef {{ (): boolean, redo(): void, type: number, value: CSSValue }} TokenIterator - Consumes a token and returns whether it was consumed.
+ * @typedef {{ (): boolean, redo(): void, type: number | typeof CSSGroup, value: CSSValue }} Iterator - Consumes a token and returns whether it was consumed.
  * @property {number} type - Integer identifying what the current token is.
  * @property {number} value - CSS Value consumed from the CSS.
  */

@@ -1,4 +1,4 @@
-import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../token-types.js'
+import { COMMENT_TYPE, SPACE_TYPE, ATWORD_TYPE } from '../utils/token-types.js'
 import { withParent } from './consume.utils.js'
 import consumeAtRule from './consumeAtRule.js'
 import consumeListOfStyleRuleValues from './consumeListOfStyleRuleValues.js'

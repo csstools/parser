@@ -1,5 +1,5 @@
-import { ATWORD_TYPE, COMMENT_TYPE, SPACE_TYPE, WORD_TYPE } from '../token-types.js'
-import { SEMI, AMPS } from '../code-points.js'
+import { ATWORD_TYPE, COMMENT_TYPE, SPACE_TYPE, WORD_TYPE } from '../utils/token-types.js'
+import { SEMI, AMPS } from '../utils/code-points.js'
 import { createIterator, withParent, isIteratingNonSemis } from './consume.utils.js'
 import consumeDeclaration from './consumeDeclaration.js'
 import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'

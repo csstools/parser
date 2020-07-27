@@ -1,6 +1,6 @@
-import { ATWORD_TYPE } from '../token-types.js'
+import { ATWORD_TYPE } from '../utils/token-types.js'
 import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { doubleDashes, symbolOfAtWord } from '../tokenize.strings.js'
+import { doubleDashes, symbolOfAtWord } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
 
 /**

@@ -1,5 +1,5 @@
-import { FUNCTION_TYPE } from '../token-types.js'
-import { L_CB, L_RB, L_SB } from '../code-points.js'
+import { FUNCTION_TYPE } from '../utils/token-types.js'
+import { L_CB, L_RB, L_SB } from '../utils/code-points.js'
 import { withParent } from './consume.utils.js'
 import consumeBlock from './consumeBlock.js'
 import CSSBlock from '../values/CSSBlock.js'

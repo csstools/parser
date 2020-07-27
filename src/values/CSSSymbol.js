@@ -1,5 +1,5 @@
 import { defineClass } from './CSSValue.utils.js'
-import { symbolOfImportant } from '../tokenize.strings.js'
+import { symbolOfImportant } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
 
 /**

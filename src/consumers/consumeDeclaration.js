@@ -1,5 +1,5 @@
-import { COLA, BANG } from '../code-points.js'
-import { WORD_TYPE } from '../token-types.js'
+import { COLA, BANG } from '../utils/code-points.js'
+import { WORD_TYPE } from '../utils/token-types.js'
 import { getSkippableSplicedValues, getSkippableValuesIndex, isImportantValue, isIterating, isIteratingSkippableValues, withParent } from './consume.utils.js'
 import CSSDeclaration from '../values/CSSDeclaration.js'
 import CSSDeclarationImportant from '../values/CSSDeclarationImportant.js'

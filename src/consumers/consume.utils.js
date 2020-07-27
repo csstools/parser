@@ -1,5 +1,5 @@
-import { COLA, L_CB, L_RB, L_SB, R_CB, R_RB, R_SB, SEMI, COMA } from '../code-points.js'
-import { COMMENT_TYPE, FUNCTION_TYPE, SPACE_TYPE } from '../token-types.js'
+import { COLA, L_CB, L_RB, L_SB, R_CB, R_RB, R_SB, SEMI, COMA } from '../utils/code-points.js'
+import { COMMENT_TYPE, FUNCTION_TYPE, SPACE_TYPE } from '../utils/token-types.js'
 
 /**
  * Returns whether a string is an ascii case-insensitive match for "important".

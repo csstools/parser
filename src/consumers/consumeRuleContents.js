@@ -1,5 +1,5 @@
 import { createIterator, getSkippableSplicedValues, isIteratingNonCurlyBracketedBlockStarts, withParent } from './consume.utils.js'
-import { L_CB } from '../code-points.js'
+import { L_CB } from '../utils/code-points.js'
 import consumeBlock from './consumeBlock.js'
 import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
 
