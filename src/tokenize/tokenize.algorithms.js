@@ -2,7 +2,7 @@ import { CR, CTRL, DASH, FF, LC_A, LC_Z, LF, LL, NINE, SP, TAB, UP_A, UP_Z, ZERO
 
 /**
  * Returns whether the character code is a vertical space.
- * @param {number} cc - Character code.
+ * @argument {number} cc - Character code.
  * @returns {boolean}
  */
 export function isVerticalSpace(cc) {
@@ -11,7 +11,7 @@ export function isVerticalSpace(cc) {
 
 /**
  * Returns whether the character code is a horizontal space.
- * @param {number} cc - Character code.
+ * @argument {number} cc - Character code.
  * @returns {boolean}
  */
 export function isHorizontalSpace(cc) {
@@ -20,7 +20,7 @@ export function isHorizontalSpace(cc) {
 
 /**
  * Returns whether the character code is an integer.
- * @param {number} cc - Character code.
+ * @argument {number} cc - Character code.
  * @returns {boolean}
  */
 export function isInteger(cc) {
@@ -29,7 +29,7 @@ export function isInteger(cc) {
 
 /**
  * Returns whether the character code is a low-line, non-ASCII, or letter.
- * @param {number} cc - Character code.
+ * @argument {number} cc - Character code.
  * @returns {boolean}
  */
 export function isIdentifierStart(cc) {
@@ -53,7 +53,7 @@ export function isIdentifierStart(cc) {
 
 /**
  * Returns whether the character code is a low-line, dash, non-ASCII, number, or letter.
- * @param {number} cc - Character code.
+ * @argument {number} cc - Character code.
  * @returns {boolean}
  */
 export function isIdentifier(cc) {

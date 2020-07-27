@@ -7,8 +7,8 @@ import consumeListOfSelectors from './consumeListOfSelectors.js'
 
 /**
  * Consume a list of rules from an unprepared iterator.
- * @param {Iterator} iterator
- * @param {CSSGroup} parent
+ * @argument {Iterator} iterator
+ * @argument {CSSGroup} parent
  */
 export default function consumeListOfStyleRules(iterator, parent) {
 	/** @type {CSSValue[]} */

@@ -7,9 +7,7 @@ import CSSValue from './CSSValue';
  * The CSSAtRule class is the container object for values that make up an at-rule.
  */
 export default class CSSAtRule extends CSSGroup {
-	constructor(items: CSSAtRuleItems) {
-		this.items = items
-	}
+	constructor(items?: CSSAtRuleItems) {}
 
 	isCSSAtRule: true
 	items: CSSAtRuleItems

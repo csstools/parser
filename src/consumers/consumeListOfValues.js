@@ -3,8 +3,8 @@ import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
 
 /**
  * Consume a list of values.
- * @param {Iterator} iterator
- * @param {CSSGroup} parent
+ * @argument {Iterator} iterator
+ * @argument {CSSGroup} parent
  */
 export default function consumeListOfValues(iterator, parent) {
 	return consumeListOfValuesWhile(iterator, parent, isIterating)

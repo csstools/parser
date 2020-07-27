@@ -2,13 +2,12 @@ import { defineClass } from './CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**
- *
  * ## CSSAtRule
  *
- * The CSSAtRule class is the container object for stylesheet at-rules in CSS.
+ * The CSSAtRule class is the container object for values that make up an at-rule.
  *
- * @class @extends {CSSBlock}
- * @argument {CSSAtRuleItems} [items]
+ * @class @extends {CSSToken}
+ * @argument {CSSAtRuleItems} items
  */
 export default function CSSAtRule(items) {
 	/** @type {CSSAtRuleItems} */

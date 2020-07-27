@@ -31,7 +31,7 @@ mirrorOf[FUNCTION_TYPE] = R_RB
 
 /**
  * Returns true, as long as the iterator is iterating.
- * @param {Iterator} iterator
+ * @argument {Iterator} iterator
  */
 export function isIterating() {
 	return true
@@ -39,7 +39,7 @@ export function isIterating() {
 
 /**
  * Returns whether the iterator is currently a non-semi value.
- * @param {Iterator} iterator
+ * @argument {Iterator} iterator
  */
 export function isIteratingNonSemis(iterator) {
 	return iterator.type !== SEMI
@@ -47,7 +47,7 @@ export function isIteratingNonSemis(iterator) {
 
 /**
  * Returns whether the iterator is currently a skippable value.
- * @param {Iterator} iterator
+ * @argument {Iterator} iterator
  */
 export function isIteratingSkippableValues(iterator) {
 	const { type } = iterator
@@ -57,7 +57,7 @@ export function isIteratingSkippableValues(iterator) {
 
 /**
  * Returns whether the iterator is not the start of a curly-bracketed block.
- * @param {Iterator} iterator
+ * @argument {Iterator} iterator
  */
 export function isIteratingNonCurlyBracketedBlockStarts(iterator) {
 	return (
@@ -68,7 +68,7 @@ export function isIteratingNonCurlyBracketedBlockStarts(iterator) {
 
 /**
  * Returns whether the iterator value is a comma.
- * @param {Iterator} iterator
+ * @argument {Iterator} iterator
  */
 export function isIteratingCommaValue(iterator) {
 	return iterator.type === COMA
@@ -110,8 +110,8 @@ export function getSkippableSplicedValues(array, startingIndex, incremement) {
 
 /**
  * Creates an iterator
- * @param {CSSValue[]} cache - List of nodes or list to consume nodes.
- * @param {boolean} doIteration - Whether to iterate before returning the iterator.
+ * @argument {CSSValue[]} cache - List of nodes or list to consume nodes.
+ * @argument {boolean} doIteration - Whether to iterate before returning the iterator.
  */
 export function createIterator(nodes, doIteration) {
 	let wait = false

@@ -4,8 +4,8 @@ import { createIterator, getSkippableSplicedValues, isIteratingSkippableValues, 
 
 /**
  * Consume a list of selectors from an prepared iterator.
- * @param {Iterator} iterator
- * @param {CSSGroup} parent
+ * @argument {Iterator} iterator
+ * @argument {CSSGroup} parent
  */
 export default function consumeSeparation(iterator, parent, isSeparator, consumerOfSeparationValue) {
 	const extra = {

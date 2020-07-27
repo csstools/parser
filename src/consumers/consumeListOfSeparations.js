@@ -2,10 +2,10 @@ import consumeSeparation from './consumeSeparation.js'
 
 /**
  * Consume a list of separations from an unprepared iterator.
- * @param {*} iterator
- * @param {*} parent
- * @param {*} isSeparator
- * @param {*} consumerOfSeparationValue
+ * @argument {*} iterator
+ * @argument {*} parent
+ * @argument {*} isSeparator
+ * @argument {*} consumerOfSeparationValue
  */
 export default function consumeListOfSeparations(iterator, parent, isSeparator, consumerOfSeparationValue) {
 	/** @type {CSSSeparation[]} */

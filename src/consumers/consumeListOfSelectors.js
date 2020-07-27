@@ -4,8 +4,8 @@ import consumeSelector from './consumeSelector.js'
 
 /**
  * Consume a list of selectors from an unprepared iterator.
- * @param {Iterator} iterator
- * @param {CSSGroup} parent
+ * @argument {Iterator} iterator
+ * @argument {CSSGroup} parent
  */
 export default function consumeListOfSelectors(iterator, parent) {
 	return consumeListOfSeparations(iterator, parent, isIteratingCommaValue, consumeSelector)
