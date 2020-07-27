@@ -1,5 +1,5 @@
 import { defineClass } from './CSSValue.utils.js'
-import CSSRule from './CSSBlock.js'
+import CSSRule from './CSSRule.js'
 
 /**
  *

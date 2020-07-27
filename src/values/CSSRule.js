@@ -22,6 +22,7 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 
 		return {
 			constructor: this.constructor.name,
+			name:        items.name,
 			prelude:     toJSONObject(items.prelude),
 			opening:     toValueString(items.opening),
 			value:       toJSONObject(items.value),
@@ -32,6 +33,8 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 		const { items } = this
 
 		return toConcatenatedString(
+			items.name,
+			items.extra.betweenNameAndPrelude,
 			items.prelude,
 			items.extra.betweenPreludeAndOpening,
 			items.opening,
@@ -43,6 +46,8 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 		const { items } = this
 
 		return toConcatenatedValues(
+			items.name,
+			items.extra.betweenNameAndPrelude,
 			items.prelude,
 			items.extra.betweenPreludeAndOpening,
 			items.opening,

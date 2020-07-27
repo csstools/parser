@@ -20,7 +20,7 @@ export interface CSSRuleItems {
 	value: CSSValue[]
 	closing: CSSValue
 	extra: {
-		betweenNameAndPrelude?: CSSValue
-		betweenPreludeAndOpening?: CSSValue
+		betweenNameAndPrelude?: CSSValue[]
+		betweenPreludeAndOpening?: CSSValue[]
 	}
 }

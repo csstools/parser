@@ -26,10 +26,8 @@ if (isCssIdentical) {
 
 	for (let i = 0, l = Math.max(bootstrapSize, tokenizedSize); i < l; ++i) {
 		if (bootstrapCSS[i] !== processedCSS[i]) {
-			console.warn([
-				bootstrapCSS.slice(i - 50, i + 50),
-				processedCSS.slice(i - 50, i + 50)
-			])
+			console.warn(`Expected:`, [ bootstrapCSS.slice(i - 50, i), bootstrapCSS.slice(i, i + 50) ])
+			console.warn(`Received:`, [ processedCSS.slice(i - 50, i), processedCSS.slice(i, i + 50) ])
 			break
 		}
 	}
