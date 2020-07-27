@@ -37,7 +37,11 @@ const config = {
 						],
 					],
 				}),
-				terser(),
+				terser({
+					mangle: {
+						keep_fnames: /^CSS/
+					}
+				}),
 			],
 		},
 	],

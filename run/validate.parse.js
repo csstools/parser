@@ -1,15 +1,14 @@
 import { readFileSync } from 'fs'
 import resolve from 'resolve'
-import parse from '../src/parse.js'
+import { consumeStyleSheet } from '../src/consume.styles.js'
+import tokenize from '../src/tokenize.js'
 
 const bootstrapCSSPath = resolve.sync(`bootstrap/dist/css/bootstrap.css`)
 const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 
-const parser = parse(bootstrapCSS)
+const sheet = consumeStyleSheet(tokenize(bootstrapCSS))
 
-while (parser() === true) continue
-
-const tokenizedCSS = String(parser.root)
+const tokenizedCSS = String(sheet)
 
 // validate
 const isCssIdentical = bootstrapCSS === tokenizedCSS

@@ -146,6 +146,7 @@
       "no-param-reassign": 0,
       "no-plusplus": 0,
       "no-proto": 0,
+      "no-restricted-globals": 0,
       "no-restricted-syntax": 0,
       "no-return-assign": 0,
       "no-tabs": 0,

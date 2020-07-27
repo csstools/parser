@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import Benchmark from 'benchmark'
 import resolve from 'resolve'
 import tokenizePrd from 'postcss/lib/tokenize.js'
-import tokenizeDev from '../src/tokenize.js'
+import tokenizeDev from '../src/tokenize/tokenize.js'
 
 // setup test utilities
 const write = process.stdout.write.bind(process.stdout)

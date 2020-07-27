@@ -4,7 +4,7 @@ import resolve from 'resolve'
 import ParserPrd from 'postcss/lib/parser.js'
 import postcssValuesParserPackage from 'postcss-values-parser'
 import PostcssSelectorParser from 'postcss-selector-parser'
-import parse from '../src/parse.js'
+import { CSSStyleSheet } from '../src/parse.js'
 
 const { parse: postcssValuesParser } = postcssValuesParserPackage
 const postcssSelectorParser = PostcssSelectorParser()
@@ -61,9 +61,7 @@ addTest(`PostCSS/Selector/Value Parsers`, () => {
 })
 
 addTest(`PostCSS Parser (Development)`, () => {
-	const parser = parse(bootstrapCSS)
-
-	while (parser() === true) continue
+	CSSStyleSheet(bootstrapCSS)
 
 	// hard-code the number of nodes parsed
 	// so as not to negatively skew the results of the combined parsers
