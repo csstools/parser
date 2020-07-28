@@ -1,51 +1,56 @@
-import { defineClass, toConcatenatedString, toConcatenatedValues, toJSONObject, toValueString } from './CSSValue.utils.js'
+import { closing, closingType, defineClass, opening, openingType, toConcatenatedValues, toJSONObject, toValueString, value, values } from './CSSValue.utils.js'
 import CSSGroup from './CSSGroup.js'
 
-export default function CSSBlock(items) {
-	this.items = Object(items)
+/**
+ * CSSBlock
+ * @class @extends CSSGroup
+ */
+export default function CSSBlock(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSBlock`, CSSBlock, CSSGroup, {
+	/* CSSBlock {
+		opening: String(this.raw.opening)
+		value: String(this.raw.value)
+		values: Array(this.raw.values)
+		closing: String(this.raw.closing)
+		raw: {
+			opening?: CSSValue
+			value?: CSSValue[]
+			closing?: CSSValue
+		}
+	} */
+
 	// Methods
 	toJSON: [ 6, function toJSON() {
-		const { items } = this
+		const { raw } = this
 
 		return {
 			constructor: this.constructor.name,
-			opening:     toValueString(items.opening),
-			value:       toJSONObject(items.value),
-			closing:     toValueString(items.closing),
+			opening:     toValueString(raw.opening),
+			values:      toJSONObject(raw.values),
+			closing:     toValueString(raw.closing),
 		}
 	} ],
-	toString: [ 6, function toString() {
-		const { items } = this
-
-		return toConcatenatedString(
-			items.opening,
-			items.value,
-			items.closing
-		)
-	} ],
 	toValues: [ 6, function toValues() {
-		const { items } = this
+		const { raw } = this
 
 		return toConcatenatedValues(
-			items.opening,
-			items.value,
-			items.closing
+			raw.opening,
+			raw.value,
+			raw.closing
 		)
 	} ],
 
 	// Accessors
-	openingType: [ 10, function () {
-		return toValueString(this.items.opening).charCodeAt(0)
-	} ],
+	value:       [ 10, value ],
+	values:      [ 10, values ],
+	opening:     [ 10, opening ],
+	openingType: [ 10, openingType ],
+	closing:     [ 10, closing ],
+	closingType: [ 10, closingType ],
 
-	// Accessors
-	opening: [ 11, function () {
-		return toValueString(this.items.opening)
-	} ],
-	closing: [ 11, function () {
-		return toValueString(this.items.closing)
-	} ],
+	// Values
+	raw: [ 7, {} ],
 })

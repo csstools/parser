@@ -1,5 +1,5 @@
-import { defineClass, toConcatenatedString, toConcatenatedValues } from './CSSValue.utils.js'
-import CSSBlock from './CSSBlock.js'
+import { closing, closingType, defineClass, openingType, toConcatenatedValues, toSymbolString, toValueString, value, values } from './CSSValue.utils.js'
+import CSSGroup from './CSSGroup.js'
 
 /**
  *
@@ -8,29 +8,62 @@ import CSSBlock from './CSSBlock.js'
  * The CSSFunction class is the container object for functions in CSS.
  *
  * @class @extends {CSSBlock}
- * @argument {CSSFunctionItems} [items]
  */
-export default function CSSFunction(items) {
-	this.items = Object(items)
+export default function CSSFunction(raw) {
+	this.raw = Object(raw)
 }
 
-defineClass(`CSSFunction`, CSSFunction, CSSBlock, {
+defineClass(`CSSFunction`, CSSFunction, CSSGroup, {
+	/* CSSFunction {
+		name: toValueString(this.raw.opening)
+		value: String(this.raw.value)
+		values: Array(this.raw.values)
+		opening: toSymbolString(this.raw.opening)
+		closing: toValueString(this.raw.closing)
+		raw: {
+			opening?: this.raw.name
+			value?: CSSValue[]
+			closing?: CSSValue
+		}
+	} */
+
 	// Methods
-	toString: [ 6, function toString() {
-		return toConcatenatedString(
-			this.items.opening,
-			this.items.value,
-			this.items.closing
-		)
+	toJSON: [ 6, function toJSON() {
+		return {
+			constructor: this.constructor.name,
+			name:        this.name,
+			value:       this.values,
+		}
 	} ],
 	toValues: [ 6, function toValues() {
+		const { raw } = this
 		return toConcatenatedValues(
-			this.items.opening,
-			this.items.value,
-			this.items.closing
+			raw.opening,
+			raw.value,
+			raw.closing
 		)
 	} ],
+
+	// Accessors
+	name:        [ 10, name ],
+	value:       [ 10, value ],
+	values:      [ 10, values ],
+	opening:     [ 10, opening ],
+	openingType: [ 10, openingType ],
+	closing:     [ 10, closing ],
+	closingType: [ 10, closingType ],
+
+	// Values
+	raw: [ 7, {} ],
 })
+
+function name() {
+	return toValueString(this.raw.opening)
+}
+
+function opening() {
+	return toSymbolString(this.raw.opening)
+}
 
 /** @typedef {import("./CSSValue.js")} CSSValue */
 /** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSFunctionItems */

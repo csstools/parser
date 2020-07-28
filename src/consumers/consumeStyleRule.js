@@ -11,13 +11,11 @@ import consumeRuleContents from './consumeRuleContents.js'
  */
 export default function consumeStyleRule(iterator, parent) {
 	const element = withParent(new CSSStyleRule({
-		prelude: null,
-		opening: null,
-		value:   null,
-		closing: null,
-		extra:   {
-			betweenPreludeAndOpening: null,
-		},
+		prelude:                  null,
+		betweenPreludeAndOpening: null,
+		opening:                  null,
+		value:                    null,
+		closing:                  null,
 	}), parent)
 
 	iterator.redo()

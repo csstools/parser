@@ -1,14 +1,14 @@
-import CSSToken from './CSSToken';
+import CSSToken from './CSSToken'
 
 /**
  * ## CSSSpace
  *
  * The CSSSpace class is the token object for all space values in CSS.
  */
-export default class CSSSpace extends CSSToken {
-	constructor(value?: string) {}
+export default class CSSSpace<V extends string> extends CSSToken<V> {
+	constructor(value?: V)
 
-	isCSSSpace: true
-	value: string
-	unit: string
+	isCSSSymbol: true
+	type: 0x0009
+	value: V
 }

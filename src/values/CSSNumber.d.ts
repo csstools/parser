@@ -5,11 +5,11 @@ import CSSToken from './CSSToken';
  *
  * The CSSNumber class is the token object for all numeric values in CSS.
  */
-export default class CSSNumber extends CSSToken {
-	constructor(value?: string, unit?: string) {}
+export default class CSSNumber<V extends string, U extends string> extends CSSToken<V> {
+	constructor(value?: V, unit?: U)
 
 	isCSSNumber: true
-	symbol: "#"
-	value: string
-	unit: string
+	type: 0x0030
+	value: V
+	unit: U
 }

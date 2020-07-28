@@ -1,4 +1,4 @@
-import { defineClass, toValueString } from './CSSValue.utils.js'
+import { closing, closingType, defineClass, name, opening, openingType, prelude, toConcatenatedValues, toString, value, values } from './CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**
@@ -7,18 +7,48 @@ import CSSRule from './CSSRule.js'
  * The CSSAtRule class is the container object for values that make up an at-rule.
  *
  * @class @extends {CSSToken}
- * @argument {CSSAtRuleItems} items
  */
-export default function CSSAtRule(items) {
-	/** @type {CSSAtRuleItems} */
-	this.items = Object(items)
+export default function CSSAtRule(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {
-	// Accessors
-	name: [ 11, function () {
-		return toValueString(this.items.name)
+	// Methods
+	toJSON: [ 6, function toJSON() {
+		return {
+			constructor: this.constructor.name,
+			name:        this.name,
+			prelude:     this.value,
+			value:       this.values,
+		}
 	} ],
+	toString: [ 6, toString ],
+	toValues: [ 6, function toValues() {
+		const { raw } = this
+
+		return toConcatenatedValues(
+			raw.name,
+			raw.betweenNameAndPrelude,
+			raw.prelude,
+			raw.betweenPreludeAndOpening,
+			raw.opening,
+			raw.value,
+			raw.closing
+		)
+	} ],
+
+	// Accessors
+	name:        [ 11, name ],
+	value:       [ 10, value ],
+	values:      [ 10, values ],
+	prelude:     [ 10, prelude ],
+	opening:     [ 10, opening ],
+	openingType: [ 10, openingType ],
+	closing:     [ 10, closing ],
+	closingType: [ 10, closingType ],
+
+	// Values
+	raw: [ 7, {} ],
 })
 
 /** @typedef {import("./CSSValue.js")} CSSValue */

@@ -11,15 +11,13 @@ import consumeRuleContents from './consumeRuleContents.js'
  */
 export default function consumeAtRule(iterator, parent, consumerOfListOfRuleValue, consumeOfListOfRulePrelude) {
 	const element = withParent(new CSSAtRule({
-		name:    iterator.value,
-		prelude: null,
-		opening: null,
-		value:   null,
-		closing: null,
-		extra:   {
-			betweenNameAndPrelude:    null,
-			betweenPreludeAndOpening: null,
-		},
+		name:                     iterator.value,
+		betweenNameAndOpening:    null,
+		prelude:                  null,
+		betweenPreludeAndOpening: null,
+		opening:                  null,
+		value:                    null,
+		closing:                  null,
 	}), parent)
 
 	return consumeRuleContents(iterator, element, consumerOfListOfRuleValue, consumeOfListOfRulePrelude)
@@ -27,5 +25,8 @@ export default function consumeAtRule(iterator, parent, consumerOfListOfRuleValu
 
 consumeAtRule.prepare = true
 
-/** @typedef {import('../values/index.js').CSSGroup} CSSGroup */
-/** @typedef {import('../css-objects.js').Iterator} Iterator */
+/** @typedef {import('../values/index.js').CSSGroup<{ value: CSSAtRule<{ name: CSSWord<string>, prelude: CSSValue[], opening: CSSSymbol, closing: CSSSymbol }> }>} CSSGroup */
+/** @typedef {import('../values/index.js').CSSWord<string>} CSSWord */
+/** @typedef {import('../values/index.js').CSSValue} CSSValue */
+/** @typedef {import('../values/index.js').CSSSymbol<string>} CSSSymbol */
+/** @typedef {import('../tokenize/tokenize.js').Iterator} Iterator */

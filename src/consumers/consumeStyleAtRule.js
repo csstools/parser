@@ -10,14 +10,12 @@ import consumeListOfStyleRules from './consumeListOfStyleRules.js'
  */
 export default function consumeStyleAtRule(iterator, parent) {
 	const element = withParent(new CSSAtRule({
-		name:    iterator.value,
-		prelude: null,
-		opening: null,
-		value:   null,
-		closing: null,
-		extra:   {
-			betweenPreludeAndOpening: null,
-		},
+		name:                     iterator.value,
+		prelude:                  null,
+		betweenPreludeAndOpening: null,
+		opening:                  null,
+		value:                    null,
+		closing:                  null,
 	}), parent)
 
 	return consumeRuleContents(iterator, element, consumeListOfStyleRules)

@@ -8,7 +8,7 @@ import consumeListOfStyleRules from './consumeListOfStyleRules.js'
  */
 export default function consumeStyleSheet(iterator) {
 	const element = new CSSStyleSheet({ value: null })
-	element.items.value = consumeListOfStyleRules(iterator, element)
+	element.raw.value = consumeListOfStyleRules(iterator, element)
 	return element
 }
 

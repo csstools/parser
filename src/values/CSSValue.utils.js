@@ -1,4 +1,8 @@
 const { create, defineProperties } = Object
+const { isArray } = Array
+const { reduce } = Array.prototype
+
+export { isArray }
 
 /**
  * Assigns a parent class and prototype descriptors to the target class.
@@ -61,20 +65,20 @@ function toDescriptors(props) {
  * @template {number} B @template {any | Function} G @template {Function} S
  * @returns {{ configurable: boolean, enumerable: boolean, writable?: boolean, get?: G, set?: S, value?: G }}
  * @example
- * | bitmask | enumerable | configurable | writable | accessor |
- * | ------- | ---------- | ------------ | -------- | -------- |
- * |       0 |            |              |          |          |
- * |       1 |     ■      |              |          |          |
- * |       2 |            |      ■       |          |          |
- * |       3 |     ■      |      ■       |          |          |
- * |       4 |            |              |    ■     |          |
- * |       5 |     ■      |              |    ■     |          |
- * |       6 |            |      ■       |    ■     |          |
- * |       7 |     ■      |      ■       |    ■     |          |
- * |       8 |            |              |          |    ■     |
- * |       9 |     ■      |              |          |    ■     |
- * |      10 |            |      ■       |          |    ■     |
- * |      11 |     ■      |      ■       |          |    ■     |
+ * |  #  | E | C | W | A |
+ * | --- | - | - | - | - |
+ * | 0x0 |   |   |   |   |
+ * | 0x1 | E |   |   |   |
+ * | 0x2 |   | C |   |   |
+ * | 0x3 | E | C |   |   |
+ * | 0x4 |   |   | W |   |
+ * | 0x5 | E |   | W |   |
+ * | 0x6 |   | C | W |   |
+ * | 0x7 | E | C | W |   |
+ * | 0x8 |   |   |   | A |
+ * | 0x9 | E |   |   | A |
+ * | 0xA |   | C |   | A |
+ * | 0xB | E | C |   | A |
  */
 function toDescriptor(bitmask, getter, setter) {
 	/** @type {{ configurable: boolean, enumerable: boolean, writable?: boolean, get?: G, set?: S, value?: G }} */
@@ -103,12 +107,15 @@ function toDescriptor(bitmask, getter, setter) {
  * @returns {string}
  */
 export function toConcatenatedString() {
-	return Array.prototype.reduce.call(arguments, (array, value) => {
-		if (Array.isArray(value)) array.push(...value)
-		else if (value != null) array.push(value)
+	return toConcatenatedValues.apply(this, arguments).join(``)
+}
 
-		return array
-	}, []).join(``)
+/**
+ * Returns a concatenated string from the values of a CSSGroup.
+ * @returns {string}
+ */
+export function toString() {
+	return this.toValues().join(``)
 }
 
 /**
@@ -117,35 +124,21 @@ export function toConcatenatedString() {
  * @returns {CSSValue[]}
  */
 export function toConcatenatedValues() {
-	return Array.prototype.reduce.call(arguments, (array, value) => {
-		array.push(...getConcatenatedValue(value))
+	return reduce.call(arguments, (array, value) => {
+		if (isArray(value)) array.push(...value)
+		else if (value != null) array.push(value)
 
 		return array
 	}, [])
-
-	function getConcatenatedValue(value) {
-		return value == null
-			? []
-			: Array.isArray(value)
-				? value.reduce(
-					(array, innerValue) => {
-						array.push(...getConcatenatedValue(innerValue))
-
-						return array
-					},
-					[]
-				)
-				: typeof value.toValues === `function`
-					? value.toValues()
-					: [ value ]
-	}
 }
 
-/** Return a value as a JSON-compatible object. */
+/**
+ * Return a value as a JSON-compatible object.
+ */
 export function toJSONObject(value) {
 	return value == null
 		? null
-		: Array.isArray(value)
+		: isArray(value)
 			? value.map(toJSONObject)
 			: typeof Object(value).toJSON === `function`
 				? value.toJSON()
@@ -156,6 +149,109 @@ export function toSymbolString(node) {
 	return Object(node).symbol == null ? null : String(node.symbol)
 }
 
+/**
+ * Returns the string value of the object’s value.
+ * @param {CSSToken} node
+ */
 export function toValueString(node) {
 	return Object(node).value == null ? null : String(node.value)
 }
+
+/**
+ * Returns the string value of the object’s raw name.
+ * @param {CSSToken} node
+ */
+export function name() {
+	return toConcatenatedString(this.raw.name)
+}
+
+/**
+ * Returns a string value of the object’s raw separator.
+ * @this {{ raw: { separator: CSSToken }}}
+ */
+export function separator() {
+	return toConcatenatedString(this.raw.separator)
+}
+
+/**
+ * Returns a string value of the object’s raw value.
+ * @this {{ raw: { separator: CSSToken }}}
+ */
+export function value() {
+	return toConcatenatedString(this.raw.value)
+}
+
+/**
+ * Return the array of values from the group, otherwise an empty array.
+ * @this {CSSGroup}
+ * @returns {CSSValue[]}
+ */
+export function values() {
+	const { value } = this.raw
+
+	return isArray(value) ? value : []
+}
+
+/**
+ * Returns a string value of the object’s raw priority.
+ * @this {{ raw: { priority: CSSPriority }}}
+ */
+export function priority() {
+	return toValueString(this.raw.priority)
+}
+
+/**
+ * Returns a string value of the object’s raw opening.
+ * @this {{ raw: { opening: CSSSymbol }}}
+ */
+export function opening() {
+	return toValueString(this.raw.opening)
+}
+
+/**
+ * Returns a starting character code of the object’s opening.
+ * @this {{ opening: string }}
+ */
+export function openingType() {
+	return this.opening.charCodeAt(0)
+}
+
+/**
+ * Returns a starting character code of the object’s value.
+ * @this {CSSToken}
+ */
+export function valueType() {
+	return this.value.charCodeAt(0)
+}
+
+/**
+ * Returns a string value of the object’s raw closing.
+ * @this {{ raw: { closing: CSSSymbol }}}
+ */
+export function closing() {
+	return toValueString(this.raw.closing)
+}
+
+/**
+ * Returns a starting character code of the object’s closing.
+ * @this {{ closing: string }}
+ */
+export function closingType() {
+	return this.closing.charCodeAt(0)
+}
+
+/**
+ * Returns the values of the object’s raw prelude.
+ * @this {{ raw: { prelude: CSSValue[] } }}
+ */
+export function prelude() {
+	return isArray(this.raw.prelude) ? this.raw.prelude : []
+}
+
+/** @typedef {import('../values').CSSBlock<{ opening: CSSToken, value: CSSValue[], closing: CSSToken }>} CSSBlock */
+/** @typedef {import('../values').CSSGroup<{ value: CSSToken }>} CSSGroup */
+/** @typedef {import('../values').CSSPriority<{ symbol: CSSSymbol, value: CSSWord }>} CSSPriority */
+/** @typedef {import('../values').CSSSymbol<string>} CSSSymbol */
+/** @typedef {import('../values').CSSToken<string>} CSSToken */
+/** @typedef {import('../values').CSSValue} CSSValue */
+/** @typedef {import('../values').CSSWord<string>} CSSWord */

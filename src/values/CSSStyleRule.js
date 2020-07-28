@@ -8,14 +8,9 @@ import CSSRule from './CSSRule.js'
  * The CSSStyleRule class is the container object for stylesheet rules in CSS.
  *
  * @class @extends {CSSRule}
- * @argument {CSSStyleRuleItems} [items]
  */
-export default function CSSStyleRule(items) {
-	/** @type {CSSStyleRuleItems} */
-	this.items = Object(items)
+export default function CSSStyleRule(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSStyleRule`, CSSStyleRule, CSSRule, {})
-
-/** @typedef {import("./CSSValue.js")} CSSValue */
-/** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSStyleRuleItems */

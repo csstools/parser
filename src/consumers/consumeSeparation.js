@@ -1,6 +1,6 @@
-import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
-import CSSSeparatedGroup from '../values/CSSSeparation.js'
 import { createIterator, getSkippableSplicedValues, isIteratingSkippableValues, withParent } from './consume.utils.js'
+import CSSSeparatedGroup from '../values/CSSSeparation.js'
+import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
 
 /**
  * Consume a list of selectors from an prepared iterator.
@@ -8,39 +8,36 @@ import { createIterator, getSkippableSplicedValues, isIteratingSkippableValues, 
  * @argument {CSSGroup} parent
  */
 export default function consumeSeparation(iterator, parent, isSeparator, consumerOfSeparationValue) {
-	const extra = {
+	const raw = {
+		separator:   null,
 		beforeValue: null,
+		value:       null,
 		afterValue:  null,
 	}
-	const items = {
-		separator: null,
-		value:     null,
-		extra,
-	}
-	const element = withParent(new CSSSeparatedGroup(items), parent)
+	const element = withParent(new CSSSeparatedGroup(raw), parent)
 
 	// potentially consume the separator
-	if (isSeparator(iterator)) items.separator = iterator.value
+	if (isSeparator(iterator)) raw.separator = iterator.value
 	else iterator.redo()
 
 	// consume skippable values between the separator and the value
-	extra.beforeValue = consumeListOfValuesWhile(iterator, parent, isIteratingSkippableValues)
+	raw.beforeValue = consumeListOfValuesWhile(iterator, parent, isIteratingSkippableValues)
 
 	iterator.redo()
 
 	// consume values until another skippable value is reached
-	items.value = consumeListOfValuesWhile(
+	raw.value = consumeListOfValuesWhile(
 		iterator,
 		parent,
 		(innerIterator) => !isSeparator(innerIterator)
 	)
 
 	// move ending skippable values
-	extra.afterValue = getSkippableSplicedValues(items.value, items.value.length - 1, -1)
+	raw.afterValue = getSkippableSplicedValues(raw.value, raw.value.length - 1, -1)
 
 	if (typeof consumerOfSeparationValue === `function`) {
-		items.value = consumerOfSeparationValue(
-			createIterator(items.value, true),
+		raw.value = consumerOfSeparationValue(
+			createIterator(raw.value, true),
 			element
 		)
 	}

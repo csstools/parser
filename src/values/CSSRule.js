@@ -1,4 +1,4 @@
-import { defineClass, toConcatenatedString, toConcatenatedValues, toJSONObject, toValueString } from './CSSValue.utils.js'
+import { closing, closingType, defineClass, opening, openingType, prelude, toConcatenatedValues, toJSONObject, toString, value, values } from './CSSValue.utils.js'
 import CSSBlock from './CSSBlock.js'
 
 /**
@@ -8,58 +8,44 @@ import CSSBlock from './CSSBlock.js'
  * The CSSRule class is the container object for rules in CSS.
  *
  * @class @extends {CSSBlock}
- * @argument {CSSRuleItems} [items]
  */
-export default function CSSRule(items) {
-	/** @type {CSSRuleItems} */
-	this.items = Object(items)
+export default function CSSRule(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSRule`, CSSRule, CSSBlock, {
 	// Methods
 	toJSON: [ 6, function toJSON() {
-		const { items } = this
-
 		return {
 			constructor: this.constructor.name,
-			name:        items.name,
-			prelude:     toJSONObject(items.prelude),
-			opening:     toValueString(items.opening),
-			value:       toJSONObject(items.value),
-			closing:     toValueString(items.closing),
+			prelude:     toJSONObject(this.prelude),
+			values:      toJSONObject(this.values),
 		}
 	} ],
-	toString: [ 6, function toString() {
-		const { items } = this
-
-		return toConcatenatedString(
-			items.name,
-			items.extra.betweenNameAndPrelude,
-			items.prelude,
-			items.extra.betweenPreludeAndOpening,
-			items.opening,
-			items.value,
-			items.closing
-		)
-	} ],
+	toString: [ 6, toString ],
 	toValues: [ 6, function toValues() {
-		const { items } = this
+		const { raw } = this
 
 		return toConcatenatedValues(
-			items.name,
-			items.extra.betweenNameAndPrelude,
-			items.prelude,
-			items.extra.betweenPreludeAndOpening,
-			items.opening,
-			items.value,
-			items.closing
+			raw.prelude,
+			raw.betweenPreludeAndOpening,
+			raw.opening,
+			raw.value,
+			raw.closing
 		)
 	} ],
 
 	// Accessors
-	prelude: [ 11, function () {
-		return this.items.prelude
-	} ],
+	value:       [ 10, value ],
+	values:      [ 10, values ],
+	prelude:     [ 10, prelude ],
+	opening:     [ 10, opening ],
+	openingType: [ 10, openingType ],
+	closing:     [ 10, closing ],
+	closingType: [ 10, closingType ],
+
+	// Values
+	raw: [ 7, {} ],
 })
 
 /** @typedef {import("./CSSValue.js")} CSSValue */

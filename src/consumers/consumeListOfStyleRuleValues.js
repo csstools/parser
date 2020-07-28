@@ -52,7 +52,7 @@ export default function consumeListOfStyleRuleValues(iterator, parent) {
 				)
 
 				if (iterator.type === SEMI) {
-					declaration.items.closing = withParent(iterator.value, declaration)
+					declaration.raw.closing = withParent(iterator.value, declaration)
 				}
 
 				listOfDeclarations.push(declaration)

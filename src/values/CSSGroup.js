@@ -1,42 +1,40 @@
-import { defineClass, toConcatenatedString, toConcatenatedValues, toJSONObject } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedValues, toJSONObject, toString, value, values } from './CSSValue.utils.js'
 import CSSValue from './CSSValue.js'
 
-export default function CSSGroup(items) {
-	this.items = Object(items)
+export default function CSSGroup(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSGroup`, CSSGroup, CSSValue, {
-	isCSSToken: [ 6, false ],
+	/* CSSGroup {
+		value: String(this.raw.value)
+		values: Array(this.raw.values)
+		raw: {
+			opening?: CSSValue
+			value?: CSSValue[]
+			closing?: CSSValue
+		}
+	} */
+	isCSSGroup: [ 6, true ],
 
 	// Methods
 	toJSON: [ 6, function toJSON() {
 		return {
 			constructor: this.constructor.name,
-			value:       toJSONObject(this.items.value),
+			values:      toJSONObject(this.values),
 		}
 	} ],
-	toString: [ 6, function toString() {
-		try {
-			return toConcatenatedString(
-				this.items.value
-			)
-		} catch (error) {
-			console.log(this)
-
-			throw error
-		}
-	} ],
+	toString: [ 6, toString ],
 	toValues: [ 6, function toValues() {
 		return toConcatenatedValues(
-			this.items.value
+			this.raw.value
 		)
 	} ],
 
 	// Accessors
-	position: [ 10, function () {
-		return this.toValues()[0].source
-	} ],
-	value: [ 11, function () {
-		return this.items.value
-	} ],
+	value:  [ 10, value ],
+	values: [ 10, values ],
+
+	// Values
+	raw: [ 7, {} ],
 })

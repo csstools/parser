@@ -1,17 +1,16 @@
+import { ATWORD_TYPE } from '../utils/token-types'
 import CSSToken from './CSSToken';
 
 /**
  * ## CSSAtWord
  *
  * The CSSAtWord class is the token object for all at-prefixed word in CSS.
- *
- * @class @extends {CSSToken}
- * @argument {string} value - Value of the at-prefixed word.
  */
-export default class CSSAtWord extends CSSToken {
-	constructor(value?: string) {}
+export default class CSSAtWord<V extends string> extends CSSToken {
+	constructor(value?: V)
 
 	isCSSAtWord: true
 	symbol: "@"
-	value: string
+	type: 0x0041
+	value: V
 }

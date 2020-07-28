@@ -5,10 +5,11 @@ import CSSToken from './CSSToken';
  *
  * The CSSHash class is the token object for all hashes in CSS.
  */
-export default class CSSHash extends CSSToken {
-	constructor(value?: string, isWithoutClosing?: boolean) {}
+export default class CSSHash<V extends string> extends CSSToken {
+	constructor(value?: V)
 
 	isCSSHash: true
 	symbol: "#"
-	value: string
+	type: 0x0048
+	value: V
 }

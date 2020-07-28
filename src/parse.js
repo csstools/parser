@@ -2,7 +2,6 @@ import tokenize from './tokenize/tokenize.js'
 
 import {
 	CSSAtRule as consumeCSSAtRule,
-	CSSBlock as consumeCSSBlock,
 	CSSDeclaration as consumeCSSDeclaration,
 	CSSRule as consumeCSSRule,
 	CSSStyleRule as consumeCSSStyleRule,
@@ -34,6 +33,6 @@ function createParser(consumer) {
 	const doIteration = consumer.prepare
 
 	return function parser(cssText) {
-		return consumer(tokenize(cssText, doIteration))
+		return consumer(tokenize(cssText, doIteration), null)
 	}
 }

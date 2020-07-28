@@ -6,7 +6,7 @@ const { charCodeAt } = String.prototype
 export default function CSSToken() {}
 
 defineClass(`CSSToken`, CSSToken, CSSValue, {
-	isCSSGroup: [ 6, false ],
+	isCSSToken: [ 6, false ],
 
 	// Methods
 	toJSON: [ 6, function toJSON() {

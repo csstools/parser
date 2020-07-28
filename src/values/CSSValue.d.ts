@@ -5,8 +5,4 @@ import CSSGroup from './CSSGroup'
  *
  * The CSSValue class is the foundational class that all other CSS objects extend from.
  */
-export default interface CSSValue extends Object {
-	isCSSValue: true
-	value: string
-	parent: CSSGroup
-}
+export default class CSSValue extends Object {}

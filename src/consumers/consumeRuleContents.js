@@ -11,14 +11,14 @@ import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
  * @argument {Consumer} [consumeOfListOfRulePrelude]
  */
 export default function consumeRuleContents(iterator, element, consumerOfListOfRuleValue, consumeOfListOfRulePrelude) {
-	const { items } = element
-	const prelude = items.prelude = consumeListOfValuesWhile(iterator, element, isIteratingNonCurlyBracketedBlockStarts)
+	const { raw } = element
+	const prelude = raw.prelude = consumeListOfValuesWhile(iterator, element, isIteratingNonCurlyBracketedBlockStarts)
 
-	items.extra.betweenNameAndPrelude = getSkippableSplicedValues(prelude, 0, 1)
-	items.extra.betweenPreludeAndOpening = getSkippableSplicedValues(prelude, prelude.length - 1, -1)
+	raw.betweenNameAndPrelude = getSkippableSplicedValues(prelude, 0, 1)
+	raw.betweenPreludeAndOpening = getSkippableSplicedValues(prelude, prelude.length - 1, -1)
 
 	if (typeof consumeOfListOfRulePrelude === `function`) {
-		items.prelude = consumeOfListOfRulePrelude(
+		raw.prelude = consumeOfListOfRulePrelude(
 			createIterator(prelude),
 			element
 		)
@@ -32,17 +32,17 @@ export default function consumeRuleContents(iterator, element, consumerOfListOfR
 			break
 
 		case value.openingType === L_CB:
-			items.opening = withParent(value.items.opening, element)
-			items.value = value.items.value
-			items.closing = withParent(value.items.closing, element)
+			raw.opening = withParent(value.raw.opening, element)
+			raw.value = value.raw.value
+			raw.closing = withParent(value.raw.closing, element)
 	}
 
 	if (
 		typeof consumerOfListOfRuleValue === `function`
-		&& items.value
+		&& raw.value
 	) {
-		items.value = consumerOfListOfRuleValue(
-			createIterator(items.value),
+		raw.value = consumerOfListOfRuleValue(
+			createIterator(raw.value),
 			element
 		)
 	}

@@ -1,49 +1,44 @@
-import { defineClass, toConcatenatedString, toJSONObject, toConcatenatedValues } from './CSSValue.utils.js'
+import { defineClass, separator, toConcatenatedValues, toJSONObject, toString, value, values } from './CSSValue.utils.js'
 import CSSGroup from './CSSGroup.js'
 
 /**
  *
  * ## CSSSeparation
  *
- * The CSSSeparation class is the container of separated groups and tokens in CSS.
+ * The CSSSeparation class is the container of values that are separated in CSS.
+ *
+ * Examples include comma separated lists, like those in a `var()` function,
+ * or selectors in a style rule.
  *
  * @class @extends {CSSGroup}
  */
-export default function CSSSeparation(items) {
-	this.items = Object(items)
+export default function CSSSeparation(raw) {
+	this.raw = Object(raw)
 }
 
 defineClass(`CSSSeparation`, CSSSeparation, CSSGroup, {
 	// Methods
 	toJSON: [ 6, function toJSON() {
-		const { items } = this
-
 		return {
 			constructor: this.constructor.name,
-			separator:   items.separator,
-			value:       toJSONObject(items.value),
+			separator:   this.separator,
+			values:      toJSONObject(this.values),
 		}
 	} ],
-	toString: [ 6, function toString() {
-		const { items } = this
-
-		return toConcatenatedString(
-			items.separator,
-			items.extra.beforeValue,
-			items.value,
-			items.extra.afterValue
-		)
-	} ],
+	toString: [ 6, toString ],
 	toValues: [ 6, function toValues() {
-		const { items } = this
+		const { raw } = this
 
 		return toConcatenatedValues(
-			items.separator,
-			items.extra.beforeValue,
-			items.value,
-			items.extra.afterValue
+			raw.separator,
+			raw.beforeValue,
+			raw.value,
+			raw.afterValue
 		)
 	} ],
-})
 
-/** @typedef {import("./CSSValue.js")} CSSValue */
+	// Accessors
+	value:     [ 10, value ],
+	values:    [ 10, values ],
+	separator: [ 10, separator ],
+})

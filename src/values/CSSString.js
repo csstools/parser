@@ -1,4 +1,4 @@
-import { WORD_TYPE } from '../utils/token-types.js'
+import { STRING_TYPE } from '../utils/token-types.js'
 import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
 import { edgeOfDQString, emptyString } from '../utils/string-values.js'
 import CSSToken from './CSSToken.js'
@@ -20,7 +20,7 @@ export default function CSSString(value, opening, isWithoutClosing) {
 }
 
 defineClass(`CSSString`, CSSString, CSSToken, {
-	type: [ 2, WORD_TYPE ],
+	type: [ 2, STRING_TYPE ],
 
 	// Methods
 	toJSON: [ 6, function toJSON() {

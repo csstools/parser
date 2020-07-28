@@ -523,7 +523,7 @@ export default function tokenize(cssText, doIteration) {
 		value.value = mainText
 
 		// assign the current value’s source
-		value.source = [ line, open - lineOpen ]
+		value.source = { line, column: open - lineOpen }
 
 		// assign the current type to the iterator
 		iterator.type = type
@@ -718,7 +718,7 @@ export default function tokenize(cssText, doIteration) {
 /**
  * @typedef {() => TokenIterator} tokenize - Reads CSS and returns a function for consuming tokens from it.
  * @typedef {import('../values/index.js').CSSValue} CSSValue
- * @typedef {import('../values/index.js').CSSGroup} CSSGroup
+ * @typedef {import('../values/index.js').CSSGroup<{ value: string }>} CSSGroup
  * @typedef {{ (): boolean, redo(): void, type: number, value: CSSValue }} TokenIterator - Consumes a token and returns whether it was consumed.
  * @typedef {{ (): boolean, redo(): void, type: number | typeof CSSGroup, value: CSSValue }} Iterator - Consumes a token and returns whether it was consumed.
  * @property {number} type - Integer identifying what the current token is.

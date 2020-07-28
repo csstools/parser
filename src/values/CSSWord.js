@@ -9,7 +9,6 @@ import CSSToken from './CSSToken.js'
  * The CSSWord class is the token object for all named words in CSS.
  *
  * @class @extends {CSSToken}
- * @argument {string} value - Value of the word.
  */
 export default function CSSWord(value) {
 	this.value = value == null ? doubleDashes : String(value)
