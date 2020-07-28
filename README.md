@@ -61,44 +61,10 @@ npm run build
 └─────────────────────────────────────┘
 ```
 
-### Lint
+### Test
 
 ```shell
-npm run lint
+npm run test
 ```
 
 All checks should pass.
-
-## Usage
-
-```js
-import parseCSSRoot from './dist/parse.cjs'
-
-const token = tokenize(`/* Example Comment */`)
-
-// log each token type and token string parts
-while (token()) {
-  console.log(
-    token.type,      // 67
-    token.getLead(), // `/*`
-    token.getText(), // ` Example Comment `
-    token.getTail()  // `/*`
-  )
-}
-```
-
-```js
-import evaluate from 'src/evaluate.js'
-import tokenize from 'src/tokenize.js'
-
-const token = tokenize(`/* Example Comment */`)
-const value = evaluate(token)
-
-// log each token type, evaluation stage, and known value string
-while (value()) {
-  console.log(
-    `${token.type}:${value.enter ? `enter` : `leave`}`, // `67:enter`
-    value.node.toString() // `/* Example Comment */`
-  )
-}
-```
