@@ -15,7 +15,7 @@
     "benchmark:parse": "node run/benchmark.parse.js",
     "benchmark:tokenize": "node run/benchmark.tokenize.js",
     "build": "rollup -c run/rollup.config.js",
-    "lint": "eslint .",
+    "test": "eslint .",
     "validate": "npm run validate:tokenize && npm run validate:parse",
     "validate:parse": "node run/validate.parse.js",
     "validate:tokenize": "node run/validate.tokenize.js",
