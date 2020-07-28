@@ -10,9 +10,10 @@ import CSSGroup from './CSSGroup.js'
  * @class @extends {CSSGroup}
  * @argument {CSSSelectorItems} [items]
  */
-export default function CSSSelector(items) {
+export default function CSSSelector(items, type) {
 	/** @type {CSSSelectorItems} */
 	this.items = Object(items)
+	this.type = type || `unknown`
 }
 
 defineClass(`CSSSelector`, CSSSelector, CSSGroup, {

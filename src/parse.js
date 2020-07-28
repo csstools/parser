@@ -17,7 +17,6 @@ import {
 
 // generic
 export const CSSAtRule = createParser(consumeCSSAtRule)
-export const CSSBlock = createParser(consumeCSSBlock)
 export const CSSRule = createParser(consumeCSSRule)
 export const listOfCSSSeparations = createParser(consumelistOfCSSSeparations)
 export const listOfCSSValues = createParser(consumelistOfCSSValues)
@@ -32,7 +31,9 @@ export const listOfCSSStyleRules = createParser(consumelistOfCSSStyleRules)
 export const listOfCSSStyleRuleValues = createParser(consumelistOfCSSStyleRuleValues)
 
 function createParser(consumer) {
+	const doIteration = consumer.prepare
+
 	return function parser(cssText) {
-		return consumer(tokenize(cssText, Boolean(consumer.prepare)))
+		return consumer(tokenize(cssText, doIteration))
 	}
 }

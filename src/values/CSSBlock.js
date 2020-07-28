@@ -40,4 +40,12 @@ defineClass(`CSSBlock`, CSSBlock, CSSGroup, {
 	openingType: [ 10, function () {
 		return toValueString(this.items.opening).charCodeAt(0)
 	} ],
+
+	// Accessors
+	opening: [ 11, function () {
+		return toValueString(this.items.opening)
+	} ],
+	closing: [ 11, function () {
+		return toValueString(this.items.closing)
+	} ],
 })

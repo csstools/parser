@@ -1,4 +1,4 @@
-import { defineClass, toConcatenatedString, toJSONObject, toValueString } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedString, toJSONObject, toValueString, toConcatenatedValues } from './CSSValue.utils.js'
 import CSSGroup from './CSSGroup.js'
 
 /**
@@ -39,6 +39,35 @@ defineClass(`CSSDeclaration`, CSSDeclaration, CSSGroup, {
 			items.extra.betweenValueAndClosing,
 			items.closing
 		)
+	} ],
+	toValues: [ 6, function toValues() {
+		const { items } = this
+
+		return toConcatenatedValues(
+			items.name,
+			items.extra.betweenNameAndOpening,
+			items.opening,
+			items.extra.betweenOpeningAndValue,
+			items.value,
+			items.extra.betweenValueAndImportant,
+			items.important,
+			items.extra.betweenValueAndClosing,
+			items.closing
+		)
+	} ],
+
+	// Accessors
+	name: [ 11, function () {
+		return toValueString(this.items.name)
+	} ],
+	opening: [ 11, function () {
+		return toValueString(this.items.opening)
+	} ],
+	important: [ 11, function () {
+		return String(this.items.important)
+	} ],
+	closing: [ 11, function () {
+		return toValueString(this.items.closing)
 	} ],
 })
 

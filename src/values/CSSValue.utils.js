@@ -127,8 +127,15 @@ export function toConcatenatedValues() {
 		return value == null
 			? []
 			: Array.isArray(value)
-				? value.map(toConcatenatedValues)
-				: typeof Object(value).toValues === `function`
+				? value.reduce(
+					(array, innerValue) => {
+						array.push(...getConcatenatedValue(innerValue))
+
+						return array
+					},
+					[]
+				)
+				: typeof value.toValues === `function`
 					? value.toValues()
 					: [ value ]
 	}

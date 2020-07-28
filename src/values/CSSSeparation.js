@@ -1,4 +1,4 @@
-import { defineClass, toConcatenatedString, toJSONObject } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedString, toJSONObject, toConcatenatedValues } from './CSSValue.utils.js'
 import CSSGroup from './CSSGroup.js'
 
 /**
@@ -28,6 +28,16 @@ defineClass(`CSSSeparation`, CSSSeparation, CSSGroup, {
 		const { items } = this
 
 		return toConcatenatedString(
+			items.separator,
+			items.extra.beforeValue,
+			items.value,
+			items.extra.afterValue
+		)
+	} ],
+	toValues: [ 6, function toValues() {
+		const { items } = this
+
+		return toConcatenatedValues(
 			items.separator,
 			items.extra.beforeValue,
 			items.value,

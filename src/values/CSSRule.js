@@ -55,6 +55,11 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 			items.closing
 		)
 	} ],
+
+	// Accessors
+	prelude: [ 11, function () {
+		return this.items.prelude
+	} ],
 })
 
 /** @typedef {import("./CSSValue.js")} CSSValue */

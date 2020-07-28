@@ -31,4 +31,12 @@ defineClass(`CSSGroup`, CSSGroup, CSSValue, {
 			this.items.value
 		)
 	} ],
+
+	// Accessors
+	position: [ 10, function () {
+		return this.toValues()[0].source
+	} ],
+	value: [ 11, function () {
+		return this.items.value
+	} ],
 })

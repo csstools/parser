@@ -1,4 +1,4 @@
-import { defineClass } from './CSSValue.utils.js'
+import { defineClass, toValueString } from './CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**
@@ -14,7 +14,12 @@ export default function CSSAtRule(items) {
 	this.items = Object(items)
 }
 
-defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {})
+defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {
+	// Accessors
+	name: [ 11, function () {
+		return toValueString(this.items.name)
+	} ],
+})
 
 /** @typedef {import("./CSSValue.js")} CSSValue */
 /** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSAtRuleItems */

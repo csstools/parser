@@ -9,9 +9,8 @@ import CSSSelector from '../values/CSSSelector.js'
 export default function consumeSelector(iterator, parent) {
 	const value = []
 	const element = withParent(new CSSSelector({
-		selector: `complex`,
 		value,
-	}), parent)
+	}, `complex`), parent)
 
 	let iv0
 	let iv1
@@ -35,10 +34,9 @@ export default function consumeSelector(iterator, parent) {
 								) {
 									value.push(
 										new CSSSelector({
-											selector: `pseudo-element`,
-											symbol:   [ iv0, iv1 ],
-											value:    iterator.value,
-										})
+											symbol: [ iv0, iv1 ],
+											value:  iterator.value,
+										}, `pseudo-element`)
 									)
 								} else {
 									// otherwise, toss iv0, redo iv1 as iv0
@@ -56,10 +54,9 @@ export default function consumeSelector(iterator, parent) {
 						):
 							value.push(
 								new CSSSelector({
-									selector: `pseudo-class`,
-									symbol:   iv0,
-									value:    iv1,
-								})
+									symbol: iv0,
+									value:  iv1,
+								}, `pseudo-class`)
 							)
 							break
 						// unknown
@@ -68,16 +65,14 @@ export default function consumeSelector(iterator, parent) {
 							iterator.redo()
 							value.push(
 								new CSSSelector({
-									selector: `unknown-1`,
-									value:    iv0,
+									value: iv0,
 								})
 							)
 					}
 				} else {
 					value.push(
 						new CSSSelector({
-							selector: `unknown-2`,
-							value:    iv0,
+							value: iv0,
 						})
 					)
 				}
@@ -86,9 +81,8 @@ export default function consumeSelector(iterator, parent) {
 			case STAR:
 				value.push(
 					new CSSSelector({
-						selector: `universal`,
-						value:    iv0,
-					})
+						value: iv0,
+					}, `universal`)
 				)
 				break
 			// class
@@ -107,17 +101,15 @@ export default function consumeSelector(iterator, parent) {
 			case WORD_TYPE:
 				value.push(
 					new CSSSelector({
-						selector: `type`,
-						value:    iterator.value,
-					})
+						value: iterator.value,
+					}, `type`)
 				)
 				break
 			// unknown
 			default:
 				value.push(
 					new CSSSelector({
-						selector: `unknown-3`,
-						value:    iterator.value,
+						value: iterator.value,
 					})
 				)
 				break
@@ -131,23 +123,20 @@ export default function consumeSelector(iterator, parent) {
 		if (iterator() === true) {
 			if (iterator.type === WORD_TYPE) {
 				return new CSSSelector({
-					selector: type,
-					symbol:   iv0,
-					value:    iterator.value,
-				})
+					symbol: iv0,
+					value:  iterator.value,
+				}, type)
 			}
 
 			iterator.redo()
 
 			return new CSSSelector({
-				selector: `unknown-4`,
-				value:    iv0,
+				value: iv0,
 			})
 		}
 
 		return new CSSSelector({
-			selector: `unknown-5`,
-			value:    iv0,
+			value: iv0,
 		})
 	}
 }
