@@ -30,6 +30,17 @@ defineClass(`CSSGroup`, CSSGroup, CSSValue, {
 			this.raw.value
 		)
 	} ],
+	walk: [ 6, function walk(callback) {
+		const values = this.toValues()
+
+		for (const value of values) {
+			callback.call(null, value)
+
+			if (typeof value.walk === `function`) {
+				value.walk(callback)
+			}
+		}
+	} ],
 
 	// Accessors
 	source: [ 11, source ],
