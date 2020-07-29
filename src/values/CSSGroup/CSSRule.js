@@ -1,4 +1,4 @@
-import { defineClass, toConcatenatedValues, toJSONObject, toString } from '../CSSValue.utils.js'
+import { defineClass, prelude, toConcatenatedValues, toJSONObject, toString } from '../CSSValue.utils.js'
 import CSSBlock from './CSSBlock.js'
 
 /**
@@ -36,6 +36,7 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 	} ],
 
 	// Accessors
+	prelude: [ 11, prelude ],
 })
 
 /** @typedef {import("../CSSValue.js")} CSSValue */

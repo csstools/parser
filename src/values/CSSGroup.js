@@ -34,7 +34,4 @@ defineClass(`CSSGroup`, CSSGroup, CSSValue, {
 	// Accessors
 	source: [ 11, source ],
 	value:  [ 11, values ],
-
-	// Values
-	raw: [ 7, {} ],
 })

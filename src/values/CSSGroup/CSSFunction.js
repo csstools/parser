@@ -46,18 +46,14 @@ defineClass(`CSSFunction`, CSSFunction, CSSGroup, {
 
 	// Accessors
 	name:        [ 11, name ],
-	value:       [ 11, values ],
 	opening:     [ 11, opening ],
 	openingType: [ 10, openingType ],
 	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
-
-	// Values
-	raw: [ 7, {} ],
 })
 
 function name() {
-	return toValueString(this.raw.opening)
+	return this.raw.opening
 }
 
 function opening() {

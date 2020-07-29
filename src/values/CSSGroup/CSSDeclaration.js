@@ -58,16 +58,11 @@ defineClass(`CSSDeclaration`, CSSDeclaration, CSSGroup, {
 
 	// Accessors
 	name:        [ 11, name ],
-	value:       [ 10, value ],
-	values:      [ 11, values ],
 	priority:    [ 11, priority ],
 	opening:     [ 11, opening ],
 	openingType: [ 10, openingType ],
 	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
-
-	// Values
-	raw: [ 7, {} ],
 })
 
 /** @typedef {import("./CSSValue.js")} CSSValue */

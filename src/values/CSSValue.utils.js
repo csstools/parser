@@ -205,7 +205,7 @@ export function priority() {
  * @this {{ raw: { opening: CSSSymbol }}}
  */
 export function opening() {
-	return toValueString(this.raw.opening)
+	return this.raw.opening
 }
 
 /**
@@ -213,7 +213,7 @@ export function opening() {
  * @this {{ opening: string }}
  */
 export function openingType() {
-	return this.opening.charCodeAt(0)
+	return this.raw.opening.value.charCodeAt(0)
 }
 
 /**
@@ -229,7 +229,7 @@ export function valueType() {
  * @this {{ raw: { closing: CSSSymbol }}}
  */
 export function closing() {
-	return toValueString(this.raw.closing)
+	return this.raw.closing
 }
 
 /**
@@ -237,7 +237,7 @@ export function closing() {
  * @this {{ closing: string }}
  */
 export function closingType() {
-	return this.closing.charCodeAt(0)
+	return this.raw.closing.value.charCodeAt(0)
 }
 
 /**

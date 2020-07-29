@@ -38,10 +38,10 @@ defineClass(`CSSPriority`, CSSPriority, CSSGroup, {
 	} ],
 
 	// Accessors
-	value: [ 11, function () {
-		return toValueString(this.raw.value)
+	symbol: [ 11, function () {
+		return this.raw.symbol
 	} ],
-
-	// Values
-	raw: [ 7, {} ],
+	value: [ 11, function () {
+		return this.raw.value
+	} ],
 })

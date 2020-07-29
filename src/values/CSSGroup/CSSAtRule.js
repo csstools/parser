@@ -1,4 +1,4 @@
-import { defineClass, name, prelude, toConcatenatedValues, toString } from '../CSSValue.utils.js'
+import { defineClass, name, toConcatenatedValues, toString } from '../CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**
@@ -39,7 +39,6 @@ defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {
 
 	// Accessors
 	name:    [ 11, name ],
-	prelude: [ 11, prelude ],
 })
 
 /** @typedef {import("../CSSValue.js")} CSSValue */
