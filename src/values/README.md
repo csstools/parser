@@ -18,6 +18,10 @@
 
 The CSSValue class is the foundational class that all other CSS objects extend from.
 
+From CSSValue, there are two kinds of objects; tokens and groups.
+Tokens represent the smallest, atomic bits of CSS, like an at-word or comment.
+Groups represent the objects built up from atomic bits, like rules and declarations.
+
 ---
 
 ### CSSToken
