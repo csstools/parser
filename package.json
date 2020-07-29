@@ -1,0 +1,185 @@
+{
+  "private": true,
+  "type": "module",
+  "main": "./dist/parse.cjs",
+  "module": "./dist/parse.mjs",
+  "exports": {
+    "import": "./dist/parse.mjs",
+    "require": "./dist/parse.cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "benchmark": "npm run benchmark:tokenize && npm run benchmark:parse",
+    "benchmark:parse": "node run/benchmark.parse.js",
+    "benchmark:tokenize": "node run/benchmark.tokenize.js",
+    "build": "rollup -c run/rollup.config.js",
+    "test": "eslint .",
+    "validate": "npm run validate:tokenize && npm run validate:parse",
+    "validate:parse": "node run/validate.parse.js",
+    "validate:tokenize": "node run/validate.tokenize.js",
+    "validate:values": "node run/validate.values.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@rollup/plugin-babel": "5.1.0",
+    "benchmark": "2.1.4",
+    "bootstrap": "4.5.0",
+    "eslint": "7.4.0",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-json": "2.1.1",
+    "gzip-size-cli": "3.0.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "7.0.32",
+    "postcss-selector-parser": "6.0.2",
+    "postcss-values-parser": "3.2.1",
+    "resolve": "1.17.0",
+    "rollup": "2.21.0",
+    "rollup-plugin-filesize": "^9.0.2",
+    "rollup-plugin-terser": "6.1.0",
+    "terser": "4.8.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": "ie 11, maintained node versions"
+        }
+      ]
+    ]
+  },
+  "browserslist": [
+    "ie >= 11"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "plugin:import/errors",
+      "plugin:json/recommended"
+    ],
+    "ignorePatterns": [
+      "dist",
+      "hide",
+      "run"
+    ],
+    "rules": {
+      "array-bracket-spacing": [
+        "error",
+        "always"
+      ],
+      "comma-dangle": [
+        "error",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline",
+          "functions": "never"
+        }
+      ],
+      "default-case": 0,
+      "func-names": 0,
+      "guard-for-in": 0,
+      "key-spacing": [
+        "error",
+        {
+          "align": "value"
+        }
+      ],
+      "import/extensions": [
+        "error",
+        "always",
+        {
+          "ignorePackages": true
+        }
+      ],
+      "import/no-cycle": 0,
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "run/*.js"
+          ]
+        }
+      ],
+      "import/prefer-default-export": 0,
+      "indent": [
+        "error",
+        "tab",
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 120,
+          "ignoreComments": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true,
+          "ignoreUrls": true
+        }
+      ],
+      "no-bitwise": 0,
+      "no-cond-assign": 0,
+      "no-console": 0,
+      "no-continue": 0,
+      "no-fallthrough": 0,
+      "no-irregular-whitespace": 0,
+      "no-nested-ternary": 0,
+      "no-multi-assign": 0,
+      "no-multi-spaces": [
+        "error",
+        {
+          "exceptions": {
+            "Property": true,
+            "VariableDeclarator": true
+          }
+        }
+      ],
+      "no-param-reassign": 0,
+      "no-plusplus": 0,
+      "no-proto": 0,
+      "no-restricted-globals": 0,
+      "no-restricted-syntax": 0,
+      "no-return-assign": 0,
+      "no-shadow": 0,
+      "no-tabs": 0,
+      "no-use-before-define": [
+        "error",
+        {
+          "classes": false,
+          "functions": false
+        }
+      ],
+      "object-curly-newline": [
+        "error",
+        {
+          "consistent": true,
+          "multiline": true
+        }
+      ],
+      "object-shorthand": [
+        "error",
+        "properties"
+      ],
+      "prefer-rest-params": 0,
+      "quotes": [
+        "error",
+        "backtick"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "sort-imports": 0
+    }
+  }
+}

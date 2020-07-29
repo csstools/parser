@@ -1,0 +1,5 @@
+.idea
+dist
+hide
+node_modules
+package-lock.json
