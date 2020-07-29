@@ -28,37 +28,145 @@ The CSSToken class is the foundational class for all syntactically significant o
 
 The CSSAtWord class is the token object for all at-prefixed word in CSS.
 
+**Example**
+
+```ts
+node = new CSSAtWord("yellow")
+
+String(node) // `@yellow`
+node.symbol  // `@`
+node.value   // `yellow`
+```
+
 #### CSSComment
 
 The CSSComment class is the token object for all comments in CSS.
+
+**Example**
+
+```ts
+node = new CSSComment(" yellow ")
+
+String(node) // `/* yellow */`
+node.value   // ` yellow `
+node.opening // `/*`
+node.closing // `*/`
+```
 
 #### CSSFunctionWord
 
 The CSSFunctionWord class is the token object for all function words in CSS.
 
+**Example**
+
+```ts
+node = new CSSFunctionWord("yellow")
+
+String(node) // `yellow(`
+node.value   // `yellow`
+node.symbol  // `(`
+```
+
 #### CSSHash
 
 The CSSHash class is the token object for all hashes in CSS.
+
+**Example**
+
+```ts
+node = new CSSHash("yellow")
+
+String(node) // `#yellow`
+node.symbol  // `#`
+node.value   // `yellow`
+```
 
 #### CSSNumber
 
 The CSSNumber class is the token object for all numeric values in CSS.
 
+**Example**
+
+```ts
+node = new CSSNumber("3", "em")
+
+String(node) // `3em`
+node.value   // `3`
+node.unit    // `em`
+```
+
+```ts
+node = new CSSNumber("4", "")
+
+String(node) // `4`
+node.value   // `4`
+node.unit    // ``
+```
+
 #### CSSSpace
 
 The CSSSpace class is the token object for all space values in CSS.
+
+**Example**
+
+```ts
+node = new CSSSpace("\t")
+
+String(node) // `\t`
+node.value   // `\t`
+```
 
 #### CSSString
 
 The CSSString class is the token object for all strings in CSS.
 
+**Example**
+
+```ts
+node = new CSSString("yellow")
+
+String(node) // `"yellow"`
+node.value   // `yellow`
+node.opening // `"`
+node.closing // `"`
+```
+
+```ts
+node = new CSSString(`yellow`, `'`)
+
+String(node) // `'yellow'`
+node.value   // `yellow`
+node.opening // `'`
+node.closing // `'`
+```
+
 #### CSSSymbol
 
 The CSSSymbol class is the token object for all symbols in CSS.
 
+**Example**
+
+```ts
+node = new CSSSymbol("!")
+
+String(node) // `!`
+node.value   // `!`
+
+node.type    // 33
+```
+
 #### CSSWord
 
 The CSSWord class is the token object for all named words in CSS.
+
+**Example**
+
+```ts
+node = new CSSWord("yellow")
+
+String(node) // `yellow`
+node.value   // `yellow`
+```
 
 ---
 
