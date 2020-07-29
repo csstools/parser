@@ -31,11 +31,13 @@ The CSSAtWord class is the token object for all at-prefixed word in CSS.
 **Example**
 
 ```ts
-node = new CSSAtWord("yellow")
+node = new CSSAtWord(`yellow`)
 
 String(node) // `@yellow`
 node.symbol  // `@`
 node.value   // `yellow`
+
+node.isCSSAtWord // true
 ```
 
 #### CSSComment
@@ -45,12 +47,14 @@ The CSSComment class is the token object for all comments in CSS.
 **Example**
 
 ```ts
-node = new CSSComment(" yellow ")
+node = new CSSComment(` yellow `)
 
 String(node) // `/* yellow */`
 node.value   // ` yellow `
 node.opening // `/*`
 node.closing // `*/`
+
+node.isCSSComment // true
 ```
 
 #### CSSFunctionWord
@@ -60,11 +64,13 @@ The CSSFunctionWord class is the token object for all function words in CSS.
 **Example**
 
 ```ts
-node = new CSSFunctionWord("yellow")
+node = new CSSFunctionWord(`yellow`)
 
 String(node) // `yellow(`
 node.value   // `yellow`
 node.symbol  // `(`
+
+node.isCSSFunctionWord // true
 ```
 
 #### CSSHash
@@ -74,11 +80,13 @@ The CSSHash class is the token object for all hashes in CSS.
 **Example**
 
 ```ts
-node = new CSSHash("yellow")
+node = new CSSHash(`yellow`)
 
 String(node) // `#yellow`
 node.symbol  // `#`
 node.value   // `yellow`
+
+node.isCSSHash // true
 ```
 
 #### CSSNumber
@@ -88,15 +96,17 @@ The CSSNumber class is the token object for all numeric values in CSS.
 **Example**
 
 ```ts
-node = new CSSNumber("3", "em")
+node = new CSSNumber(`3`, `em`)
 
 String(node) // `3em`
 node.value   // `3`
 node.unit    // `em`
+
+node.isCSSNumber // true
 ```
 
 ```ts
-node = new CSSNumber("4", "")
+node = new CSSNumber(`4`, ``)
 
 String(node) // `4`
 node.value   // `4`
@@ -110,10 +120,12 @@ The CSSSpace class is the token object for all space values in CSS.
 **Example**
 
 ```ts
-node = new CSSSpace("\t")
+node = new CSSSpace(`\t`)
 
 String(node) // `\t`
 node.value   // `\t`
+
+node.isCSSSpace // true
 ```
 
 #### CSSString
@@ -123,12 +135,14 @@ The CSSString class is the token object for all strings in CSS.
 **Example**
 
 ```ts
-node = new CSSString("yellow")
+node = new CSSString(`yellow`)
 
 String(node) // `"yellow"`
 node.value   // `yellow`
 node.opening // `"`
 node.closing // `"`
+
+node.isCSSString // true
 ```
 
 ```ts
@@ -147,12 +161,13 @@ The CSSSymbol class is the token object for all symbols in CSS.
 **Example**
 
 ```ts
-node = new CSSSymbol("!")
+node = new CSSSymbol(`!`)
 
 String(node) // `!`
 node.value   // `!`
 
-node.type    // 33
+node.isCSSSymbol // true
+node.type        // 33
 ```
 
 #### CSSWord
@@ -162,10 +177,12 @@ The CSSWord class is the token object for all named words in CSS.
 **Example**
 
 ```ts
-node = new CSSWord("yellow")
+node = new CSSWord(`yellow`)
 
 String(node) // `yellow`
 node.value   // `yellow`
+
+node.isCSSWord // true
 ```
 
 ---
@@ -178,6 +195,22 @@ The CSSGroup class organizes objects into categories within its `raw` property.
 
 For example, a CSSDeclaration includes an `raw.name` property which has a `CSSWord` value, an `raw.opening` property which has a `CSSSymbol` value (for the colon), and then another `raw.value` property which has an array of any of its group and token values.
 Meanwhile, any spaces or comments between the colon and value are put into an `raw.betweenOpeningAndValue` property.
+
+**Example**
+
+```ts
+node = new CSSGroup({
+  value: [
+    new CSSWord(`Minnie`),
+    new CSSSpace(` `),
+    new CSSWord(`Mouse`)
+  ]
+})
+
+String(node) // `Minnie Mouse`
+
+node.isCSSGroup // true
+```
 
 ---
 
@@ -213,9 +246,9 @@ To consume a declaration, assuming the current value is a `CSSWord`:
       - Move any values before the `CSSSymbol<"!">` that are a `CSSComment` or `CSSSpace` to `CSSDeclaration#betweenValueAndPriority`.
 - Return the new `CSSDeclaration`.
 
-```tsx
-declare type CSSSkippable = CSSComment | CSSSpace
+**Shape**
 
+```ts
 declare class CSSDeclaration extends CSSGroup {
   name: CSSWord
   betweenNameAndOpening: CSSSkippable[]
@@ -230,4 +263,30 @@ declare class CSSDeclaration extends CSSGroup {
   }>
   betweenValueAndClosing: CSSSkippable[]
 }
+
+declare type CSSSkippable = CSSComment | CSSSpace
+```
+
+**Example**
+
+```ts
+node = new CSSDeclaration({
+  name: new CSSWord(`color`),
+  betweenNameAndOpening: [],
+  opening: new CSSSymbol(`:`),
+  betweenOpeningAndValue: [ new CSSSpace(` `) ],
+  value: [ new CSSWord(`yellow`) ],
+  betweenValueAndPriority: [ new CSSSpace(` `) ],
+  priority: new CSSPriority({
+    symbol: new CSSSymbol(`!`),
+    betweenSymbolAndValue: [],
+    value: new Word(`important`),
+  }),
+  betweenValueAndClosing: [],
+  closing: new CSSSymbol(`;`)
+})
+
+String(node) // `color: yellow !important;`
+
+node.isCSSDeclaration // true
 ```

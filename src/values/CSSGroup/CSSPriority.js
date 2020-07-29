@@ -11,7 +11,6 @@ export default function CSSPriority(raw) {
 
 defineClass(`CSSPriority`, CSSPriority, CSSGroup, {
 	/* CSSPriority {
-		value: String(this.raw.value)
 		raw: {
 			symbol?: CSSValue
 			betweenSymbolAndValue?: CSSValue[]
