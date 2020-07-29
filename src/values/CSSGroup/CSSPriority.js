@@ -44,4 +44,11 @@ defineClass(`CSSPriority`, CSSPriority, CSSGroup, {
 	value: [ 11, function () {
 		return this.raw.value
 	} ],
+	detail: [ 11, function () {
+		const { raw } = this
+
+		return {
+			betweenSymbolAndValue: raw.betweenSymbolAndValue,
+		}
+	} ],
 })

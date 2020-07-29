@@ -38,7 +38,15 @@ defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {
 	} ],
 
 	// Accessors
-	name:    [ 11, name ],
+	name:   [ 11, name ],
+	detail: [ 11, function () {
+		const { raw } = this
+
+		return {
+			betweenNameAndPrelude:    raw.betweenNameAndPrelude,
+			betweenPreludeAndOpening: raw.betweenPreludeAndOpening,
+		}
+	} ],
 })
 
 /** @typedef {import("../CSSValue.js")} CSSValue */

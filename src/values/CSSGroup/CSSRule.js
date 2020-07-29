@@ -37,6 +37,13 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 
 	// Accessors
 	prelude: [ 11, prelude ],
+	detail:  [ 11, function () {
+		const { raw } = this
+
+		return {
+			betweenPreludeAndOpening: raw.betweenPreludeAndOpening,
+		}
+	} ],
 })
 
 /** @typedef {import("../CSSValue.js")} CSSValue */

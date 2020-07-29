@@ -14,13 +14,9 @@ export default function CSSStyleSheet(raw) {
 }
 
 defineClass(`CSSStyleSheet`, CSSStyleSheet, CSSGroup, {
-	/* CSSGroup {
-		value: String(this.raw.value)
-		values: Array(this.raw.values)
+	/* CSSStyleSheet {
 		raw: {
-			opening?: CSSValue
 			value?: CSSValue[]
-			closing?: CSSValue
 		}
 	} */
 	isCSSStyleSheet: [ 6, true ],

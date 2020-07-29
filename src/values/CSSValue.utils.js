@@ -162,7 +162,7 @@ export function toValueString(node) {
  * @param {CSSToken} node
  */
 export function name() {
-	return toValueString(this.raw.name)
+	return this.raw.name
 }
 
 /**
@@ -197,7 +197,7 @@ export function values() {
  * @this {{ raw: { priority: CSSPriority }}}
  */
 export function priority() {
-	return toValueString(this.raw.priority)
+	return this.raw.priority
 }
 
 /**

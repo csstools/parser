@@ -63,6 +63,16 @@ defineClass(`CSSDeclaration`, CSSDeclaration, CSSGroup, {
 	openingType: [ 10, openingType ],
 	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
+	detail:      [ 11, function () {
+		const { raw } = this
+
+		return {
+			betweenNameAndOpening:   raw.betweenNameAndOpening,
+			betweenOpeningAndValue:  raw.betweenOpeningAndValue,
+			betweenValueAndPriority: raw.betweenValueAndPriority,
+			betweenValueAndClosing:  raw.betweenValueAndClosing,
+		}
+	} ],
 })
 
 /** @typedef {import("./CSSValue.js")} CSSValue */
