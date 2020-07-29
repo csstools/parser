@@ -1,5 +1,9 @@
 # CSS Parser
 
+## CSS Object Model
+
+See [src/values/README.md](src/values/README.md).
+
 ## Commands
 
 ### Benchmark
