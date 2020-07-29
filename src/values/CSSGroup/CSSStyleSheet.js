@@ -1,5 +1,5 @@
-import { defineClass } from './CSSValue.utils.js'
-import CSSGroup from './CSSGroup.js'
+import { defineClass } from '../CSSValue.utils.js'
+import CSSGroup from '../CSSGroup.js'
 
 /**
  *

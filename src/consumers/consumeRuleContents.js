@@ -8,21 +8,13 @@ import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
  * @argument {Iterator} iterator
  * @argument {CSSGroup} parent
  * @argument {Consumer} [consumerOfListOfRuleValue]
- * @argument {Consumer} [consumeOfListOfRulePrelude]
  */
-export default function consumeRuleContents(iterator, element, consumerOfListOfRuleValue, consumeOfListOfRulePrelude) {
+export default function consumeRuleContents(iterator, element, consumerOfListOfRuleValue) {
 	const { raw } = element
 	const prelude = raw.prelude = consumeListOfValuesWhile(iterator, element, isIteratingNonCurlyBracketedBlockStarts)
 
 	raw.betweenNameAndPrelude = getSkippableSplicedValues(prelude, 0, 1)
 	raw.betweenPreludeAndOpening = getSkippableSplicedValues(prelude, prelude.length - 1, -1)
-
-	if (typeof consumeOfListOfRulePrelude === `function`) {
-		raw.prelude = consumeOfListOfRulePrelude(
-			createIterator(prelude),
-			element
-		)
-	}
 
 	// consume the rule block
 	const { value } = iterator

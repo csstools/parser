@@ -1,5 +1,5 @@
-import { closing, closingType, defineClass, name, opening, openingType, priority, toConcatenatedValues, value, values } from './CSSValue.utils.js'
-import CSSGroup from './CSSGroup.js'
+import { closing, closingType, defineClass, name, opening, openingType, priority, toConcatenatedValues, value, values } from '../CSSValue.utils.js'
+import CSSGroup from '../CSSGroup.js'
 
 /**
  *
@@ -57,13 +57,13 @@ defineClass(`CSSDeclaration`, CSSDeclaration, CSSGroup, {
 	} ],
 
 	// Accessors
-	name:        [ 10, name ],
+	name:        [ 11, name ],
 	value:       [ 10, value ],
-	values:      [ 10, values ],
-	priority:    [ 10, priority ],
-	opening:     [ 10, opening ],
+	values:      [ 11, values ],
+	priority:    [ 11, priority ],
+	opening:     [ 11, opening ],
 	openingType: [ 10, openingType ],
-	closing:     [ 10, closing ],
+	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
 
 	// Values

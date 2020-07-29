@@ -1,5 +1,5 @@
-import { closing, closingType, defineClass, opening, openingType, toConcatenatedValues, toJSONObject, toValueString, value, values } from './CSSValue.utils.js'
-import CSSGroup from './CSSGroup.js'
+import { closing, closingType, defineClass, opening, openingType, toConcatenatedValues, toJSONObject, toValueString } from '../CSSValue.utils.js'
+import CSSGroup from '../CSSGroup.js'
 
 /**
  * CSSBlock
@@ -44,13 +44,8 @@ defineClass(`CSSBlock`, CSSBlock, CSSGroup, {
 	} ],
 
 	// Accessors
-	value:       [ 10, value ],
-	values:      [ 10, values ],
-	opening:     [ 10, opening ],
+	opening:     [ 11, opening ],
 	openingType: [ 10, openingType ],
-	closing:     [ 10, closing ],
+	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
-
-	// Values
-	raw: [ 7, {} ],
 })

@@ -1,5 +1,5 @@
-import { closing, closingType, defineClass, openingType, toConcatenatedValues, toSymbolString, toValueString, value, values } from './CSSValue.utils.js'
-import CSSGroup from './CSSGroup.js'
+import { closing, closingType, defineClass, openingType, toConcatenatedValues, toSymbolString, toValueString, values } from '../CSSValue.utils.js'
+import CSSGroup from '../CSSGroup.js'
 
 /**
  *
@@ -45,12 +45,11 @@ defineClass(`CSSFunction`, CSSFunction, CSSGroup, {
 	} ],
 
 	// Accessors
-	name:        [ 10, name ],
-	value:       [ 10, value ],
-	values:      [ 10, values ],
-	opening:     [ 10, opening ],
+	name:        [ 11, name ],
+	value:       [ 11, values ],
+	opening:     [ 11, opening ],
 	openingType: [ 10, openingType ],
-	closing:     [ 10, closing ],
+	closing:     [ 11, closing ],
 	closingType: [ 10, closingType ],
 
 	// Values

@@ -1,4 +1,4 @@
-import { defineClass } from './CSSValue.utils.js'
+import { defineClass } from '../CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**

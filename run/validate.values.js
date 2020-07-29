@@ -1,5 +1,6 @@
 import { inspect } from 'util'
 import * as parse from '../src/parse.js'
+import { CSSGroup } from '../src/values/index.js'
 
 const cols = process.stdout.columns || 120
 inspect.defaultOptions.breakLength = cols
@@ -12,6 +13,8 @@ const allTestPassed = [
 	test(`CSSDeclaration`, parse.CSSDeclaration, `declaration-name : word @atword #hash ! important`),
 	test(`CSSStyleRule`, parse.CSSStyleRule, `html, body:last-child {\n  color: blue;\n}`),
 	test(`CSSStyleSheet`, parse.CSSStyleSheet, `:root {\n  --custom-property: value;\n}\n\nhtml, body:last-child {\n  color: blue;\n  @media (width >= 960px) {\n    color: red;\n  }\n}`),
+	test(`listOfCSSSeparations`, parse.listOfCSSSeparations, `html, { color: blue }`),
+	test(`CSSStyleRule`, parse.CSSStyleRule, `html, { color: blue }`),
 ].every(Boolean)
 
 if (allTestPassed) process.exit(0)
@@ -19,7 +22,7 @@ else process.exit(1)
 
 function test(name, fn, sourceCSS) {
 	const resultAST = fn(sourceCSS)
-	const resultASV = resultAST.toValues()
+	const resultASV = Array.isArray(resultAST) ? resultAST : resultAST.toValues()
 	const resultCSS = resultASV.map(String).join(``)
 	if (resultCSS === sourceCSS) {
 		console.log(name, `passed.`)

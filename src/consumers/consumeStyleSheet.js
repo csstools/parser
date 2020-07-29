@@ -1,4 +1,4 @@
-import CSSStyleSheet from '../values/CSSStyleSheet.js'
+import CSSStyleSheet from '../values/CSSGroup/CSSStyleSheet.js'
 import consumeListOfStyleRules from './consumeListOfStyleRules.js'
 
 /**

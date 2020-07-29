@@ -1,5 +1,5 @@
 import CSSComment from './CSSComment'
-import CSSGroup from './CSSGroup'
+import CSSGroup from '../CSSGroup'
 import CSSSpace from './CSSSpace'
 import CSSSymbol from './CSSSymbol'
 import CSSValue from './CSSValue'

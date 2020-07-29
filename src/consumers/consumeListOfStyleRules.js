@@ -3,7 +3,6 @@ import { withParent } from './consume.utils.js'
 import consumeAtRule from './consumeAtRule.js'
 import consumeListOfStyleRuleValues from './consumeListOfStyleRuleValues.js'
 import consumeRule from './consumeRule.js'
-import consumeListOfSelectors from './consumeListOfSelectors.js'
 
 /**
  * Consume a list of rules from an unprepared iterator.
@@ -37,8 +36,7 @@ export default function consumeListOfStyleRules(iterator, parent) {
 					consumeRule(
 						iterator,
 						parent,
-						consumeListOfStyleRuleValues,
-						consumeListOfSelectors
+						consumeListOfStyleRuleValues
 					)
 				)
 		}

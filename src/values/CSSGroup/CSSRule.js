@@ -1,4 +1,4 @@
-import { closing, closingType, defineClass, opening, openingType, prelude, toConcatenatedValues, toJSONObject, toString, value, values } from './CSSValue.utils.js'
+import { defineClass, toConcatenatedValues, toJSONObject, toString } from '../CSSValue.utils.js'
 import CSSBlock from './CSSBlock.js'
 
 /**
@@ -36,17 +36,7 @@ defineClass(`CSSRule`, CSSRule, CSSBlock, {
 	} ],
 
 	// Accessors
-	value:       [ 10, value ],
-	values:      [ 10, values ],
-	prelude:     [ 10, prelude ],
-	opening:     [ 10, opening ],
-	openingType: [ 10, openingType ],
-	closing:     [ 10, closing ],
-	closingType: [ 10, closingType ],
-
-	// Values
-	raw: [ 7, {} ],
 })
 
-/** @typedef {import("./CSSValue.js")} CSSValue */
+/** @typedef {import("../CSSValue.js")} CSSValue */
 /** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSRuleItems */

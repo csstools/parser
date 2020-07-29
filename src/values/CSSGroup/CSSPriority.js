@@ -1,5 +1,5 @@
-import { defineClass, toConcatenatedValues, toString, toValueString } from './CSSValue.utils.js'
-import CSSGroup from './CSSGroup.js'
+import { defineClass, toConcatenatedValues, toString, toValueString } from '../CSSValue.utils.js'
+import CSSGroup from '../CSSGroup.js'
 
 /**
  * CSSPriority

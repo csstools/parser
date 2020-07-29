@@ -1,5 +1,5 @@
 import CSSFunctionWord from './CSSFunctionWord'
-import CSSGroup from './CSSGroup'
+import CSSGroup from '../CSSGroup'
 import CSSSymbol from './CSSSymbol'
 import CSSValue from './CSSValue'
 

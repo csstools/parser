@@ -1,7 +1,7 @@
-import { SPACE_TYPE } from '../utils/token-types.js'
-import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { space } from '../utils/string-values.js'
-import CSSToken from './CSSToken.js'
+import { SPACE_TYPE } from '../../utils/token-types.js'
+import { defineClass, toConcatenatedString } from '../CSSValue.utils.js'
+import { space } from '../../utils/string-values.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSSpace
@@ -16,7 +16,8 @@ export default function CSSSpace(value) {
 }
 
 defineClass(`CSSSpace`, CSSSpace, CSSToken, {
-	type: [ 2, SPACE_TYPE ],
+	isSkippish: [ 2, true ],
+	type:       [ 2, SPACE_TYPE ],
 
 	// Methods
 	toString: [ 6, function toString() {

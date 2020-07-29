@@ -1,4 +1,4 @@
-import CSSGroup from './CSSGroup'
+import CSSGroup from '../CSSGroup'
 import CSSSymbol from './CSSSymbol'
 import CSSValue from './CSSValue'
 import CSSWord from './CSSWord'

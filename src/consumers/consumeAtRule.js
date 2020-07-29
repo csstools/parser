@@ -1,5 +1,5 @@
 import { withParent } from './consume.utils.js'
-import CSSAtRule from '../values/CSSAtRule.js'
+import CSSAtRule from '../values/CSSGroup/CSSAtRule.js'
 import consumeRuleContents from './consumeRuleContents.js'
 
 /**

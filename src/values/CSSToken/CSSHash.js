@@ -1,7 +1,7 @@
-import { HASH_TYPE } from '../utils/token-types.js'
-import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { doubleDashes, symbolOfHash } from '../utils/string-values.js'
-import CSSToken from './CSSToken.js'
+import { HASH_TYPE } from '../../utils/token-types.js'
+import { defineClass, toConcatenatedString } from '../CSSValue.utils.js'
+import { doubleDashes, symbolOfHash } from '../../utils/string-values.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSHash

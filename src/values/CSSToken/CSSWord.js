@@ -1,7 +1,7 @@
-import { defineClass } from './CSSValue.utils.js'
-import { doubleDashes } from '../utils/string-values.js'
-import { WORD_TYPE } from '../utils/token-types.js'
-import CSSToken from './CSSToken.js'
+import { defineClass } from '../CSSValue.utils.js'
+import { doubleDashes } from '../../utils/string-values.js'
+import { WORD_TYPE } from '../../utils/token-types.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSWord

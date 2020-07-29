@@ -1,4 +1,4 @@
-import { closing, closingType, defineClass, name, opening, openingType, prelude, toConcatenatedValues, toString, value, values } from './CSSValue.utils.js'
+import { defineClass, name, prelude, toConcatenatedValues, toString } from '../CSSValue.utils.js'
 import CSSRule from './CSSRule.js'
 
 /**
@@ -38,18 +38,9 @@ defineClass(`CSSAtRule`, CSSAtRule, CSSRule, {
 	} ],
 
 	// Accessors
-	name:        [ 11, name ],
-	value:       [ 10, value ],
-	values:      [ 10, values ],
-	prelude:     [ 10, prelude ],
-	opening:     [ 10, opening ],
-	openingType: [ 10, openingType ],
-	closing:     [ 10, closing ],
-	closingType: [ 10, closingType ],
-
-	// Values
-	raw: [ 7, {} ],
+	name:    [ 11, name ],
+	prelude: [ 11, prelude ],
 })
 
-/** @typedef {import("./CSSValue.js")} CSSValue */
+/** @typedef {import("../CSSValue.js")} CSSValue */
 /** @typedef {{ [key: string]: CSSValue | CSSValue[], detail: { [key: string]: CSSValue[] } }} CSSAtRuleItems */

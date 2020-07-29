@@ -1,7 +1,7 @@
-import { STRING_TYPE } from '../utils/token-types.js'
-import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { edgeOfDQString, emptyString } from '../utils/string-values.js'
-import CSSToken from './CSSToken.js'
+import { STRING_TYPE } from '../../utils/token-types.js'
+import { defineClass, toConcatenatedString } from '../CSSValue.utils.js'
+import { edgeOfDQString, emptyString } from '../../utils/string-values.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSString

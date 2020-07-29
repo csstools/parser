@@ -162,7 +162,7 @@ export function toValueString(node) {
  * @param {CSSToken} node
  */
 export function name() {
-	return toConcatenatedString(this.raw.name)
+	return toValueString(this.raw.name)
 }
 
 /**
@@ -246,6 +246,14 @@ export function closingType() {
  */
 export function prelude() {
 	return isArray(this.raw.prelude) ? this.raw.prelude : []
+}
+
+export function source() {
+	const values = this.toValues()
+
+	if (values.length) return values[0].source
+
+	return null
 }
 
 /** @typedef {import('../values').CSSBlock<{ opening: CSSToken, value: CSSValue[], closing: CSSToken }>} CSSBlock */

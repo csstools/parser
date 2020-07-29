@@ -1,5 +1,5 @@
 import { withParent } from './consume.utils.js'
-import CSSRule from '../values/CSSRule.js'
+import CSSStyleRule from '../values/CSSGroup/CSSStyleRule.js'
 import consumeRuleContents from './consumeRuleContents.js'
 
 /**
@@ -10,7 +10,7 @@ import consumeRuleContents from './consumeRuleContents.js'
  * @argument {Consumer} [consumeOfListOfRulePrelude]
  */
 export default function consumeRule(iterator, parent, consumerOfListOfRuleValue, consumeOfListOfRulePrelude) {
-	const element = withParent(new CSSRule({
+	const element = withParent(new CSSStyleRule({
 		prelude:                  null,
 		betweenPreludeAndOpening: null,
 		opening:                  null,

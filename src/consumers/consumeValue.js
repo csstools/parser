@@ -2,8 +2,8 @@ import { FUNCTION_TYPE } from '../utils/token-types.js'
 import { L_CB, L_RB, L_SB } from '../utils/code-points.js'
 import { withParent } from './consume.utils.js'
 import consumeBlock from './consumeBlock.js'
-import CSSBlock from '../values/CSSBlock.js'
-import CSSFunction from '../values/CSSFunction.js'
+import CSSBlock from '../values/CSSGroup/CSSBlock.js'
+import CSSFunction from '../values/CSSGroup/CSSFunction.js'
 
 /**
  * Consume a value from a prepared iterator.

@@ -1,6 +1,6 @@
-import { defineClass, valueType } from './CSSValue.utils.js'
-import { symbolOfImportant } from '../utils/string-values.js'
-import CSSToken from './CSSToken.js'
+import { defineClass, valueType } from '../CSSValue.utils.js'
+import { symbolOfImportant } from '../../utils/string-values.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSSymbol
@@ -16,5 +16,5 @@ export default function CSSSymbol(value) {
 
 defineClass(`CSSSymbol`, CSSSymbol, CSSToken, {
 	// Accessors
-	type: [ 10, valueType ],
+	type: [ 11, valueType ],
 })

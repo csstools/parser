@@ -25,7 +25,7 @@ defineClass(`CSSToken`, CSSToken, CSSValue, {
 	} ],
 
 	// Accessors
-	type: [ 10, function () {
+	type: [ 11, function () {
 		return charCodeAt.call(this.value, 0)
 	} ],
 })

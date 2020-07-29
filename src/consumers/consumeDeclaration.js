@@ -1,8 +1,8 @@
 import { COLA, BANG } from '../utils/code-points.js'
 import { WORD_TYPE } from '../utils/token-types.js'
 import { getSkippableSplicedValues, getSkippableValuesIndex, isIterating, isIteratingSkippableValues, withParent } from './consume.utils.js'
-import CSSDeclaration from '../values/CSSDeclaration.js'
-import CSSPriority from '../values/CSSPriority.js'
+import CSSDeclaration from '../values/CSSGroup/CSSDeclaration.js'
+import CSSPriority from '../values/CSSGroup/CSSPriority.js'
 import consumeListOfValuesWhile from './consumeListOfValuesWhile.js'
 
 /**

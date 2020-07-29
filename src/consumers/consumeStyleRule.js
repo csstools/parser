@@ -1,6 +1,5 @@
 import { withParent } from './consume.utils.js'
-import CSSStyleRule from '../values/CSSStyleRule.js'
-import consumeListOfSelectors from './consumeListOfSelectors.js'
+import CSSStyleRule from '../values/CSSGroup/CSSStyleRule.js'
 import consumeListOfStyleRuleValues from './consumeListOfStyleRuleValues.js'
 import consumeRuleContents from './consumeRuleContents.js'
 
@@ -20,7 +19,7 @@ export default function consumeStyleRule(iterator, parent) {
 
 	iterator.redo()
 
-	return consumeRuleContents(iterator, element, consumeListOfStyleRuleValues, consumeListOfSelectors)
+	return consumeRuleContents(iterator, element, consumeListOfStyleRuleValues)
 }
 
 consumeStyleRule.prepare = true

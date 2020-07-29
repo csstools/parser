@@ -1,4 +1,4 @@
-import { defineClass, toConcatenatedValues, toJSONObject, toString, value, values } from './CSSValue.utils.js'
+import { defineClass, source, toConcatenatedValues, toJSONObject, toString, values } from './CSSValue.utils.js'
 import CSSValue from './CSSValue.js'
 
 export default function CSSGroup(raw) {
@@ -32,8 +32,8 @@ defineClass(`CSSGroup`, CSSGroup, CSSValue, {
 	} ],
 
 	// Accessors
-	value:  [ 10, value ],
-	values: [ 10, values ],
+	source: [ 11, source ],
+	value:  [ 11, values ],
 
 	// Values
 	raw: [ 7, {} ],

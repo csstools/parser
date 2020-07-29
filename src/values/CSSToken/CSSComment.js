@@ -1,7 +1,7 @@
-import { COMMENT_TYPE } from '../utils/token-types.js'
-import { defineClass, toConcatenatedString } from './CSSValue.utils.js'
-import { closingOfComment, emptyString, openingOfComment } from '../utils/string-values.js'
-import CSSToken from './CSSToken.js'
+import { COMMENT_TYPE } from '../../utils/token-types.js'
+import { defineClass, toConcatenatedString } from '../CSSValue.utils.js'
+import { closingOfComment, emptyString, openingOfComment } from '../../utils/string-values.js'
+import CSSToken from '../CSSToken.js'
 
 /**
  * ## CSSComment
@@ -19,7 +19,8 @@ export default function CSSComment(value, isWithoutClosing) {
 }
 
 defineClass(`CSSComment`, CSSComment, CSSToken, {
-	type: [ 2, COMMENT_TYPE ],
+	isSkippish: [ 2, true ],
+	type:       [ 2, COMMENT_TYPE ],
 
 	// Methods
 	toString: [ 6, function toString() {
