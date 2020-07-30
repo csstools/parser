@@ -15,20 +15,16 @@ export default function CSSDeclaration(raw) {
 
 defineClass(`CSSDeclaration`, CSSDeclaration, CSSGroup, {
 	/* CSSDeclaration {
-		name: String(this.raw.name)
-		value: String(this.raw.value)
-		values: Array(this.raw.values)
-		priority: String(this.raw.priority)
 		raw: {
-			name: CSSValue
-			betweenNameAndOpening?: CSSValue
-			opening?: CSSValue
-			betweenOpeningAndValue?: CSSValue
+			name: CSSWord
+			betweenNameAndOpening?: CSSSkippable[]
+			opening?: CSSSymbol<":">
+			betweenOpeningAndValue?: CSSSkippable[]
 			value?: CSSValue[]
-			betweenValueAndPriority?: CSSValue[]
+			betweenValueAndPriority?: CSSSkippable[]
 			priority?: CSSValue
-			betweenValueAndClosing?: CSSValue[]
-			closing?: CSSValue
+			betweenValueAndClosing?: CSSSkippable[]
+			closing?: CSSSymbol<";">
 		}
 	} */
 
