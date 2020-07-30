@@ -11,6 +11,8 @@ This section describes how different objects are consumed in CSS.
 
 The **CSSDeclaration** class represents a CSS declaration block.
 
+**Simplified Illustration**
+
 ```
 ┌───────────────────────────────────────────────────────────┐
 │                        declaration                        │
@@ -18,6 +20,22 @@ The **CSSDeclaration** class represents a CSS declaration block.
 │       name       │ opening │ value │  priority  │ closing │
 " background-color      :       red    !important      ;    "
 └──────────────────┴─────────┴───────┴────────────┴─────────┘
+```
+
+**Detailed Illustration**
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│                                        declaration                                        │
+├──────────────────┬───────┬─────────┬───────┬───────┬───────┬────────────┬───────┬─────────┤
+│       name       │   1   | opening │   2   | value │   3   |  priority  │   4   | closing │
+" background-color   /* */      :      /* */    red    /* */   !important   /* */      ;    "
+└──────────────────┴───────┴─────────┴───────┴───────┴───────┴────────────┴───────┴─────────┘
+
+1. any comments or spaces between the name and the opening.
+2. any comments or spaces between the opening and the value.
+3. any comments or spaces between the value and the priority (when a priority exists).
+4. any comments or spaces between the value and the closing.
 ```
 
 ### Consuming a CSSDeclaration
@@ -60,20 +78,6 @@ To consume a declaration:
        5. Move any `CSSComment` or `CSSSpace` values between the `CSSPriority#symbol` and the `CSSPriority#value` to the `CSSPriority#betweenSymbolAndValue` list.
        6. Move any `CSSComment` or `CSSSpace` values before the `CSSPriority#symbol` to the `CSSDeclaration#betweenValueAndPriority` list.
 14. Return the `CSSDeclaration`.
-
-```
-┌───────────────────────────────────────────────────────────────────────────────────────────┐
-│                                        declaration                                        │
-├──────────────────┬───────┬─────────┬───────┬───────┬───────┬────────────┬───────┬─────────┤
-│       name       │   1   | opening │   2   | value │   3   |  priority  │   4   | closing │
-" background-color   /* */      :      /* */    red    /* */   !important   /* */      ;    "
-└──────────────────┴───────┴─────────┴───────┴───────┴───────┴────────────┴───────┴─────────┘
-
-1. any comments or spaces between the name and the opening.
-2. any comments or spaces between the opening and the value.
-3. any comments or spaces between the value and the priority (when a priority exists).
-4. any comments or spaces between the value and the closing.
-```
 
 **Shape**
 
