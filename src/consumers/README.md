@@ -61,6 +61,20 @@ To consume a declaration:
        6. Move any `CSSComment` or `CSSSpace` values before the `CSSPriority#symbol` to the `CSSDeclaration#betweenValueAndPriority` list.
 14. Return the `CSSDeclaration`.
 
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│                                        declaration                                        │
+├──────────────────┬───────┬─────────┬───────┬───────┬───────┬────────────┬───────┬─────────┤
+│       name       │  *A*  | opening │  *B*  | value │  *C*  |  priority  │  *D*  | closing │
+" background-color   /* */      :      /* */    red    /* */   !important   /* */      ;    "
+└──────────────────┴───────┴─────────┴───────┴───────┴───────┴────────────┴───────┴─────────┘
+
+*A* — any comments or spaces between the name and the opening.
+*B* — any comments or spaces between the opening and the value.
+*C* — any comments or spaces between the value and the priority (when a priority exists).
+*D* — any comments or spaces between the value and the closing.
+```
+
 **Shape**
 
 ```ts
