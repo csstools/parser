@@ -25,12 +25,12 @@ The **CSSDeclaration** class represents a CSS declaration block.
 **Detailed Illustration**
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                          declaration                                          │
-├──────────────────┬───────┬─────────┬───────┬───────────┬───────┬────────────┬───────┬─────────┤
-│       name       │   1   | opening │   2   |   value   │   3   |  priority  │   4   | closing │
-" background-color   /* */      :      /* */   blue none   /* */   !important   /* */      ;    "
-└──────────────────┴───────┴─────────┴───────┴───────────┴───────┴────────────┴───────┴─────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                                       declaration                                       │
+├────────────┬───────┬─────────┬───────┬───────────┬───────┬────────────┬───────┬─────────┤
+│    name    │   1   | opening │   2   |   value   │   3   |  priority  │   4   | closing │
+" background   /* */      :      /* */   blue none   /* */   !important   /* */      ;    "
+└────────────┴───────┴─────────┴───────┴───────────┴───────┴────────────┴───────┴─────────┘
 
 1. any comments or spaces between the name and the opening.
 2. any comments or spaces between the opening and the value.
