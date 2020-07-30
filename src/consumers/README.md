@@ -42,7 +42,7 @@ To consume a declaration:
 8.  Advance the current value.
 9.  If the current value cannot be accessed;
     1. Return the unbound values of the `CSSDeclaration`.
-10. While the current value is a `CSSComment` or `CSSSpace` value, then
+10. While the current value is a `CSSComment` or `CSSSpace`, then
     1. Assign the current value to the `CSSDeclaration#betweenOpeningAndValue`.
     2. Advance the value.
 11. While the current value can be accessed,
@@ -51,7 +51,7 @@ To consume a declaration:
 12. Move any `CSSComment` or `CSSSpace` values from the end of the `CSSDeclaration#value` to the `CSSDeclaration#betweenValueAndClosing`.
 13. If the following conditions are met, which are
     1. If the last value of the `CSSDeclaration#value` is a `CSSWord`, and
-    2. If zero-or-more values before that value are a `CSSComment` or `CSSSpace`, and
+    2. If zero-or-more values before that are a `CSSComment` or `CSSSpace`, and
     3. If the value before that is a `CSSSymbol<"!">`, then
        1. Create a new `CSSPriority`.
        2. Assign the `CSSPriority` value to the `CSSDeclaration#priority`.
