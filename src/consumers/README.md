@@ -3,7 +3,6 @@
 This section describes how different objects are consumed in CSS.
 
 - [CSSDeclaration](#cssdeclaration)
-- [CSSStyleRule](#cssstylerule)
 
 ---
 
@@ -78,27 +77,3 @@ To consume a declaration:
        5. Move any `CSSComment` or `CSSSpace` values between the `CSSPriority#symbol` and the `CSSPriority#value` to the `CSSPriority#betweenSymbolAndValue` list.
        6. Move any `CSSComment` or `CSSSpace` values before the `CSSPriority#symbol` to the `CSSDeclaration#betweenValueAndPriority` list.
 14. Return the `CSSDeclaration`.
-
-**Shape**
-
-```ts
-declare class CSSDeclaration extends CSSGroup {
-  name: CSSWord
-  betweenNameAndOpening: CSSSkippable[]
-  opening: CSSSymbol<":">
-  betweenOpeningAndValue: CSSSkippable[]
-  value: CSSValue[]
-  betweenValueAndPriority: CSSSkippable[]
-  priority: CSSPriority<{
-    symbol: CSSSymbol<"!">
-    betweenSymbolAndValue: CSSSkippable[]
-    value: CSSWord
-  }>
-  betweenValueAndClosing: CSSSkippable[]
-}
-
-declare type CSSSkippable = CSSComment | CSSSpace
-```
-
-## CSSStyleRule
-
