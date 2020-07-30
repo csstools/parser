@@ -36,8 +36,7 @@ To consume a declaration:
     2. Advance the current value.
 7.  If the current value is not a `CSSSymbol<":">`, then
     1. Return the incomplete `CSSDeclaration`.
-8.  Otherwise
-    1. Assign the current value to `CSSDeclaration#opening`.
+8.  Assign the current value to `CSSDeclaration#opening`.
 9.  Advance the current value.
 10. While the current value is a `CSSComment` or `CSSSpace` value, then
     1. Assign the current value to `CSSDeclaration#betweenOpeningAndValue`.
