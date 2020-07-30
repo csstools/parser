@@ -65,14 +65,14 @@ To consume a declaration:
 ┌───────────────────────────────────────────────────────────────────────────────────────────┐
 │                                        declaration                                        │
 ├──────────────────┬───────┬─────────┬───────┬───────┬───────┬────────────┬───────┬─────────┤
-│       name       │  *A*  | opening │  *B*  | value │  *C*  |  priority  │  *D*  | closing │
+│       name       │   1   | opening │   2   | value │   3   |  priority  │   4   | closing │
 " background-color   /* */      :      /* */    red    /* */   !important   /* */      ;    "
 └──────────────────┴───────┴─────────┴───────┴───────┴───────┴────────────┴───────┴─────────┘
 
-*A* — any comments or spaces between the name and the opening.
-*B* — any comments or spaces between the opening and the value.
-*C* — any comments or spaces between the value and the priority (when a priority exists).
-*D* — any comments or spaces between the value and the closing.
+1. any comments or spaces between the name and the opening.
+2. any comments or spaces between the opening and the value.
+3. any comments or spaces between the value and the priority (when a priority exists).
+4. any comments or spaces between the value and the closing.
 ```
 
 **Shape**
