@@ -22,6 +22,10 @@ The **CSSDeclaration** class represents a CSS declaration block.
 
 ### Consuming a CSSDeclaration
 
+> **Notes**:
+> 1. This algorithm is based upon https://drafts.csswg.org/css-syntax/#consume-declaration
+> 2. This algorithm assumes that current value is available and is a `CSSWord`.
+
 To consume a declaration:
 
 1.  If the current value is not a `CSSWord`, then
