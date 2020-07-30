@@ -615,7 +615,7 @@ export default function tokenize(cssText, doIteration) {
 								cc1 === PLUS
 								|| cc1 === DASH
 							)
-							&& isInteger(cssText.charCodeAt(shut + 1))
+							&& isInteger(cssText.charCodeAt(shut + 2))
 							&& (
 								shut += 2
 							)
