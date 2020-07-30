@@ -29,37 +29,37 @@ The **CSSDeclaration** class represents a CSS declaration block.
 To consume a declaration:
 
 1.  Create a new `CSSDeclaration`.
-2.  Assign the current value to `CSSDeclaration#name`.
+2.  Assign the current value to the `CSSDeclaration#name`.
 3.  Advance the current value.
 4.  If the current value cannot be accessed;
-    1. Return the unbound values of `CSSDeclaration`.
+    1. Return the unbound values of the `CSSDeclaration`.
 5.  While the current value is a `CSSComment` or `CSSSpace` value,
-    1. Assign the current value to `CSSDeclaration#betweenNameAndOpening`.
+    1. Assign the current value to the `CSSDeclaration#betweenNameAndOpening`.
     2. Advance the current value.
 6.  If the current value is not a `CSSSymbol<":">`, then
-    1. Return the unbound values of `CSSDeclaration`.
-7.  Assign the current value to `CSSDeclaration#opening`.
+    1. Return the unbound values of the `CSSDeclaration`.
+7.  Assign the current value to the `CSSDeclaration#opening`.
 8.  Advance the current value.
 9.  If the current value cannot be accessed;
-    1. Return the unbound values of `CSSDeclaration`.
+    1. Return the unbound values of the `CSSDeclaration`.
 10. While the current value is a `CSSComment` or `CSSSpace` value, then
-    1. Assign the current value to `CSSDeclaration#betweenOpeningAndValue`.
+    1. Assign the current value to the `CSSDeclaration#betweenOpeningAndValue`.
     2. Advance the value.
 11. While the current value can be accessed,
-    1. Push the current value to `CSSDeclaration#value`.
+    1. Push the current value to the `CSSDeclaration#value`.
     2. Advance the current value.
-12. Move any `CSSComment` or `CSSSpace` values from the end of `CSSDeclaration#value` to `CSSDeclaration#betweenValueAndClosing`.
+12. Move any `CSSComment` or `CSSSpace` values from the end of the `CSSDeclaration#value` to the `CSSDeclaration#betweenValueAndClosing`.
 13. If the following conditions are met, which are
-    1. If the last value of `CSSDeclaration#value` is a `CSSWord`, and
+    1. If the last value of the `CSSDeclaration#value` is a `CSSWord`, and
     2. If zero-or-more values before that value are a `CSSComment` or `CSSSpace`, and
     3. If the value before that is a `CSSSymbol<"!">`, then
        1. Create a new `CSSPriority`.
-       2. Assign it to `CSSDeclaration#priority`.
-       3. Assign the `CSSSymbol<"!">` value to `CSSPriority#symbol`.
-       4. Assign the `CSSWord` value to `CSSPriority#value`.
-       5. Move any `CSSComment` or `CSSSpace` values between `CSSPriority#symbol` and `CSSPriority#value` to `CSSPriority#betweenSymbolAndValue`.
-       6. Move any `CSSComment` or `CSSSpace` values before `CSSPriority#symbol` to `CSSDeclaration#betweenValueAndPriority`.
-14. Return the new `CSSDeclaration`.
+       2. Assign the `CSSPriority` value to the `CSSDeclaration#priority`.
+       3. Assign the `CSSSymbol<"!">` value to the `CSSPriority#symbol`.
+       4. Assign the `CSSWord` value to the `CSSPriority#value`.
+       5. Move any `CSSComment` or `CSSSpace` values between the `CSSPriority#symbol` and the `CSSPriority#value` to the `CSSPriority#betweenSymbolAndValue`.
+       6. Move any `CSSComment` or `CSSSpace` values before the `CSSPriority#symbol` to the `CSSDeclaration#betweenValueAndPriority`.
+14. Return the `CSSDeclaration`.
 
 **Shape**
 
