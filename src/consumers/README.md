@@ -34,7 +34,7 @@ To consume a declaration:
 4.  If the current value cannot be accessed;
     1. Return the unbound values of the `CSSDeclaration`.
 5.  While the current value is either a `CSSComment` or `CSSSpace` value,
-    1. Assign the current value to the `CSSDeclaration#betweenNameAndOpening`.
+    1. Push the current value to the `CSSDeclaration#betweenNameAndOpening`.
     2. Advance the current value.
 6.  If the current value is not a `CSSSymbol<":">`, then
     1. Return the unbound values of the `CSSDeclaration`.
@@ -43,7 +43,7 @@ To consume a declaration:
 9.  If the current value cannot be accessed;
     1. Return the unbound values of the `CSSDeclaration`.
 10. While the current value is either a `CSSComment` or `CSSSpace`, then
-    1. Assign the current value to the `CSSDeclaration#betweenOpeningAndValue`.
+    1. Push the current value to the `CSSDeclaration#betweenOpeningAndValue`.
     2. Advance the value.
 11. While the current value can be accessed,
     1. Push the current value to the `CSSDeclaration#value`.
