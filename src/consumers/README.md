@@ -40,7 +40,7 @@ The **CSSDeclaration** class represents a CSS declaration block.
 ### Consuming a CSSDeclaration
 
 > **Notes**:
-> 1. This algorithm is based upon https://drafts.csswg.org/css-syntax/#consume-declaration
+> 1. This algorithm is a lossless variation of the [CSS Syntax](https://drafts.csswg.org/css-syntax/#consume-declaration).
 > 2. This algorithm assumes the current value can be accessed, and that it is a `CSSWord`.
 
 To consume a declaration:
