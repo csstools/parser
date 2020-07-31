@@ -28,7 +28,7 @@ export const FF   = 0x000C // ␌ ===  12
 export const CR   = 0x000D // ␍ ===  13
 
 /**
- * Left Curly Brace
+ * Exclamation Mark
  * @see https://unicode.org/charts/nameslist/n_0000.html#0021
  */
 export const BANG = 0x0021 // ! === 3

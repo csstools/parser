@@ -34,7 +34,10 @@
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-json": "2.1.1",
+    "esm": "^3.2.25",
     "gzip-size-cli": "3.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "node-fetch": "^2.6.0",
     "npm-run-all": "^4.1.5",
     "postcss": "7.0.32",
     "postcss-selector-parser": "6.0.2",
@@ -181,5 +184,8 @@
       ],
       "sort-imports": 0
     }
+  },
+  "esm": {
+    "await": true
   }
 }
