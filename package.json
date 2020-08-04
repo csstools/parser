@@ -25,15 +25,15 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
     "@rollup/plugin-babel": "5.1.0",
     "benchmark": "2.1.4",
     "bootstrap": "4.5.0",
-    "eslint": "7.4.0",
+    "eslint": "7.6.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-json": "2.1.1",
+    "eslint-plugin-json": "2.1.2",
     "esm": "^3.2.25",
     "gzip-size-cli": "3.0.0",
     "isomorphic-fetch": "^2.2.1",
@@ -43,10 +43,11 @@
     "postcss-selector-parser": "6.0.2",
     "postcss-values-parser": "3.2.1",
     "resolve": "1.17.0",
-    "rollup": "2.21.0",
+    "rollup": "2.23.0",
     "rollup-plugin-filesize": "^9.0.2",
+    "rollup-plugin-iife": "^0.3.1",
     "rollup-plugin-terser": "6.1.0",
-    "terser": "4.8.0"
+    "terser": "5.0.0"
   },
   "babel": {
     "presets": [
@@ -77,6 +78,7 @@
         "error",
         "always"
       ],
+      "brace-style": 0,
       "comma-dangle": [
         "error",
         {
@@ -103,6 +105,7 @@
           "ignorePackages": true
         }
       ],
+      "import/namespace": 0,
       "import/no-cycle": 0,
       "import/no-extraneous-dependencies": [
         "error",
@@ -133,9 +136,11 @@
       "no-bitwise": 0,
       "no-cond-assign": 0,
       "no-console": 0,
+      "no-constant-condition": 0,
       "no-continue": 0,
       "no-fallthrough": 0,
       "no-irregular-whitespace": 0,
+      "no-labels": 0,
       "no-nested-ternary": 0,
       "no-multi-assign": 0,
       "no-multi-spaces": [

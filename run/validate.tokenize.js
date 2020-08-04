@@ -1,6 +1,7 @@
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import resolve from 'resolve'
-import tokenize from '../src/tokenize/tokenize.js'
+import tokenizeOld from '../src/tokenize/tokenize.js'
+import tokenizeNew from '../dist/tokenize.js'
 
 // setup
 const postcssDevTestName = `PostCSS Tokenizer (Development)`
@@ -11,12 +12,41 @@ const bootstrapCSS = readFileSync(bootstrapCSSPath, `utf8`)
 // introduction
 console.log(`Validating ${postcssDevTestName} preserves CSS identically...\n`)
 
-// process
-const tokens = []
-const tokenizer = tokenize(bootstrapCSS)
-while (tokenizer() === true) tokens.push(tokenizer.value.toString())
+// ...
+let tokens
+let tokenizer
 
-const tokenizedCSS = tokens.join(``)
+// process
+tokens = []
+tokenizer = tokenizeNew(bootstrapCSS)
+while (tokenizer() === true) tokens.push(tokenizer.node)
+
+writeFileSync(`result-new.json`, JSON.stringify(tokens.map(node => {
+	const { constructor, ...object } = node
+	const { name: type } = constructor
+	return { type, ...object }
+}), null, '  '))
+
+// process
+tokens = []
+tokenizer = tokenizeOld(bootstrapCSS)
+while (tokenizer() === true) tokens.push(tokenizer.value)
+
+writeFileSync(`result-old.json`, JSON.stringify(tokens.map(node => {
+	const { opening, value, closing, symbol, constructor, unit } = node
+	const { name: type } = constructor
+	return (
+		type === 'CSSComment' || type === 'CSSString'
+			? { type, prefix: opening, value, suffix: closing }
+		: type === 'CSSAtWord' || type === 'CSSHash'
+			? { type, prefix: symbol, value }
+		: type === 'CSSNumber'
+		? { type, value, unit }
+	: { type, value }
+	)
+}), null, '  '))
+
+const tokenizedCSS = tokens.map(node => node.toString()).join(``)
 
 // validate
 const isCssIdentical = bootstrapCSS === tokenizedCSS

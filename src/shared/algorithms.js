@@ -1,4 +1,4 @@
-import * as codes from './character-codes.js'
+import * as codes from './ascii-codes.js'
 import * as defs from './definitions.js'
 
 /**
@@ -16,19 +16,34 @@ export function isValidEscape(/** @type {number} */ c1, /** @type {number} */ c2
  * Returns whether three code points start an identifier.
  * @see https://drafts.csswg.org/css-syntax/#would-start-an-identifier
  */
-export function isIdentifierStart(/** @type {number} */ c1, /** @type {number} */ c2, /** @type {number} */ c3) {
-	return (
-		(
-			c1 === codes.HYPHEN_MINUS
-			&& (
-				c2 === codes.HYPHEN_MINUS
-				|| defs.isIdentifierStart(c2)
-				|| are2AValidEscape(c2, c3)
-			)
-		)
-		|| defs.isIdentifierStart(c1)
-		|| are2AValidEscape(c1, c2)
-	)
+export function isIdentifierStart(read, shut, code) {
+	switch (true) {
+		case code === defs.HYPHEN_MINUS:
+			code = read.peek(1)
+			switch (true) {
+				case defs.isIdentifierStart(code):
+				case code === defs.HYPHEN_MINUS:
+					return 2
+				case isValidEscape(data, shut):
+					return 3
+			}
+		case isValidEscape(data, shut):
+			if (!defs.isNewline(read.peek(1))) return 2
+			break
+		case defs.isIdentifierStart(code):
+			return 1
+	}
+}
+
+function isValidEscape(data, shut) {
+	switch (true) {
+		case (
+			data.charCodeAt(shut) === defs.REVERSE_SOLIDUS
+			&& isNewline(data.charCodeAt(shut + 1))
+		):
+			return 2
+	}
+	return 0
 }
 
 /**
@@ -67,3 +82,35 @@ export function isCRLFNewline(/** @type {number} */ c1, /** @type {number} */ c2
 		&& c2 === codes.LINE_FEED
 	)
 }
+
+export function isCommentStart(codeAt0, codeAt1) {
+	return (
+		codeAt0 === codes.SOLIDUS
+		&& codeAt1 === codes.ASTERISK
+	)
+}
+
+export function isCommentEnd(codeAt0, codeAt1) {
+	return (
+		codeAt0 === codes.ASTERISK
+		&& codeAt1 === codes.SOLIDUS
+	)
+}
+
+export function isIdentifierStartHypenMinus(read) {
+	let { code } = read
+	if (code === defs.HYPHEN_MINUS) {
+		let { peek } = read
+		code = peek(1)
+		if (
+			code === defs.HYPHEN_MINUS
+			|| isIdentifierStart(code)
+			|| (
+				code === defs.REVERSE_SOLIDUS
+				&& !defs.isNewline(peek(2))
+			)
+		)
+	}
+}
+
+export const isEOF = isNaN

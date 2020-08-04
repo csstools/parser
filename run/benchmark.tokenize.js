@@ -2,7 +2,8 @@ import { readFileSync } from 'fs'
 import Benchmark from 'benchmark'
 import resolve from 'resolve'
 import tokenizePrd from 'postcss/lib/tokenize.js'
-import tokenizeDev from '../src/tokenize/tokenize.js'
+import tokenizeDev from '../dist/tokenize.js'
+import tokenizeDld from '../src/tokenize/tokenize.js'
 
 // setup test utilities
 const write = process.stdout.write.bind(process.stdout)
@@ -33,10 +34,16 @@ addTest(`PostCSS Tokenizer (${version(`postcss/package.json`)})`, () => {
 	while (!tokenizer.endOfFile()) returnValue.push(tokenizer.nextToken())
 })
 
-addTest(`PostCSS Tokenizer (Development)`, () => {
+addTest(`PostCSS Tokenizer (New Development)`, () => {
 	returnValue = []
 	const tokenizer = tokenizeDev(bootstrapCSS)
-	while (tokenizer() === true) returnValue.push(tokenizer.type)
+	while (tokenizer() === true) returnValue.push(tokenizer.code)
+})
+
+addTest(`PostCSS Tokenizer (Development)`, () => {
+	returnValue = []
+	const tokenizer = tokenizeDld(bootstrapCSS)
+	while (tokenizer() === true) returnValue.push(tokenizer.code)
 })
 
 suite.on(`complete`, (event) => {

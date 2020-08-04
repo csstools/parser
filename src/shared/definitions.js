@@ -1,4 +1,6 @@
-import * as codes from './character-codes.js'
+import * as codes from './ascii-codes.js'
+
+export * from './ascii-codes.js'
 
 /**
  * Returns whether the code point is a digit.
@@ -30,8 +32,16 @@ export function isLowercaseLetter(/** @type {number} */ code) {
  */
 export function isLetter(/** @type {number} */ code) {
 	return (
-		isUppercaseLetter(code)
-		|| isLowercaseLetter(code)
+		// isUppercaseLetter
+		(
+			code >= codes.LATIN_CAPITAL_LETTER_A
+			&& code <= codes.LATIN_CAPITAL_LETTER_Z
+		)
+		// isLowercaseLetter
+		|| (
+			code >= codes.LATIN_SMALL_LETTER_A
+			&& code <= codes.LATIN_SMALL_LETTER_Z
+		)
 	)
 }
 
@@ -49,8 +59,18 @@ export function isNonAscii(/** @type {number} */ code) {
  */
 export function isIdentifierStart(/** @type {number} */ code) {
 	return (
-		isLetter(code)
-		|| isNonAscii(code)
+		// isUppercaseLetter
+		(
+			code >= codes.LATIN_CAPITAL_LETTER_A
+			&& code <= codes.LATIN_CAPITAL_LETTER_Z
+		)
+		// isLowercaseLetter
+		|| (
+			code >= codes.LATIN_SMALL_LETTER_A
+			&& code <= codes.LATIN_SMALL_LETTER_Z
+		)
+		// isNonAscii
+		|| code > codes.DELETE
 		|| code === codes.LOW_LINE
 	)
 }
