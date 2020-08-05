@@ -46,19 +46,25 @@ The **CSSDeclaration** class represents a CSS declaration block.
 To consume a declaration:
 
 1.  Create a new `CSSDeclaration` as `d`.
-2.  Assign the current value to `d.name`.
-3.  Advance the current value.
-4.  If the current value cannot be accessed;
-    1. Return the unbound values from `d`.
+2.  Assign the current token to `d.name`.
+3.  Advance the current token.
+4.  If the current token cannot be accessed, then
+    1. Create a new `CSSAny` as `a`.
+    2. Move all of the tokens from `d` to the `a.value` list.
+    1. Return `a`.
 5.  While the current value is either a `CSSComment` or `CSSSpace` value,
     1. Push the current value to the `d.betweenNameAndOpening` list.
     2. Advance the current value.
 6.  If the current value is not a `CSSSymbol<":">`, then
-    1. Return the unbound values from `d`.
+    1. Create a new `CSSAny` as `a`.
+    2. Move all of the tokens from `d` to the `a.value` list.
+    1. Return `a`.
 7.  Assign the current value to `d.opening`.
 8.  Advance the current value.
-9.  If the current value cannot be accessed;
-    1. Return the unbound values of the `CSSDeclaration`.
+9.  If the current value cannot be accessed, then
+    1. Create a new `CSSAny` as `a`.
+    2. Move all of the tokens from `d` to the `a.value` list.
+    1. Return `a`.
 10. While the current value is either a `CSSComment` or `CSSSpace`, then
     1. Push the current value to the `d.betweenOpeningAndValue` list.
     2. Advance the value.
