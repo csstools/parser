@@ -52,34 +52,34 @@ To consume a declaration:
     1. Create a new `CSSAny` as `a`.
     2. Move all of the tokens from `d` to the `a.value` list.
     1. Return `a`.
-5.  While the current value is either a `CSSComment` or `CSSSpace` value,
-    1. Push the current value to the `d.betweenNameAndOpening` list.
-    2. Advance the current value.
-6.  If the current value is not a `CSSSymbol<":">`, then
+5.  While the current token is either a `CSSComment` or `CSSSpace` token,
+    1. Push the current token to the `d.betweenNameAndOpening` list.
+    2. Advance the current token.
+6.  If the current token is not a `CSSSymbol<":">`, then
     1. Create a new `CSSAny` as `a`.
     2. Move all of the tokens from `d` to the `a.value` list.
     1. Return `a`.
-7.  Assign the current value to `d.opening`.
-8.  Advance the current value.
-9.  If the current value cannot be accessed, then
+7.  Assign the current token to `d.opening`.
+8.  Advance the current token.
+9.  If the current token cannot be accessed, then
     1. Create a new `CSSAny` as `a`.
     2. Move all of the tokens from `d` to the `a.value` list.
     1. Return `a`.
-10. While the current value is either a `CSSComment` or `CSSSpace`, then
-    1. Push the current value to the `d.betweenOpeningAndValue` list.
-    2. Advance the value.
-11. While the current value can be accessed,
-    1. Push the current value to the `d.value` list.
-    2. Advance the current value.
-12. Move any `CSSComment` or `CSSSpace` values from the end of `d.value` to the `d.betweenValueAndClosing` list.
+10. While the current token is either a `CSSComment` or `CSSSpace`, then
+    1. Push the current token to the `d.betweenOpeningAndValue` list.
+    2. Advance the token.
+11. While the current token can be accessed,
+    1. Push the current token to the `d.value` list.
+    2. Advance the current token.
+12. Move any `CSSComment` or `CSSSpace` tokens from the end of `d.value` to the `d.betweenValueAndClosing` list.
 13. If the following conditions are met, which are
-    1. If the last value of `d.value` is a `CSSWord`, and
-    2. If zero-or-more values before that are either a `CSSComment` or `CSSSpace`, and
-    3. If the value before that is a `CSSSymbol<"!">`, then
+    1. If the last token of `d.value` is a `CSSWord`, and
+    2. If zero-or-more tokens before that are either a `CSSComment` or `CSSSpace`, and
+    3. If the token before that is a `CSSSymbol<"!">`, then
        1. Create a new `CSSPriority` as `p`.
        2. Assign `p` to `d.priority`.
-       3. Assign the `CSSSymbol<"!">` value to `p.symbol`.
-       4. Assign the `CSSWord` value to `p.value`.
-       5. Move any `CSSComment` or `CSSSpace` values between `p.symbol` and `p.value` to the `p.betweenSymbolAndValue` list.
-       6. Move any `CSSComment` or `CSSSpace` values before `p.symbol` to the `d.betweenValueAndPriority` list.
+       3. Assign the `CSSSymbol<"!">` token to `p.symbol`.
+       4. Assign the `CSSWord` token to `p.value`.
+       5. Move any `CSSComment` or `CSSSpace` tokens between `p.symbol` and `p.value` to the `p.betweenSymbolAndValue` list.
+       6. Move any `CSSComment` or `CSSSpace` tokens before `p.symbol` to the `d.betweenValueAndPriority` list.
 14. Return `d`.
